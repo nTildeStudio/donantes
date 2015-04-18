@@ -1,0 +1,100 @@
+<resources>
+    <declare-styleable name="PLinearLayout">
+        <attr name="pl_percentage_padding" format="float" />
+        <attr name="pl_percentage_padding_left" format="float" />
+        <attr name="pl_percentage_padding_right" format="float" />
+        <attr name="pl_percentage_padding_top" format="float" />
+        <attr name="pl_percentage_padding_bottom" format="float" />
+        <attr name="pl_percentage_height" format="float" />
+        <attr name="pl_percentage_width" format="float" />
+    </declare-styleable>
+    <declare-styleable name="PRelativeLayout">
+        <attr name="pr_percentage_padding" format="float" />
+        <attr name="pr_percentage_padding_left" format="float" />
+        <attr name="pr_percentage_padding_right" format="float" />
+        <attr name="pr_percentage_padding_top" format="float" />
+        <attr name="pr_percentage_padding_bottom" format="float" />
+        <attr name="pr_percentage_height" format="float" />
+        <attr name="pr_percentage_width" format="float" />
+    </declare-styleable>
+    <declare-styleable name="PScrollView">
+        <attr name="psv_percentage_padding" format="float" />
+        <attr name="psv_percentage_padding_left" format="float" />
+        <attr name="psv_percentage_padding_right" format="float" />
+        <attr name="psv_percentage_padding_top" format="float" />
+        <attr name="psv_percentage_padding_bottom" format="float" />
+        <attr name="psv_percentage_height" format="float" />
+        <attr name="psv_percentage_width" format="float" />
+    </declare-styleable>
+    <declare-styleable name="PHorizontalScrollView">
+        <attr name="phsv_percentage_padding" format="float" />
+        <attr name="phsv_percentage_padding_left" format="float" />
+        <attr name="phsv_percentage_padding_right" format="float" />
+        <attr name="phsv_percentage_padding_top" format="float" />
+        <attr name="phsv_percentage_padding_bottom" format="float" />
+        <attr name="phsv_percentage_height" format="float" />
+        <attr name="phsv_percentage_width" format="float" />
+    </declare-styleable>
+    <declare-styleable name="PListView">
+        <attr name="plv_percentage_padding" format="float" />
+        <attr name="plv_percentage_padding_left" format="float" />
+        <attr name="plv_percentage_padding_right" format="float" />
+        <attr name="plv_percentage_padding_top" format="float" />
+        <attr name="plv_percentage_padding_bottom" format="float" />
+        <attr name="plv_percentage_height" format="float" />
+        <attr name="plv_percentage_width" format="float" />
+    </declare-styleable>
+   <declare-styleable name="PGridView">
+        <attr name="gv_percentage_padding" format="float" />
+        <attr name="gv_percentage_padding_left" format="float" />
+        <attr name="gv_percentage_padding_right" format="float" />
+        <attr name="gv_percentage_padding_top" format="float" />
+        <attr name="gv_percentage_padding_bottom" format="float" />
+        <attr name="gv_percentage_height" format="float" />
+        <attr name="gv_percentage_width" format="float" />
+    </declare-styleable>
+    <declare-styleable name="PTextView">
+        <attr name="ptv_height" format="float" />
+        <attr name="ptv_font_asset" format="string" />
+    </declare-styleable>
+    <declare-styleable name="PImageView">
+        <attr name="piv_height" format="float" />
+    </declare-styleable>
+    <declare-styleable name="PEditText">
+        <attr name="pet_height" format="float" />
+        <attr name="pet_font_asset" format="string" />
+    </declare-styleable>
+    <declare-styleable name="FormFieldValidator">
+        <attr name="ffv_help_string" format="string" />
+        <attr name="ffv_error_string" format="string" />
+        <attr name="ffv_text_hint" format="string" />
+        <attr name="ffv_text" format="string" />
+        <attr name="ffv_required" format="boolean" />
+        <attr name="ffv_txt_font_size" format="float" />
+        <attr name="ffv_txt_font_asset" format="string" />
+        <attr name="ffv_help_font_size" format="float" />
+        <attr name="ffv_help_font_asset" format="string" />
+        <attr name="ffv_validation_type" format="integer">
+            <enum name="no_validation_first" value="-3"/>
+            <enum name="no_validation_number" value="-2"/>
+        	<enum name="no_validation" value="-1"/>
+        	<enum name="email" value="0"/>
+        	<enum name="zipCode" value="1"/>
+        	<enum name="phone" value="2"/>
+        	<enum name="password" value="3"/>
+        	<enum name="visa" value="4"/>
+        	<enum name="mastercard" value="5"/>
+        	<enum name="diners" value="6"/>
+        	<enum name="americanExpress" value="7"/>
+        	<enum name="discover" value="8"/>
+        	<enum name="jcb" value="9"/>
+        	<enum name="cod" value="10"/>
+        	<enum name="affinity" value="11"/>
+            <enum name="cif" value="12"/>
+            <enum name="nif" value="13"/>
+        	<enum name="positiveNumber" value="14"/>
+        </attr>
+    </declare-styleable>
+    
+    
+</resources>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Donantes</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="default_asset_font"></string>
+    <string name="title_activity_ubicacion">Ubicacion</string>
+    <string name="title_activity_agenda">Agenda</string>
+    <string name="home_donde_donar_titulo">Dónde donar</string>
+    <string name="home_donde_donar_descripcion">Encuentra los mejores puntos de donación</string>
+    <string name="home_agenda_titulo">Agenda de donaciones</string>
+    <string name="home_agenda_descripcion">Anota tus donaciones y olvídate de fechas</string>
+</resources>
