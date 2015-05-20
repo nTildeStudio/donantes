@@ -34,7 +34,7 @@ public class MenuTest extends ActivityInstrumentationTestCase2{
         solo.assertCurrentActivity("Actividad incorrecta",Agenda.class);
         solo.goBack();
         solo.clickOnText(getActivity().getString(R.string.home_agenda_descripcion));
-        solo.assertCurrentActivity("Actividad incorrecta",Agenda.class);
+        solo.assertCurrentActivity("Actividad incorrecta",Agenda.class); 
         solo.goBack();
     }
 
