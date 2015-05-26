@@ -10,7 +10,7 @@ public class Agenda extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.activity_open_translate,R.anim.activity_close_scale);
-        setContentView(R.layout.activity_ubicacion);
+        setContentView(R.layout.activity_ubicacion); 
     }
 
     @Override
