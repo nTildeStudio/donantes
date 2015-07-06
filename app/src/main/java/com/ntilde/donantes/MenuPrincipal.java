@@ -2,8 +2,8 @@ package com.ntilde.donantes;
 
 import android.content.Intent;
 import android.graphics.Point;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,16 +14,17 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.ntilde.Techniques.MenuIn;
 import com.ntilde.percentagelayout.PImageView;
 import com.ntilde.percentagelayout.PLinearLayout;
+import com.parse.Parse;
 
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectViews;
 import butterknife.InjectView;
+import butterknife.InjectViews;
 import butterknife.OnClick;
 
 
-public class HomeActivity extends ActionBarActivity {
+public class MenuPrincipal extends ActionBarActivity {
 
     @InjectViews({
             R.id.icono_ubicacion,
@@ -55,6 +56,10 @@ public class HomeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.activity_open_translate,R.anim.activity_close_scale);
         setContentView(R.layout.activity_home);
+
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "9qm1kVlIwYlGQ8ZBvJiAj6GEj7mfBpfLmE2eGCh0", "tD7aDDlGmcd2InKOho2g2KQCfg1OWUQhIfOdsAre");
+
         ButterKnife.inject(this);
         ic_margen_sup.post(new Runnable(){
             @Override

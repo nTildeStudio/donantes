@@ -1,7 +1,6 @@
 package com.ntilde.donantes;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.Menu;
 
 import com.robotium.solo.Solo;
 
@@ -13,7 +12,7 @@ public class MenuTest extends ActivityInstrumentationTestCase2{
     private Solo solo;
 
     public MenuTest(){
-        super(HomeActivity.class);
+        super(MenuPrincipal.class);
     }
 
     public void setUp() throws Exception{
