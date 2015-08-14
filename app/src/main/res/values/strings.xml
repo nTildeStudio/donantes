@@ -10,4 +10,6 @@
     <string name="home_donde_donar_descripcion">Encuentra los mejores puntos de donación</string>
     <string name="home_agenda_titulo">Agenda de donaciones</string>
     <string name="home_agenda_descripcion">Anota tus donaciones y olvídate de fechas</string>
+    <string name="title_activity_primer_inicio">Configuracion inicial</string>
+    <string name="title_activity_splash_screen">Donantes</string>
 </resources>

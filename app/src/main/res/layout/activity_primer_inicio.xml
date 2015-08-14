@@ -1,0 +1,99 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.ntilde.donantes.PrimerInicio"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#fff"
+    android:id="@+id/iconos_margen_izquierdo">
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:id="@+id/home_cabecera"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        app:pl_percentage_height="12.5"
+        app:pl_percentage_width="100"
+        android:orientation="vertical">
+        <com.ntilde.percentagelayout.PLinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            app:pl_percentage_height="95"
+            app:pl_percentage_width="100"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/home_logotipo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_logotipo"
+                android:adjustViewBounds="true"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <com.ntilde.percentagelayout.PTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:ptv_height="1"
+                    android:text=" "
+                    android:textColor="#444"/>
+                <com.ntilde.percentagelayout.PTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:ptv_height="5"
+                    android:text="Donación de sangre"
+                    android:textColor="#c00"/>
+                <com.ntilde.percentagelayout.PTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:ptv_height="2.2"
+                    android:text="Configuración inicial de la aplicación"
+                    android:textColor="#444"/>
+            </LinearLayout>
+        </com.ntilde.percentagelayout.PLinearLayout>
+        <com.ntilde.percentagelayout.PLinearLayout
+            android:id="@+id/home_borde_rojo_superior"
+            android:layout_width="0px"
+            android:layout_height="0px"
+            app:pl_percentage_height="5"
+            app:pl_percentage_width="100"
+            android:background="#c00">
+        </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+        android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+
+    <com.ntilde.percentagelayout.PTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:ptv_height="2.8"
+        android:text="Seleccione un centro de donación"
+        android:textColor="#000"/>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:pl_percentage_width="100"
+        app:pl_percentage_height="40">
+
+        <fragment
+            android:id="@+id/primer_inicio_mapa"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/boton"
+        android:text="Guardar"/>
+
+</LinearLayout>
