@@ -12,4 +12,5 @@
     <string name="home_agenda_descripcion">Anota tus donaciones y olvídate de fechas</string>
     <string name="title_activity_primer_inicio">Configuracion inicial</string>
     <string name="title_activity_splash_screen">Donantes</string>
+    <color name="rojo">#c00</color>
 </resources>

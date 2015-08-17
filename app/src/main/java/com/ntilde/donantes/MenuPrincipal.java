@@ -1,6 +1,7 @@
 package com.ntilde.donantes;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +15,11 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.ntilde.Techniques.MenuIn;
 import com.ntilde.percentagelayout.PImageView;
 import com.ntilde.percentagelayout.PLinearLayout;
+import com.ntilde.percentagelayout.PTextView;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.List;
 
@@ -41,6 +47,7 @@ public class MenuPrincipal extends ActionBarActivity {
     @InjectView(R.id.home_logotipo)ImageView logotipo;
     @InjectView(R.id.home_borde_rojo_superior) PLinearLayout borde_rojo_superior;
     @InjectView(R.id.home_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
+    @InjectView(R.id.menu_principal_nombre_centro) PTextView nombre_centro;
     @InjectViews({
             R.id.info_ubicacion,
             R.id.info_agenda,
@@ -57,6 +64,18 @@ public class MenuPrincipal extends ActionBarActivity {
         setContentView(R.layout.activity_home);
 
         ButterKnife.inject(this);
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
+        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, MenuPrincipal.MODE_PRIVATE);
+        String centroSeleccionado = prefs.getString(Constantes.SP_CENTRO, "");
+        query.getInBackground(centroSeleccionado, new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    nombre_centro.setText(object.getString("Descripcion"));
+                }
+            }
+        });
+
         ic_margen_sup.post(new Runnable(){
             @Override
             public void run(){

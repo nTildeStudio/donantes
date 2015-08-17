@@ -10,7 +10,7 @@
     android:id="@+id/iconos_margen_izquierdo">
 
     <com.ntilde.percentagelayout.PLinearLayout
-        android:id="@+id/home_cabecera"
+        android:id="@+id/primer_inicio_cabecera"
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_height="12.5"
@@ -24,7 +24,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
             <ImageView
-                android:id="@+id/home_logotipo"
+                android:id="@+id/primer_inicio_logotipo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_logotipo"
@@ -57,7 +57,7 @@
             </LinearLayout>
         </com.ntilde.percentagelayout.PLinearLayout>
         <com.ntilde.percentagelayout.PLinearLayout
-            android:id="@+id/home_borde_rojo_superior"
+            android:id="@+id/primer_inicio_borde_rojo_superior"
             android:layout_width="0px"
             android:layout_height="0px"
             app:pl_percentage_height="5"
@@ -70,11 +70,15 @@
         android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
 
     <com.ntilde.percentagelayout.PTextView
+        android:id="@+id/primer_inicio_msg_centro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:ptv_height="2.8"
         android:text="Seleccione un centro de donación"
         android:textColor="#000"/>
+
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
 
     <com.ntilde.percentagelayout.PLinearLayout
         android:layout_width="0dp"
@@ -90,10 +94,112 @@
 
     </com.ntilde.percentagelayout.PLinearLayout>
 
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+
+    <com.ntilde.percentagelayout.PTextView
+        android:id="@+id/primer_inicio_msg_grupo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:ptv_height="2.8"
+        android:text="Seleccione su grupo sanguineo"
+        android:textColor="#000"/>
+
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:pl_percentage_height="10"
+        app:pl_percentage_width="100"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/primer_inicio_grupo_0n"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="0-"/>
+
+        <Button
+            android:id="@+id/primer_inicio_grupo_an"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="A-"/>
+
+        <Button
+            android:id="@+id/primer_inicio_grupo_bn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="B-"/>
+
+        <Button
+            android:id="@+id/primer_inicio_grupo_abn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="AB-"/>
+
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:pl_percentage_height="10"
+        app:pl_percentage_width="100"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/primer_inicio_grupo_0p"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="0+"/>
+
+        <Button
+            android:id="@+id/primer_inicio_grupo_ap"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="A+"/>
+
+        <Button
+            android:id="@+id/primer_inicio_grupo_bp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="B+"/>
+
+        <Button
+            android:id="@+id/primer_inicio_grupo_abp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:text="AB+"/>
+
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+
+    <LinearLayout
+        android:id="@+id/primer_inicio_borde_rojo_inferior"
+        android:layout_width="match_parent" android:layout_height="0px"
+        android:background="#c00" android:orientation="horizontal">
+    </LinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="1.5"></com.ntilde.percentagelayout.PLinearLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/boton"
-        android:text="Guardar"/>
+        android:id="@+id/primer_inicio_boton_guardar"
+        android:text="Guardar configuración"/>
 
 </LinearLayout>

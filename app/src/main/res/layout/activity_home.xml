@@ -47,6 +47,7 @@
                     android:text="Donación de sangre"
                     android:textColor="#c00"/>
                 <com.ntilde.percentagelayout.PTextView
+                    android:id="@+id/menu_principal_nombre_centro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"

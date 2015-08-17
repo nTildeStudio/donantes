@@ -1,6 +1,7 @@
 package com.ntilde.donantes;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -28,8 +29,16 @@ public class SplashScreen extends ActionBarActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //TODO dirigir a Primer inicio o a Menu principal segun corresponda
-                startActivity(new Intent(SplashScreen.this, PrimerInicio.class));
+                SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
+                boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio"));
+                ok=ok&&!"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
+
+                if(ok){
+                    startActivity(new Intent(SplashScreen.this, MenuPrincipal.class));
+                }
+                else {
+                    startActivity(new Intent(SplashScreen.this, PrimerInicio.class));
+                }
             }
         }, 1500);
     }
