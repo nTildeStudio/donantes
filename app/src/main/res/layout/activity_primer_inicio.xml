@@ -121,6 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:textSize="15dp"
             android:text="0-"/>
 
         <Button
@@ -128,6 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:textSize="15dp"
             android:text="A-"/>
 
         <Button
@@ -135,6 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:textSize="15dp"
             android:text="B-"/>
 
         <Button
@@ -142,6 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:textSize="15dp"
             android:text="AB-"/>
 
     </com.ntilde.percentagelayout.PLinearLayout>
@@ -159,6 +163,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:textSize="15dp"
             android:text="0+"/>
 
         <Button
@@ -166,6 +171,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:textSize="15dp"
             android:text="A+"/>
 
         <Button
@@ -173,6 +179,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:textSize="15dp"
             android:text="B+"/>
 
         <Button
@@ -180,6 +187,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textStyle="bold"
+            android:textSize="15dp"
             android:text="AB+"/>
 
     </com.ntilde.percentagelayout.PLinearLayout>

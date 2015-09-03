@@ -1,6 +1,5 @@
 package com.ntilde.donantes;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,8 +8,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -40,6 +37,7 @@ public class Configuracion extends ActionBarActivity {
 
     private String centroSeleccionado=null;
     private String grupoSanguineoSeleccionado=null;
+    private String sexoSeleccionado=null;
     private Map<String,String> centrosRegionalesIdNombre;
 
     SupportMapFragment smfMapa;
@@ -47,22 +45,24 @@ public class Configuracion extends ActionBarActivity {
     List<LatLng> otsLatLng;
 
     @InjectView(R.id.iconos_margen_superior) PLinearLayout ic_margen_sup;
-    @InjectView(R.id.primer_inicio_logotipo)ImageView logotipo;
-    @InjectView(R.id.primer_inicio_borde_rojo_superior) PLinearLayout borde_rojo_superior;
-    @InjectView(R.id.primer_inicio_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
-    @InjectViews({R.id.primer_inicio_grupo_0n, R.id.primer_inicio_grupo_0p, R.id.primer_inicio_grupo_an, R.id.primer_inicio_grupo_ap,
-            R.id.primer_inicio_grupo_bn, R.id.primer_inicio_grupo_bp, R.id.primer_inicio_grupo_abn, R.id.primer_inicio_grupo_abp}) Button[] gruposSanguineos;
-    @InjectView(R.id.primer_inicio_msg_centro) PTextView msg_centro;
-    @InjectView(R.id.primer_inicio_msg_grupo) PTextView msg_grupo;
+    @InjectView(R.id.configuracion_logotipo)ImageView logotipo;
+    @InjectView(R.id.configuracion_borde_rojo_superior) PLinearLayout borde_rojo_superior;
+    @InjectView(R.id.configuracion_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
+    @InjectViews({R.id.configuracion_grupo_0n, R.id.configuracion_grupo_0p, R.id.configuracion_grupo_an, R.id.configuracion_grupo_ap,
+            R.id.configuracion_grupo_bn, R.id.configuracion_grupo_bp, R.id.configuracion_grupo_abn, R.id.configuracion_grupo_abp}) Button[] gruposSanguineos;
+    @InjectViews({R.id.configuracion_sexo_masculino, R.id.configuracion_sexo_femenino}) Button[] sexos;
+    @InjectView(R.id.configuracion_msg_centro) PTextView msg_centro;
+    @InjectView(R.id.configuracion_msg_grupo) PTextView msg_grupo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.activity_open_translate,R.anim.activity_close_scale);
         setContentView(R.layout.activity_configuracion);
 
         ButterKnife.inject(this);
 
-        smfMapa=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.primer_inicio_mapa);
+        smfMapa=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.configuracion_mapa);
 
         try {
             gmMapa=smfMapa.getMap();
@@ -91,11 +91,13 @@ public class Configuracion extends ActionBarActivity {
                     centrosRegionalesIdNombre = new HashMap<>();
                     for(ParseObject centroRegional:centrosRegionales){
                         ParseGeoPoint ubicacion=centroRegional.getParseGeoPoint("Ubicacion");
-                        LatLng latLng=new LatLng(ubicacion.getLatitude(),ubicacion.getLongitude());
-                        otsLatLng.add(latLng);
-                        MarkerOptions a=new MarkerOptions();
-                        gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")));
-                        centrosRegionalesIdNombre.put(centroRegional.getString("Nombre"),centroRegional.getObjectId());
+                        if(ubicacion!=null) {
+                            LatLng latLng = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
+                            otsLatLng.add(latLng);
+                            gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")));
+                            //gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
+                            centrosRegionalesIdNombre.put(centroRegional.getString("Nombre"), centroRegional.getObjectId());
+                        }
                     }
                     gmMapa.getUiSettings().setZoomControlsEnabled(true);
                     LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -115,39 +117,67 @@ public class Configuracion extends ActionBarActivity {
                 }
             }
         });
+
+        cargarPreferencias();
     }
 
-    @OnClick({R.id.primer_inicio_grupo_0n, R.id.primer_inicio_grupo_0p, R.id.primer_inicio_grupo_an, R.id.primer_inicio_grupo_ap,
-            R.id.primer_inicio_grupo_bn, R.id.primer_inicio_grupo_bp, R.id.primer_inicio_grupo_abn, R.id.primer_inicio_grupo_abp})
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.activity_open_scale,R.anim.activity_close_translate);
+    }
+
+    @OnClick({R.id.configuracion_grupo_0n, R.id.configuracion_grupo_0p, R.id.configuracion_grupo_an, R.id.configuracion_grupo_ap,
+            R.id.configuracion_grupo_bn, R.id.configuracion_grupo_bp, R.id.configuracion_grupo_abn, R.id.configuracion_grupo_abp})
     public void onGrupoClick(Button grupo){
         for(Button grupoSanguineo:gruposSanguineos){
             grupoSanguineo.setTextColor(Color.BLACK);
+            grupoSanguineo.setTextSize(15);
         }
         grupo.setTextColor(getResources().getColor(R.color.rojo));
+        grupo.setTextSize(25);
         msg_grupo.setTextColor(Color.BLACK);
         grupoSanguineoSeleccionado=grupo.getText().toString();
     }
 
-    @OnClick(R.id.primer_inicio_boton_guardar)
+    @OnClick({R.id.configuracion_sexo_femenino, R.id.configuracion_sexo_masculino})
+    public void onSexoClick(Button sexo){
+        for(Button sexoAct:sexos){
+            sexoAct.setTextColor(Color.BLACK);
+            sexoAct.setTextSize(15);
+        }
+        sexo.setTextColor(getResources().getColor(R.color.rojo));
+        sexo.setTextSize(25);
+        sexoSeleccionado=sexo.getText().toString();
+    }
+
+    @OnClick(R.id.configuracion_boton_guardar)
     public void onGuardar(){
-        boolean datosOk=true;
-        if(centroSeleccionado==null){
-            datosOk=false;
-            msg_centro.setTextColor(getResources().getColor(R.color.rojo));
-            YoYo.with(Techniques.Shake).duration(1000).playOn(msg_centro);
+        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constantes.SP_CENTRO, centroSeleccionado);
+        editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
+        editor.putString(Constantes.SP_SEXO, sexoSeleccionado);
+        editor.commit();
+        finish();
+    }
+
+    private void cargarPreferencias(){
+        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
+        centroSeleccionado=prefs.getString(Constantes.SP_CENTRO, null);
+        grupoSanguineoSeleccionado=prefs.getString(Constantes.SP_GRUPO, null);
+        sexoSeleccionado=prefs.getString(Constantes.SP_SEXO, null);
+        for(Button grupo:gruposSanguineos){
+            if(grupo.getText().toString().equals(grupoSanguineoSeleccionado)){
+                grupo.setTextColor(getResources().getColor(R.color.rojo));
+                grupo.setTextSize(25);
+            }
         }
-        if(grupoSanguineoSeleccionado==null){
-            datosOk=false;
-            msg_grupo.setTextColor(getResources().getColor(R.color.rojo));
-            YoYo.with(Techniques.Shake).duration(1000).playOn(msg_grupo);
-        }
-        if(datosOk) {
-            SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, PrimerInicio.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(Constantes.SP_CENTRO, centroSeleccionado);
-            editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
-            editor.commit();
-            startActivity(new Intent(Configuracion.this, MenuPrincipal.class));
+        for(Button sexo:sexos){
+            if(sexo.getText().toString().equals(sexoSeleccionado)){
+                sexo.setTextColor(getResources().getColor(R.color.rojo));
+                sexo.setTextSize(25);
+            }
         }
     }
 

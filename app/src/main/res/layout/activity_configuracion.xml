@@ -10,7 +10,7 @@
     android:id="@+id/iconos_margen_izquierdo">
 
     <com.ntilde.percentagelayout.PLinearLayout
-        android:id="@+id/primer_inicio_cabecera"
+        android:id="@+id/configuracion_cabecera"
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_height="12.5"
@@ -24,7 +24,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
             <ImageView
-                android:id="@+id/primer_inicio_logotipo"
+                android:id="@+id/configuracion_logotipo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_logotipo"
@@ -57,7 +57,7 @@
             </LinearLayout>
         </com.ntilde.percentagelayout.PLinearLayout>
         <com.ntilde.percentagelayout.PLinearLayout
-            android:id="@+id/primer_inicio_borde_rojo_superior"
+            android:id="@+id/configuracion_borde_rojo_superior"
             android:layout_width="0px"
             android:layout_height="0px"
             app:pl_percentage_height="5"
@@ -70,7 +70,7 @@
         android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
 
     <com.ntilde.percentagelayout.PTextView
-        android:id="@+id/primer_inicio_msg_centro"
+        android:id="@+id/configuracion_msg_centro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:ptv_height="2.8"
@@ -87,7 +87,7 @@
         app:pl_percentage_height="25">
 
         <fragment
-            android:id="@+id/primer_inicio_mapa"
+            android:id="@+id/configuracion_mapa"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -114,7 +114,7 @@
                 app:pl_percentage_height="8.5"></com.ntilde.percentagelayout.PLinearLayout>
 
             <com.ntilde.percentagelayout.PTextView
-                android:id="@+id/primer_inicio_msg_grupo"
+                android:id="@+id/configuracion_msg_grupo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:ptv_height="2.8"
@@ -133,31 +133,35 @@
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/primer_inicio_grupo_0n"
+                    android:id="@+id/configuracion_grupo_0n"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="0-"/>
 
                 <Button
-                    android:id="@+id/primer_inicio_grupo_an"
+                    android:id="@+id/configuracion_grupo_an"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="A-"/>
 
                 <Button
-                    android:id="@+id/primer_inicio_grupo_bn"
+                    android:id="@+id/configuracion_grupo_bn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="B-"/>
 
                 <Button
-                    android:id="@+id/primer_inicio_grupo_abn"
+                    android:id="@+id/configuracion_grupo_abn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="AB-"/>
 
             </com.ntilde.percentagelayout.PLinearLayout>
@@ -171,31 +175,35 @@
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/primer_inicio_grupo_0p"
+                    android:id="@+id/configuracion_grupo_0p"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="0+"/>
 
                 <Button
-                    android:id="@+id/primer_inicio_grupo_ap"
+                    android:id="@+id/configuracion_grupo_ap"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="A+"/>
 
                 <Button
-                    android:id="@+id/primer_inicio_grupo_bp"
+                    android:id="@+id/configuracion_grupo_bp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="B+"/>
 
                 <Button
-                    android:id="@+id/primer_inicio_grupo_abp"
+                    android:id="@+id/configuracion_grupo_abp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="AB+"/>
 
             </com.ntilde.percentagelayout.PLinearLayout>
@@ -208,13 +216,14 @@
             app:pl_percentage_width="40"
             app:pl_percentage_height="100"
             android:gravity="center_horizontal"
+            app:pl_percentage_padding_right="5"
             android:orientation="vertical">
 
             <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
                 app:pl_percentage_height="8.5"></com.ntilde.percentagelayout.PLinearLayout>
 
             <com.ntilde.percentagelayout.PTextView
-                android:id="@+id/primer_inicio_msg_sexo"
+                android:id="@+id/configuracion_msg_sexo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:ptv_height="2.8"
@@ -229,15 +238,15 @@
                 android:layout_height="0dp"
                 app:pl_percentage_height="36.5"
                 app:pl_percentage_width="100"
-                app:pl_percentage_padding_right="5"
                 android:orientation="horizontal"
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/primer_inicio_sexo_femenino"
+                    android:id="@+id/configuracion_sexo_femenino"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="Femenino"/>
 
             </com.ntilde.percentagelayout.PLinearLayout>
@@ -247,15 +256,15 @@
                 android:layout_height="0dp"
                 app:pl_percentage_height="36.5"
                 app:pl_percentage_width="100"
-                app:pl_percentage_padding_right="5"
                 android:orientation="horizontal"
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/primer_inicio_sexo_masculino"
+                    android:id="@+id/configuracion_sexo_masculino"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="Masculino"/>
 
             </com.ntilde.percentagelayout.PLinearLayout>
@@ -268,7 +277,7 @@
         app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
 
     <com.ntilde.percentagelayout.PTextView
-        android:id="@+id/primer_inicio_msg_notificaciones"
+        android:id="@+id/configuracion_msg_notificaciones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:ptv_height="2.8"
@@ -285,7 +294,7 @@
         app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
 
     <LinearLayout
-        android:id="@+id/primer_inicio_borde_rojo_inferior"
+        android:id="@+id/configuracion_borde_rojo_inferior"
         android:layout_width="match_parent" android:layout_height="0px"
         android:background="#c00" android:orientation="horizontal">
     </LinearLayout>
@@ -296,7 +305,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/primer_inicio_boton_guardar"
+        android:id="@+id/configuracion_boton_guardar"
         android:text="Guardar configuración"/>
 
 </LinearLayout>

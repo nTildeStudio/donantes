@@ -122,8 +122,10 @@ public class PrimerInicio extends ActionBarActivity {
     public void onGrupoClick(Button grupo){
         for(Button grupoSanguineo:gruposSanguineos){
             grupoSanguineo.setTextColor(Color.BLACK);
+            grupoSanguineo.setTextSize(15);
         }
         grupo.setTextColor(getResources().getColor(R.color.rojo));
+        grupo.setTextSize(25);
         msg_grupo.setTextColor(Color.BLACK);
         grupoSanguineoSeleccionado=grupo.getText().toString();
     }
