@@ -1,12 +1,112 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.ntilde.donantes.Informacion">
+<LinearLayout android:id="@+id/iconos_margen_izquierdo"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#fff"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              tools:context="com.ntilde.donantes.PrimerInicio">
 
-    <TextView android:text="informacion" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:id="@+id/configuracion_cabecera"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:orientation="vertical"
+        app:pl_percentage_height="12.5"
+        app:pl_percentage_width="100">
 
-</RelativeLayout>
+        <com.ntilde.percentagelayout.PLinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:pl_percentage_height="95"
+            app:pl_percentage_width="100">
+
+            <ImageView
+                android:id="@+id/configuracion_logotipo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_logotipo"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.ntilde.percentagelayout.PTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=" "
+                    android:textColor="#444"
+                    app:ptv_height="1"/>
+
+                <com.ntilde.percentagelayout.PTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Donación de sangre"
+                    android:textColor="#c00"
+                    app:ptv_height="5"/>
+
+                <com.ntilde.percentagelayout.PTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/informacion_donante_title"
+                    android:textColor="#444"
+                    app:ptv_height="2.2"/>
+            </LinearLayout>
+        </com.ntilde.percentagelayout.PLinearLayout>
+
+        <com.ntilde.percentagelayout.PLinearLayout
+            android:id="@+id/configuracion_borde_rojo_superior"
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:background="#c00"
+            app:pl_percentage_height="5"
+            app:pl_percentage_width="100">
+        </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+                                               android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:orientation="vertical"
+        app:pl_percentage_height="74.6"
+        app:pl_percentage_width="100"
+        android:background="@color/accent_material_light"
+        >
+
+        <ListView
+            android:id="@+id/main_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainActivity"
+            android:background="@android:color/white"
+            android:scrollbars="none"
+            />
+
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+    <LinearLayout
+        android:id="@+id/configuracion_borde_rojo_inferior"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:background="#c00"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        app:pl_percentage_height="1.5"></com.ntilde.percentagelayout.PLinearLayout>
+
+</LinearLayout>
