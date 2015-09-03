@@ -151,7 +151,7 @@ public class Configuracion extends ActionBarActivity {
         sexoSeleccionado=sexo.getText().toString();
     }
 
-    @OnClick(R.id.configuracion_boton_guardar)
+    @OnClick(R.id.configuracion_buttonFloat)
     public void onGuardar(){
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

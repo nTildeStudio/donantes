@@ -32,6 +32,8 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.4'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.roomorama:caldroid:2.2.0'
+    compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile 'com.github.sundeepk:compact-calendar-view:1.7.3'
 
 }
