@@ -12,7 +12,8 @@
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAEfwvLkIqr2lykuFmKRnv8q-KVEKTl40Y"/>
+            android:value="AIzaSyAEfwvLkIqr2lykuFmKRnv8q-KVEKTl40Y" />
+
         <activity
             android:name=".SplashScreen"
             android:label="@string/title_activity_splash_screen"
@@ -38,6 +39,18 @@
         <activity
             android:name=".PrimerInicio"
             android:label="@string/title_activity_primer_inicio" >
+        </activity>
+        <activity
+            android:name=".Configuracion"
+            android:label="@string/title_activity_configuracion" >
+        </activity>
+        <activity
+            android:name=".Informacion"
+            android:label="@string/title_activity_informacion" >
+        </activity>
+        <activity
+            android:name=".Mensajes"
+            android:label="@string/title_activity_mensajes" >
         </activity>
     </application>
 

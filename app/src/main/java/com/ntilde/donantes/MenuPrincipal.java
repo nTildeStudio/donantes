@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -72,6 +73,7 @@ public class MenuPrincipal extends ActionBarActivity {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
                     nombre_centro.setText(object.getString("Descripcion"));
+                    ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
                 }
             }
         });
@@ -154,10 +156,13 @@ public class MenuPrincipal extends ActionBarActivity {
                 startActivity(new Intent(this,Agenda.class));
                 break;
             case "informacion":
+                startActivity(new Intent(this,Informacion.class));
                 break;
             case "mensajes":
+                startActivity(new Intent(this,Mensajes.class));
                 break;
             case "configuracion":
+                startActivity(new Intent(this, Configuracion.class));
                 break;
         }
     }
