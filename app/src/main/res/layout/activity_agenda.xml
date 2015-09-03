@@ -1,12 +1,106 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.ntilde.donantes.Ubicacion">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              tools:context="com.ntilde.donantes.PrimerInicio"
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+              android:background="#fff"
+              android:id="@+id/iconos_margen_izquierdo">
 
-    <TextView android:text="agenda" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:id="@+id/configuracion_cabecera"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        app:pl_percentage_height="12.5"
+        app:pl_percentage_width="100"
+        android:orientation="vertical">
+        <com.ntilde.percentagelayout.PLinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            app:pl_percentage_height="95"
+            app:pl_percentage_width="100"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/configuracion_logotipo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_logotipo"
+                android:adjustViewBounds="true"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <com.ntilde.percentagelayout.PTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:ptv_height="1"
+                    android:text=" "
+                    android:textColor="#444"/>
+                <com.ntilde.percentagelayout.PTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:ptv_height="4.5"
+                    android:text="Agenda de donaciones"
+                    android:textColor="#c00"/>
+                <com.ntilde.percentagelayout.PTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    app:ptv_height="2.2"
+                    android:text="Anota tus donaciones y olvídate de fechas"
+                    android:textColor="#444"/>
+            </LinearLayout>
+        </com.ntilde.percentagelayout.PLinearLayout>
+        <com.ntilde.percentagelayout.PLinearLayout
+            android:id="@+id/configuracion_borde_rojo_superior"
+            android:layout_width="0px"
+            android:layout_height="0px"
+            app:pl_percentage_height="5"
+            app:pl_percentage_width="100"
+            android:background="#c00">
+        </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.percentagelayout.PLinearLayout>
 
-</RelativeLayout>
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+                                               android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        app:pl_percentage_height="75.1"
+        app:pl_percentage_width="100">
+
+        <com.github.sundeepk.compactcalendarview.CompactCalendarView
+            android:id="@+id/compactcalendar_view"
+            android:layout_width="match_parent"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_height="match_parent"
+            app:compactCalendarTextSize="12sp"
+            app:compactCalendarBackgroundColor="#0000"
+            app:compactCalendarTextColor="#000"
+            app:compactCalendarFirstDayOfMonthBackgroundColor="#0000"
+            app:compactCalendarCurrentDayBackgroundColor="#c00"
+            />
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+                                               app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+
+    <LinearLayout
+        android:id="@+id/configuracion_borde_rojo_inferior"
+        android:layout_width="match_parent" android:layout_height="0px"
+        android:background="#c00" android:orientation="horizontal">
+    </LinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+                                               app:pl_percentage_height="1.5"></com.ntilde.percentagelayout.PLinearLayout>
+
+</LinearLayout>
