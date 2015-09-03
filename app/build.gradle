@@ -32,4 +32,5 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.4'
     compile 'com.google.android.gms:play-services:7.5.0'
     compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.roomorama:caldroid:2.2.0'
 }
