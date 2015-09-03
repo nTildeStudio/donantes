@@ -45,14 +45,14 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     app:ptv_height="5"
-                    android:text="Donación de sangre"
+                    android:text="Configuración"
                     android:textColor="#c00"/>
                 <com.ntilde.percentagelayout.PTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     app:ptv_height="2.2"
-                    android:text="Configuración de la aplicación"
+                    android:text="Gestiona tu perfil de usuario y alertas"
                     android:textColor="#444"/>
             </LinearLayout>
         </com.ntilde.percentagelayout.PLinearLayout>
@@ -105,7 +105,7 @@
         <com.ntilde.percentagelayout.PLinearLayout
             android:layout_width="0px"
             android:layout_height="0px"
-            app:pl_percentage_width="60"
+            app:pl_percentage_width="100"
             app:pl_percentage_height="100"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -215,6 +215,7 @@
             android:layout_height="0px"
             app:pl_percentage_width="40"
             app:pl_percentage_height="100"
+            android:visibility="gone"
             android:gravity="center_horizontal"
             app:pl_percentage_padding_right="5"
             android:orientation="vertical">
