@@ -75,10 +75,9 @@ public class CustomArrayAdapter extends ArrayAdapter<ExpandableListItem> {
 
         if (!object.isExpanded()) {
             expandingLayout.setVisibility(View.GONE);
-            titleView.setTextAppearance(mContext,R.style.normalText);
         } else {
             expandingLayout.setVisibility(View.VISIBLE);
-            titleView.setTextAppearance(mContext, R.style.boldText);
+
         }
 
         return convertView;
