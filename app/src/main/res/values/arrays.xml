@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="titulos_informacion">
+        <item>Titulo 1</item>
+        <item>Titulo 2</item>
+        <item>Titulo 3</item>
+        <item>Titulo 4</item>
+        <item>Titulo 5</item>
+        <item>Titulo 6</item>
+        <item>Titulo 7</item>
+    </string-array>
+
+    <string-array name="imagenes_informacion">
+        <item>ic_logotipo</item>
+        <item>ic_logotipo</item>
+        <item>ic_logotipo</item>
+        <item>ic_logotipo</item>
+        <item>ic_logotipo</item>
+        <item>ic_logotipo</item>
+        <item>ic_logotipo</item>
+    </string-array>
+
+</resources>

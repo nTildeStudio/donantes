@@ -5,4 +5,14 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="normalText">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#3c3c3c</item>
+    </style>
+    <style name="boldText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#1a1a1a</item>
+
+    </style>
+
 </resources>
