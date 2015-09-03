@@ -69,7 +69,7 @@
         </activity>
 
         <!--PARSE NOTIFICATIONS -->
-        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_logotipo"/>
+        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_logotipo_blanco"/>
         <service android:name="com.parse.PushService" />
         <receiver android:name="com.parse.ParseBroadcastReceiver">
             <intent-filter>
