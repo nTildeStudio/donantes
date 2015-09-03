@@ -1,8 +1,6 @@
 package com.ntilde.donantes;
 
 import android.app.Application;
-import android.util.Log;
-import android.view.Menu;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
@@ -17,7 +15,7 @@ public class DonantesApplication extends Application{
     public void onCreate() {
         super.onCreate();
         Parse.initialize(this, "9qm1kVlIwYlGQ8ZBvJiAj6GEj7mfBpfLmE2eGCh0", "tD7aDDlGmcd2InKOho2g2KQCfg1OWUQhIfOdsAre");
-        PushService.setDefaultPushCallback(this, MenuPrincipal.class);
+        PushService.setDefaultPushCallback(this, MenuPrincipal.class, R.drawable.ic_logotipo);
     }
 
 }
