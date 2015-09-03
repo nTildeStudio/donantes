@@ -74,6 +74,7 @@ public class MenuPrincipal extends ActionBarActivity {
                 if (e == null) {
                     nombre_centro.setText(object.getString("Descripcion"));
                     ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
+                    ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes y alertas del "+object.getString("Nombre"));
                 }
             }
         });
@@ -107,6 +108,23 @@ public class MenuPrincipal extends ActionBarActivity {
     protected void onPause(){
         super.onPause();
         overridePendingTransition(0,R.anim.application_close);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
+        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, MenuPrincipal.MODE_PRIVATE);
+        String centroSeleccionado = prefs.getString(Constantes.SP_CENTRO, "");
+        query.getInBackground(centroSeleccionado, new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    nombre_centro.setText(object.getString("Descripcion"));
+                    ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
+                    ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes y alertas del "+object.getString("Nombre"));
+                }
+            }
+        });
     }
 
     @Override
