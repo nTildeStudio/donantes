@@ -8,23 +8,15 @@ import android.support.v7.app.ActionBarActivity;
 
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.parse.PushService;
 
 public class SplashScreen extends ActionBarActivity {
 
-    private static boolean parseInit=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-
-        if(!parseInit) {
-            Parse.initialize(this, "9qm1kVlIwYlGQ8ZBvJiAj6GEj7mfBpfLmE2eGCh0", "tD7aDDlGmcd2InKOho2g2KQCfg1OWUQhIfOdsAre");
-            ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-            installation.put("GCMSenderId","");
-            installation.saveInBackground();
-            parseInit=true;
-        }
 
         new Handler().postDelayed(new Runnable() {
             @Override
