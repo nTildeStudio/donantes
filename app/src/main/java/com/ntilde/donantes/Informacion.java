@@ -56,7 +56,6 @@ public class Informacion extends AppCompatActivity {
 
             }
 
-            mAdapter.notifyDataSetChanged();
         }
 
         @Override
