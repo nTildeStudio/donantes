@@ -74,10 +74,15 @@
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_width="100"
-        app:pl_percentage_height="66"
-        android:background="#00f"
+        app:pl_percentage_height="62"
         app:pl_percentage_padding_left="5"
         app:pl_percentage_padding_right="5">
+
+        <com.squareup.timessquare.CalendarPickerView
+            android:id="@+id/calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
     </com.ntilde.percentagelayout.PLinearLayout>
 
@@ -88,32 +93,25 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:pl_percentage_width="100"
-        app:pl_percentage_height="7"
+        app:pl_percentage_height="11"
         android:background="#f77"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <com.ntilde.percentagelayout.PTextView
-            android:id="@+id/ubicacion_msg_seleccionar_punto"
+            android:id="@+id/ubicacion_msg_direccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:ptv_height="3"
+            android:textColor="#000"/>
+
+        <com.ntilde.percentagelayout.PTextView
+            android:id="@+id/ubicacion_msg_seleccionar_fecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:ptv_height="3"
             android:textColor="#fff"
-            android:text="Seleccione un punto de donación"/>
-
-        <Button
-            android:id="@+id/ubicacion_informacion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="Ver información"/>
-
-        <Button
-            android:id="@+id/ubicacion_como_llegar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="Cómo llegar"/>
+            android:text="Seleccione una fecha"/>
 
     </com.ntilde.percentagelayout.PLinearLayout>
 
@@ -126,26 +124,16 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.ntilde.percentagelayout.PTextView
-            android:id="@+id/ubicacion_msg_seleccionar_punto2"
+        <Button
+            android:id="@+id/ubicacion_llamar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:ptv_height="3"
-            android:textColor="#fff"
-            android:text="Seleccione un punto de donación"/>
+            android:text="Llamar"/>
 
         <Button
-            android:id="@+id/ubicacion_informacion2"
+            android:id="@+id/ubicacion_como_llegar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="Ver información"/>
-
-        <Button
-            android:id="@+id/ubicacion_como_llegar2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
             android:text="Cómo llegar"/>
 
     </com.ntilde.percentagelayout.PLinearLayout>

@@ -2,6 +2,7 @@ package com.ntilde.donantes;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -43,7 +44,7 @@ public class Ubicacion extends ActionBarActivity {
     List<LatLng> otsLatLng;
 
     private String puntoSeleccionado=null;
-    private Map<String,String> centrosRegionalesIdNombre;
+    private Map<String,ParseObject> centrosRegionalesIdNombre;
 
     @InjectView(R.id.iconos_margen_superior) PLinearLayout ic_margen_sup;
     @InjectView(R.id.ubicacion_logotipo) ImageView logotipo;
@@ -105,7 +106,7 @@ public class Ubicacion extends ActionBarActivity {
                                         otsLatLng.add(latLng);
                                         gmMapa.addMarker(new MarkerOptions().position(latLng).title(puntoDeDonacion.getString("Nombre")));
                                         //gmMapa.addMarker(new MarkerOptions().position(latLng).title(puntoDeDonacion.getString("Nombre")).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
-                                        centrosRegionalesIdNombre.put(puntoDeDonacion.getString("Nombre"), puntoDeDonacion.getObjectId());
+                                        centrosRegionalesIdNombre.put(puntoDeDonacion.getString("Nombre"), puntoDeDonacion);
                                     }
                                 }
                                 if(!puntosIncluidos){
@@ -121,7 +122,7 @@ public class Ubicacion extends ActionBarActivity {
                                 gmMapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                     @Override
                                     public boolean onMarkerClick(Marker marker) {
-                                        puntoSeleccionado=centrosRegionalesIdNombre.get(marker.getTitle());
+                                        puntoSeleccionado=centrosRegionalesIdNombre.get(marker.getTitle()).getString("Nombre");
                                         msg_seleccionar_punto.setVisibility(View.GONE);
                                         btComoLlegar.setVisibility(View.VISIBLE);
                                         btInformacion.setVisibility(View.VISIBLE);
@@ -150,11 +151,23 @@ public class Ubicacion extends ActionBarActivity {
 
     @OnClick({R.id.ubicacion_informacion,R.id.ubicacion_como_llegar})
     public void onClick(View view){
+        ParseObject punto=(ParseObject)centrosRegionalesIdNombre.get(puntoSeleccionado);
         switch (view.getId()){
             case R.id.ubicacion_como_llegar:
+                ParseGeoPoint geopunto = punto.getParseGeoPoint("Ubicacion");
+                Intent comoLlegar = new Intent(
+                        "android.intent.action.VIEW",
+                        Uri.parse("http://maps.google.com/maps?saddr=&daddr=" + geopunto.getLatitude() + "," + geopunto.getLongitude()
+                        ));
+                startActivity(comoLlegar);
                 break;
             case R.id.ubicacion_informacion:
-                startActivity(new Intent(this, PuntoDeDonacion.class));
+                Intent mostrarDetalles=new Intent(this, PuntoDeDonacion.class);
+                mostrarDetalles.putExtra("puntoNombre",punto.getString("Nombre"));
+                mostrarDetalles.putExtra("puntoId",punto.getObjectId());
+                mostrarDetalles.putExtra("puntoTelefono",punto.getString("Telefono"));
+                mostrarDetalles.putExtra("puntoDireccion",punto.getString("Direccion"));
+                startActivity(mostrarDetalles);
                 break;
         }
     }
