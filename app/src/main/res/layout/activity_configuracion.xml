@@ -7,13 +7,13 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="#fff"
-    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/iconos_margen_izquierdo">
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/iconos_margen_izquierdo">
 
         <com.ntilde.percentagelayout.PLinearLayout
             android:id="@+id/configuracion_cabecera"
@@ -77,9 +77,11 @@
 
         <com.ntilde.percentagelayout.PTextView
             android:id="@+id/configuracion_msg_centro"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             app:ptv_height="2.8"
+            android:layout_marginLeft="16dp"
             android:text="Seleccione un centro de donación"
             android:textColor="#000"/>
 
@@ -281,29 +283,37 @@
         </com.ntilde.percentagelayout.PLinearLayout>
 
         <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-            app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+            app:pl_percentage_height="2.5" android:orientation="horizontal"></com.ntilde.percentagelayout.PLinearLayout>
 
-        <com.ntilde.percentagelayout.PTextView
-            android:id="@+id/configuracion_msg_notificaciones"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:ptv_height="2.8"
-            android:text="Configuración de notificaciones"
-            android:textColor="#000"/>
+            android:gravity="bottom"
+            android:paddingLeft="16dp"
+            android:orientation="horizontal">
+
+            <com.ntilde.percentagelayout.PTextView
+                android:id="@+id/configuracion_msg_notificaciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:ptv_height="2.8"
+                android:text="Recibir notificaciones"
+                android:textColor="#000"/>
+
+            <com.gc.materialdesign.views.Switch
+                android:id="@+id/switchView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/rojo"
+                materialdesign:check="true" />
+
+        </LinearLayout>
 
         <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
             app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
 
         <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
             app:pl_percentage_height="9" app:pl_percentage_width="100">
-
-            <com.gc.materialdesign.views.Switch
-                android:id="@+id/switchView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#f44"
-                materialdesign:check="true" />
-
         </com.ntilde.percentagelayout.PLinearLayout>
 
         <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
@@ -327,8 +337,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="24dp"
-        android:background="#f44"
+        android:background="@color/rojo"
         materialdesign:animate="true"
-        materialdesign:iconDrawable="@drawable/ic_logotipo" />
+        materialdesign:iconDrawable="@drawable/ic_save_white_24dp"/>
 
 </RelativeLayout>
