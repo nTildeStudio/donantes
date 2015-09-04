@@ -4,10 +4,12 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.gc.materialdesign.views.Switch;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -20,8 +22,10 @@ import com.ntilde.percentagelayout.PTextView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.PushService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,15 +53,16 @@ public class Configuracion extends ActionBarActivity {
     @InjectView(R.id.configuracion_borde_rojo_superior) PLinearLayout borde_rojo_superior;
     @InjectView(R.id.configuracion_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
     @InjectViews({R.id.configuracion_grupo_0n, R.id.configuracion_grupo_0p, R.id.configuracion_grupo_an, R.id.configuracion_grupo_ap,
-            R.id.configuracion_grupo_bn, R.id.configuracion_grupo_bp, R.id.configuracion_grupo_abn, R.id.configuracion_grupo_abp}) Button[] gruposSanguineos;
+            R.id.configuracion_grupo_bn, R.id.configuracion_grupo_bp, R.id.configuracion_grupo_abn, R.id.configuracion_grupo_abp}) ImageView[] gruposSanguineos;
     @InjectViews({R.id.configuracion_sexo_masculino, R.id.configuracion_sexo_femenino}) Button[] sexos;
     @InjectView(R.id.configuracion_msg_centro) PTextView msg_centro;
     @InjectView(R.id.configuracion_msg_grupo) PTextView msg_grupo;
+    @InjectView(R.id.configuracion_switch_notifications) Switch switch_notifications;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.activity_open_translate,R.anim.activity_close_scale);
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
         setContentView(R.layout.activity_configuracion);
 
         ButterKnife.inject(this);
@@ -76,10 +81,10 @@ public class Configuracion extends ActionBarActivity {
             }
         });
 
-        borde_rojo_superior.post(new Runnable(){
+        borde_rojo_superior.post(new Runnable() {
             @Override
-            public void run(){
-                borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight();
+            public void run() {
+                borde_rojo_inferior.getLayoutParams().height = borde_rojo_superior.getPHeight();
             }
         });
 
@@ -129,15 +134,47 @@ public class Configuracion extends ActionBarActivity {
 
     @OnClick({R.id.configuracion_grupo_0n, R.id.configuracion_grupo_0p, R.id.configuracion_grupo_an, R.id.configuracion_grupo_ap,
             R.id.configuracion_grupo_bn, R.id.configuracion_grupo_bp, R.id.configuracion_grupo_abn, R.id.configuracion_grupo_abp})
-    public void onGrupoClick(Button grupo){
-        for(Button grupoSanguineo:gruposSanguineos){
-            grupoSanguineo.setTextColor(Color.BLACK);
-            grupoSanguineo.setTextSize(15);
+    public void onGrupoClick(ImageView grupo){
+        gruposSanguineos[0].setImageResource(R.drawable.grupo_0_neg_off);
+        gruposSanguineos[1].setImageResource(R.drawable.grupo_0_pos_off);
+        gruposSanguineos[2].setImageResource(R.drawable.grupo_a_neg_off);
+        gruposSanguineos[3].setImageResource(R.drawable.grupo_a_pos_off);
+        gruposSanguineos[4].setImageResource(R.drawable.grupo_b_neg_off);
+        gruposSanguineos[5].setImageResource(R.drawable.grupo_b_pos_off);
+        gruposSanguineos[6].setImageResource(R.drawable.grupo_ab_neg_off);
+        gruposSanguineos[7].setImageResource(R.drawable.grupo_ab_pos_off);
+
+        switch(grupo.getTag().toString()){
+            case "0-":
+                grupo.setImageResource(R.drawable.grupo_0_neg_on);
+                break;
+            case "0+":
+                grupo.setImageResource(R.drawable.grupo_0_pos_on);
+                break;
+            case "A-":
+                grupo.setImageResource(R.drawable.grupo_a_neg_on);
+                break;
+            case "A+":
+                grupo.setImageResource(R.drawable.grupo_a_pos_on);
+                break;
+            case "B-":
+                grupo.setImageResource(R.drawable.grupo_b_neg_on);
+                break;
+            case "B+":
+                grupo.setImageResource(R.drawable.grupo_b_pos_on);
+                break;
+            case "AB-":
+                grupo.setImageResource(R.drawable.grupo_ab_neg_on);
+                break;
+            case "AB+":
+                grupo.setImageResource(R.drawable.grupo_ab_pos_on);
+                break;
         }
-        grupo.setTextColor(getResources().getColor(R.color.rojo));
-        grupo.setTextSize(25);
-        msg_grupo.setTextColor(Color.BLACK);
-        grupoSanguineoSeleccionado=grupo.getText().toString();
+
+//        grupo.setTextColor(getResources().getColor(R.color.rojo));
+//        grupo.setTextSize(25);
+//        msg_grupo.setTextColor(Color.BLACK);
+        grupoSanguineoSeleccionado=grupo.getTag().toString();
     }
 
     @OnClick({R.id.configuracion_sexo_femenino, R.id.configuracion_sexo_masculino})
@@ -158,7 +195,17 @@ public class Configuracion extends ActionBarActivity {
         editor.putString(Constantes.SP_CENTRO, centroSeleccionado);
         editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
         editor.putString(Constantes.SP_SEXO, sexoSeleccionado);
+        editor.putBoolean(Constantes.SP_NOTIFICACIONES, switch_notifications.isCheck());
         editor.commit();
+
+        ParseInstallation pi = ParseInstallation.getCurrentInstallation();
+        ArrayList<String> channels = new ArrayList<>();
+        String channel = centroSeleccionado+"_"+grupoSanguineoSeleccionado;
+        channel = channel.replace("+","POS").replace("-","NEG");
+        if(switch_notifications.isCheck()) channels.add(channel);
+        pi.put("channels", channels);
+        pi.saveInBackground();
+
         finish();
     }
 
@@ -167,10 +214,37 @@ public class Configuracion extends ActionBarActivity {
         centroSeleccionado=prefs.getString(Constantes.SP_CENTRO, null);
         grupoSanguineoSeleccionado=prefs.getString(Constantes.SP_GRUPO, null);
         sexoSeleccionado=prefs.getString(Constantes.SP_SEXO, null);
-        for(Button grupo:gruposSanguineos){
-            if(grupo.getText().toString().equals(grupoSanguineoSeleccionado)){
-                grupo.setTextColor(getResources().getColor(R.color.rojo));
-                grupo.setTextSize(25);
+        switch_notifications.setChecked(prefs.getBoolean(Constantes.SP_NOTIFICACIONES, false));
+        for(ImageView grupo:gruposSanguineos){
+            if(grupo.getTag().toString().equals(grupoSanguineoSeleccionado)){
+                switch(grupo.getTag().toString()){
+                    case "0-":
+                        grupo.setImageResource(R.drawable.grupo_0_neg_on);
+                        break;
+                    case "0+":
+                        grupo.setImageResource(R.drawable.grupo_0_pos_on);
+                        break;
+                    case "A-":
+                        grupo.setImageResource(R.drawable.grupo_a_neg_on);
+                        break;
+                    case "A+":
+                        grupo.setImageResource(R.drawable.grupo_a_pos_on);
+                        break;
+                    case "B-":
+                        grupo.setImageResource(R.drawable.grupo_b_neg_on);
+                        break;
+                    case "B+":
+                        grupo.setImageResource(R.drawable.grupo_b_pos_on);
+                        break;
+                    case "AB-":
+                        grupo.setImageResource(R.drawable.grupo_ab_neg_on);
+                        break;
+                    case "AB+":
+                        grupo.setImageResource(R.drawable.grupo_ab_pos_on);
+                        break;
+                }
+//                grupo.setTextColor(getResources().getColor(R.color.rojo));
+//                grupo.setTextSize(25);
             }
         }
         for(Button sexo:sexos){

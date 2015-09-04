@@ -92,7 +92,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:pl_percentage_width="100"
-            app:pl_percentage_height="25">
+            app:pl_percentage_height="45">
 
             <fragment
                 android:id="@+id/configuracion_mapa"
@@ -106,7 +106,7 @@
             android:layout_width="0px"
             android:layout_height="0px"
             app:pl_percentage_width="100"
-            app:pl_percentage_height="27.5"
+            app:pl_percentage_height="26"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -115,7 +115,6 @@
                 android:layout_height="0px"
                 app:pl_percentage_width="100"
                 app:pl_percentage_height="100"
-                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
@@ -123,8 +122,9 @@
 
                 <com.ntilde.percentagelayout.PTextView
                     android:id="@+id/configuracion_msg_grupo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     app:ptv_height="2.8"
                     android:text="Seleccione su grupo sanguineo"
                     android:textColor="#000"/>
@@ -135,86 +135,179 @@
                 <com.ntilde.percentagelayout.PLinearLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:pl_percentage_height="36.5"
+                    app:pl_percentage_height="20"
                     app:pl_percentage_width="100"
                     android:orientation="horizontal"
                     android:gravity="center">
 
-                    <Button
+                    <ImageView
                         android:id="@+id/configuracion_grupo_0n"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="0-"/>
-
-                    <Button
-                        android:id="@+id/configuracion_grupo_an"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="A-"/>
-
-                    <Button
-                        android:id="@+id/configuracion_grupo_bn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="B-"/>
-
-                    <Button
-                        android:id="@+id/configuracion_grupo_abn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="AB-"/>
-
-                </com.ntilde.percentagelayout.PLinearLayout>
-
-                <com.ntilde.percentagelayout.PLinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:pl_percentage_height="36.5"
-                    app:pl_percentage_width="100"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:tag="0-"
+                        android:src="@drawable/grupo_0_neg_off"/>
+                    <ImageView
                         android:id="@+id/configuracion_grupo_0p"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="0+"/>
-
-                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:tag="0+"
+                        android:src="@drawable/grupo_0_pos_off"/>
+                    <ImageView
+                        android:id="@+id/configuracion_grupo_an"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:tag="A-"
+                        android:src="@drawable/grupo_a_neg_off"/>
+                    <ImageView
                         android:id="@+id/configuracion_grupo_ap"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="A+"/>
-
-                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:tag="A+"
+                        android:src="@drawable/grupo_a_pos_off"/>
+                    <ImageView
+                        android:id="@+id/configuracion_grupo_bn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:tag="B-"
+                        android:src="@drawable/grupo_b_neg_off"/>
+                    <ImageView
                         android:id="@+id/configuracion_grupo_bp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="B+"/>
-
-                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:tag="B+"
+                        android:src="@drawable/grupo_b_pos_off"/>
+                    <ImageView
+                        android:id="@+id/configuracion_grupo_abn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:tag="AB-"
+                        android:src="@drawable/grupo_ab_neg_off"/>
+                    <ImageView
                         android:id="@+id/configuracion_grupo_abp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:text="AB+"/>
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:tag="AB+"
+                        android:src="@drawable/grupo_ab_pos_off"/>
+
+                    <!--<Button-->
+                        <!--android:id="@+id/configuracion_grupo_0n"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="15dp"-->
+                        <!--android:text="0-"/>-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/configuracion_grupo_an"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="15dp"-->
+                        <!--android:text="A-"/>-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/configuracion_grupo_bn"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="15dp"-->
+                        <!--android:text="B-"/>-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/configuracion_grupo_abn"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="15dp"-->
+                        <!--android:text="AB-"/>-->
 
                 </com.ntilde.percentagelayout.PLinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:orientation="horizontal">
+
+                    <com.ntilde.percentagelayout.PTextView
+                        android:id="@+id/configuracion_msg_notificaciones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ptv_height="2.8"
+                        android:text="Recibir notificaciones"
+                        android:textColor="#000"/>
+
+                    <com.gc.materialdesign.views.Switch
+                        android:id="@+id/configuracion_switch_notifications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/rojo"
+                        materialdesign:check="true" />
+
+                </LinearLayout>
+
+
+
+                <!--<com.ntilde.percentagelayout.PLinearLayout-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="0dp"-->
+                    <!--app:pl_percentage_height="7.5"-->
+                    <!--app:pl_percentage_width="100"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:gravity="center">-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/configuracion_grupo_0p"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="15dp"-->
+                        <!--android:text="0+"/>-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/configuracion_grupo_ap"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="15dp"-->
+                        <!--android:text="A+"/>-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/configuracion_grupo_bp"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="15dp"-->
+                        <!--android:text="B+"/>-->
+
+                    <!--<Button-->
+                        <!--android:id="@+id/configuracion_grupo_abp"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="15dp"-->
+                        <!--android:text="AB+"/>-->
+
+                <!--</com.ntilde.percentagelayout.PLinearLayout>-->
 
             </com.ntilde.percentagelayout.PLinearLayout>
 
@@ -283,38 +376,14 @@
         </com.ntilde.percentagelayout.PLinearLayout>
 
         <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-            app:pl_percentage_height="2.5" android:orientation="horizontal"></com.ntilde.percentagelayout.PLinearLayout>
+            app:pl_percentage_height="0.5" android:orientation="horizontal"></com.ntilde.percentagelayout.PLinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:paddingLeft="16dp"
-            android:orientation="horizontal">
+        <!--<com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"-->
+            <!--app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>-->
 
-            <com.ntilde.percentagelayout.PTextView
-                android:id="@+id/configuracion_msg_notificaciones"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:ptv_height="2.8"
-                android:text="Recibir notificaciones"
-                android:textColor="#000"/>
-
-            <com.gc.materialdesign.views.Switch
-                android:id="@+id/switchView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/rojo"
-                materialdesign:check="true" />
-
-        </LinearLayout>
-
-        <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-            app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
-
-        <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-            app:pl_percentage_height="9" app:pl_percentage_width="100">
-        </com.ntilde.percentagelayout.PLinearLayout>
+        <!--<com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"-->
+            <!--app:pl_percentage_height="9" app:pl_percentage_width="100">-->
+        <!--</com.ntilde.percentagelayout.PLinearLayout>-->
 
         <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
             app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>

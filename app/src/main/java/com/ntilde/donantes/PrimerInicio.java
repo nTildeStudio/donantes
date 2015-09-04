@@ -51,7 +51,7 @@ public class PrimerInicio extends ActionBarActivity {
     @InjectView(R.id.primer_inicio_borde_rojo_superior) PLinearLayout borde_rojo_superior;
     @InjectView(R.id.primer_inicio_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
     @InjectViews({R.id.primer_inicio_grupo_0n, R.id.primer_inicio_grupo_0p, R.id.primer_inicio_grupo_an, R.id.primer_inicio_grupo_ap,
-                    R.id.primer_inicio_grupo_bn, R.id.primer_inicio_grupo_bp, R.id.primer_inicio_grupo_abn, R.id.primer_inicio_grupo_abp}) Button[] gruposSanguineos;
+                    R.id.primer_inicio_grupo_bn, R.id.primer_inicio_grupo_bp, R.id.primer_inicio_grupo_abn, R.id.primer_inicio_grupo_abp}) ImageView[] gruposSanguineos;
     @InjectView(R.id.primer_inicio_msg_centro) PTextView msg_centro;
     @InjectView(R.id.primer_inicio_msg_grupo) PTextView msg_grupo;
 
@@ -119,15 +119,51 @@ public class PrimerInicio extends ActionBarActivity {
 
     @OnClick({R.id.primer_inicio_grupo_0n, R.id.primer_inicio_grupo_0p, R.id.primer_inicio_grupo_an, R.id.primer_inicio_grupo_ap,
             R.id.primer_inicio_grupo_bn, R.id.primer_inicio_grupo_bp, R.id.primer_inicio_grupo_abn, R.id.primer_inicio_grupo_abp})
-    public void onGrupoClick(Button grupo){
-        for(Button grupoSanguineo:gruposSanguineos){
-            grupoSanguineo.setTextColor(Color.BLACK);
-            grupoSanguineo.setTextSize(15);
+    public void onGrupoClick(ImageView grupo){
+//        for(ImageView grupoSanguineo:gruposSanguineos){
+//            grupoSanguineo.setTextColor(Color.BLACK);
+//            grupoSanguineo.setTextSize(15);
+//        }
+//        grupo.setTextColor(getResources().getColor(R.color.rojo));
+//        grupo.setTextSize(25);
+
+        gruposSanguineos[0].setImageResource(R.drawable.grupo_0_neg_off);
+        gruposSanguineos[1].setImageResource(R.drawable.grupo_0_pos_off);
+        gruposSanguineos[2].setImageResource(R.drawable.grupo_a_neg_off);
+        gruposSanguineos[3].setImageResource(R.drawable.grupo_a_pos_off);
+        gruposSanguineos[4].setImageResource(R.drawable.grupo_b_neg_off);
+        gruposSanguineos[5].setImageResource(R.drawable.grupo_b_pos_off);
+        gruposSanguineos[6].setImageResource(R.drawable.grupo_ab_neg_off);
+        gruposSanguineos[7].setImageResource(R.drawable.grupo_ab_pos_off);
+
+        switch(grupo.getTag().toString()){
+            case "0-":
+                grupo.setImageResource(R.drawable.grupo_0_neg_on);
+                break;
+            case "0+":
+                grupo.setImageResource(R.drawable.grupo_0_pos_on);
+                break;
+            case "A-":
+                grupo.setImageResource(R.drawable.grupo_a_neg_on);
+                break;
+            case "A+":
+                grupo.setImageResource(R.drawable.grupo_a_pos_on);
+                break;
+            case "B-":
+                grupo.setImageResource(R.drawable.grupo_b_neg_on);
+                break;
+            case "B+":
+                grupo.setImageResource(R.drawable.grupo_b_pos_on);
+                break;
+            case "AB-":
+                grupo.setImageResource(R.drawable.grupo_ab_neg_on);
+                break;
+            case "AB+":
+                grupo.setImageResource(R.drawable.grupo_ab_pos_on);
+                break;
         }
-        grupo.setTextColor(getResources().getColor(R.color.rojo));
-        grupo.setTextSize(25);
         msg_grupo.setTextColor(Color.BLACK);
-        grupoSanguineoSeleccionado=grupo.getText().toString();
+        grupoSanguineoSeleccionado=grupo.getTag().toString();
     }
 
     @OnClick(R.id.primer_inicio_boton_guardar)
