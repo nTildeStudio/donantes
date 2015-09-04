@@ -35,5 +35,6 @@ dependencies {
     compile 'com.roomorama:caldroid:2.2.0'
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile 'com.github.sundeepk:compact-calendar-view:1.7.3'
+    compile 'com.squareup:android-times-square:1.6.4@aar'
 
 }

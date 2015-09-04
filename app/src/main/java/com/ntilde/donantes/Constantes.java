@@ -11,4 +11,5 @@ public class Constantes {
     public static final String SP_GRUPO="grupo_sanguineo";
     public static final String SP_SEXO="sexo";
     public static final String SP_ALERTAS="alertas";
+    public static final String SP_DONACIONES="donaciones";
 }

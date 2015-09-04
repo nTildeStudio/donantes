@@ -16,6 +16,7 @@
     <string name="title_activity_configuracion">Configuracion</string>
     <string name="title_activity_informacion">Informacion</string>
     <string name="title_activity_mensajes">Mensajes</string>
+    <string name="title_activity_punto_de_donacion">PuntoDeDonacion</string>
 
     <string name="informacion_donante_title">Información al donante</string>
 </resources>

@@ -20,11 +20,11 @@
     <uses-permission android:name="com.ntilde.donantes.permission.C2D_MESSAGE" />
 
     <application
+        android:name=".DonantesApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_logotipo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name="DonantesApplication">
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAEfwvLkIqr2lykuFmKRnv8q-KVEKTl40Y" />
@@ -98,6 +98,11 @@
                 <category android:name="com.ntilde.donantes" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".PuntoDeDonacion"
+            android:label="@string/title_activity_punto_de_donacion" >
+        </activity>
     </application>
 
 </manifest>

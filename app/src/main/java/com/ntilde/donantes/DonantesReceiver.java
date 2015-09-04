@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -32,17 +31,7 @@ public class DonantesReceiver extends ParsePushBroadcastReceiver{
 
             SharedPreferences prefs = context.getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
 
-            Set<String> alertas=prefs.getStringSet(Constantes.SP_ALERTAS,null);
-
-            if(alertas==null){
-                Log.e("XXX","lo tenemos, pero nulo");
-            }
-            else{
-                Log.e("XXX","lo tenemos y no es nulo");
-                for(String alerta:alertas){
-                    Log.e("XXX","Tiene: "+alerta);
-                }
-            }
+            Set<String> alertas=prefs.getStringSet(Constantes.SP_ALERTAS, new HashSet<String>());
 
             alertas.add(System.currentTimeMillis() + "::" + data.getString("alert"));
 

@@ -1,11 +1,15 @@
 package com.ntilde.donantes;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,6 +33,7 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 
 public class Ubicacion extends ActionBarActivity {
@@ -44,6 +49,9 @@ public class Ubicacion extends ActionBarActivity {
     @InjectView(R.id.ubicacion_logotipo) ImageView logotipo;
     @InjectView(R.id.ubicacion_borde_rojo_superior) PLinearLayout borde_rojo_superior;
     @InjectView(R.id.ubicacion_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
+    @InjectView(R.id.ubicacion_msg_seleccionar_punto) TextView msg_seleccionar_punto;
+    @InjectView(R.id.ubicacion_informacion) Button btInformacion;
+    @InjectView(R.id.ubicacion_como_llegar) Button btComoLlegar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +122,9 @@ public class Ubicacion extends ActionBarActivity {
                                     @Override
                                     public boolean onMarkerClick(Marker marker) {
                                         puntoSeleccionado=centrosRegionalesIdNombre.get(marker.getTitle());
+                                        msg_seleccionar_punto.setVisibility(View.GONE);
+                                        btComoLlegar.setVisibility(View.VISIBLE);
+                                        btInformacion.setVisibility(View.VISIBLE);
                                         return false;
                                     }
                                 });
@@ -135,5 +146,16 @@ public class Ubicacion extends ActionBarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @OnClick({R.id.ubicacion_informacion,R.id.ubicacion_como_llegar})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.ubicacion_como_llegar:
+                break;
+            case R.id.ubicacion_informacion:
+                startActivity(new Intent(this, PuntoDeDonacion.class));
+                break;
+        }
     }
 }
