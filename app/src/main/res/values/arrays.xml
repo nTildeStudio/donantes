@@ -2,23 +2,23 @@
 <resources>
 
     <string-array name="titulos_informacion">
-        <item>Titulo 1</item>
-        <item>Titulo 2</item>
-        <item>Titulo 3</item>
-        <item>Titulo 4</item>
-        <item>Titulo 5</item>
-        <item>Titulo 6</item>
-        <item>Titulo 7</item>
+        <item>¿Porque donar?</item>
+        <item>¿He de ir en ayunas?</item>
+        <item>¿Cuanto dura la donación?</item>
+        <item>¿Existe algún rieso?</item>
+        <item>¿Puedo donar bajo medicación?</item>
+        <item>¿Cúal es el mejor grupo para donar?</item>
+        <item>¿Cuanto he de esperar hasta volver a donar?</item>
     </string-array>
 
     <string-array name="imagenes_informacion">
-        <item>ic_logotipo</item>
-        <item>ic_logotipo</item>
-        <item>ic_logotipo</item>
-        <item>ic_logotipo</item>
-        <item>ic_logotipo</item>
-        <item>ic_logotipo</item>
-        <item>ic_logotipo</item>
+        <item>porque_donar</item>
+        <item>ayunas</item>
+        <item>duracion_donacion</item>
+        <item>riesgos_donacion</item>
+        <item>donar_medicamento</item>
+        <item>grupo_donacion</item>
+        <item>tiempo_donacion</item>
     </string-array>
 
 </resources>
