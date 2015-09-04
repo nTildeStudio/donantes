@@ -14,10 +14,11 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/ab_transparent_example"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/ab_transparent_example"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/item_linear_layout"
@@ -25,15 +26,26 @@
         android:layout_width="match_parent"
         android:orientation="horizontal">
 
-        <TextView
+        <!--<TextView-->
+            <!--android:id="@+id/title_view"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:padding="16dp"-->
+            <!--android:textColor="#9f9f9f"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="bold"/>-->
+
+        <com.ntilde.percentagelayout.PTextView
             android:id="@+id/title_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:ptv_height="3"
             android:gravity="center_vertical"
             android:padding="16dp"
             android:textColor="#9f9f9f"
-            android:textSize="15sp"
             android:textStyle="bold"/>
+
 
     </LinearLayout>
 
