@@ -100,15 +100,17 @@
 
         <com.ntilde.percentagelayout.PTextView
             android:id="@+id/ubicacion_msg_direccion"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             app:ptv_height="3"
             android:textColor="#000"/>
 
         <com.ntilde.percentagelayout.PTextView
             android:id="@+id/ubicacion_msg_seleccionar_fecha"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             app:ptv_height="3"
             android:textColor="#fff"
             android:text="Seleccione una fecha"/>

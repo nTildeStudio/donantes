@@ -46,7 +46,7 @@ public class Mensajes extends ActionBarActivity {
         setContentView(R.layout.activity_mensajes);
 
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
-        Set<String> alertas=prefs.getStringSet(Constantes.SP_ALERTAS,new HashSet<String>());
+        Set<String> alertas=new HashSet<>(prefs.getStringSet(Constantes.SP_ALERTAS,new HashSet<String>()));
 
         ButterKnife.inject(this);
 

@@ -41,31 +41,38 @@
         </activity>
         <activity
             android:name=".Ubicacion"
-            android:label="@string/title_activity_ubicacion" >
+            android:label="@string/title_activity_ubicacion"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Agenda"
-            android:label="@string/title_activity_agenda" >
+            android:label="@string/title_activity_agenda"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".MenuPrincipal"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".PrimerInicio"
-            android:label="@string/title_activity_primer_inicio" >
+            android:label="@string/title_activity_primer_inicio"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Configuracion"
-            android:label="@string/title_activity_configuracion" >
+            android:label="@string/title_activity_configuracion"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Informacion"
-            android:label="@string/title_activity_informacion" >
+            android:label="@string/title_activity_informacion"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Mensajes"
-            android:label="@string/title_activity_mensajes" >
+            android:label="@string/title_activity_mensajes"
+            android:screenOrientation="portrait">
         </activity>
 
         <!--PARSE NOTIFICATIONS -->
@@ -101,7 +108,8 @@
 
         <activity
             android:name=".PuntoDeDonacion"
-            android:label="@string/title_activity_punto_de_donacion" >
+            android:label="@string/title_activity_punto_de_donacion"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

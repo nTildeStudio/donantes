@@ -69,7 +69,7 @@ public class Agenda extends AppCompatActivity {
         calendar.init(today, nextYear.getTime()).withSelectedDate(today);
 
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Agenda.MODE_PRIVATE);
-        Set<String> donaciones = prefs.getStringSet(Constantes.SP_DONACIONES, new HashSet<String>());
+        Set<String> donaciones = new HashSet<>(prefs.getStringSet(Constantes.SP_DONACIONES, new HashSet<String>()));
         donacionesMap=new HashMap<>();
         for(String donacion:donaciones){
             donacionesMap.put(new Date(Long.parseLong(donacion.split("::")[0])),donacion.split("::")[1]);

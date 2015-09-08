@@ -74,7 +74,7 @@ public class MenuPrincipal extends ActionBarActivity {
                 if (e == null) {
                     nombre_centro.setText(object.getString("Descripcion"));
                     ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
-                    ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes y alertas del "+object.getString("Nombre"));
+                    ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes del "+object.getString("Nombre"));
                 }
             }
         });
@@ -121,7 +121,7 @@ public class MenuPrincipal extends ActionBarActivity {
                 if (e == null) {
                     nombre_centro.setText(object.getString("Descripcion"));
                     ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
-                    ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes y alertas del "+object.getString("Nombre"));
+                    ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes del "+object.getString("Nombre"));
                 }
             }
         });

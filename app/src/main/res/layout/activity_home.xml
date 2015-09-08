@@ -250,7 +250,7 @@
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vuelve a leer los mensajes y alertas del CRTG"
+                android:text="Vuelve a leer los mensajes del CRT"
                 app:ptv_height="2"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView

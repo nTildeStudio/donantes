@@ -74,7 +74,7 @@ public class PuntoDeDonacion extends ActionBarActivity {
         calendar.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {
-                if(fechas.containsKey(date)){
+                if(fechas !=null && fechas.containsKey(date)){
                     msg_horario.setText("Horario: "+fechas.get(date));
                 }
                 else{

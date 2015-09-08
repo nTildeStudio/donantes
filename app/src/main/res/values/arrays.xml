@@ -2,13 +2,13 @@
 <resources>
 
     <string-array name="titulos_informacion">
-        <item>¿Porque donar?</item>
+        <item>¿Por qué donar?</item>
         <item>¿Tengo que ir en ayunas?</item>
-        <item>¿Cuanto dura la donación?</item>
+        <item>¿Cuánto dura la donación?</item>
         <item>¿Existe algún rieso?</item>
         <item>¿Puedo donar bajo medicación?</item>
         <item>¿Cúal es el mejor grupo para donar?</item>
-        <item>¿Cuanto he de esperar hasta volver a donar?</item>
+        <item>¿Cuánto esperar hasta volver a donar?</item>
     </string-array>
 
     <string-array name="imagenes_informacion">

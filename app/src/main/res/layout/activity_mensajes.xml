@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     app:ptv_height="2.2"
-                    android:text="Todo lo que necesitas saber sobre donaciones"
+                    android:text="Vuelve a leer los mensajes y alertas"
                     android:textColor="#444"/>
             </LinearLayout>
         </com.ntilde.percentagelayout.PLinearLayout>
@@ -73,7 +73,7 @@
     <com.ntilde.percentagelayout.PRelativeLayout
         android:layout_width="0px"
         android:layout_height="0px"
-        app:pr_percentage_height="74.6"
+        app:pr_percentage_height="82"
         app:pr_percentage_width="100">
 
         <ListView
