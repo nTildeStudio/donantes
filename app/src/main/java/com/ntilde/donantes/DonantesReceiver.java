@@ -30,9 +30,7 @@ public class DonantesReceiver extends ParsePushBroadcastReceiver{
             data = new JSONObject(intent.getExtras().getString(PARSE_DATA_KEY));
 
             SharedPreferences prefs = context.getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
-
             Set<String> alertas=new HashSet<>(prefs.getStringSet(Constantes.SP_ALERTAS, new HashSet<String>()));
-
             alertas.add(System.currentTimeMillis() + "::" + data.getString("alert"));
 
             SharedPreferences.Editor editor = prefs.edit();
