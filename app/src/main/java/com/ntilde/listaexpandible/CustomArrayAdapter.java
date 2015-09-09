@@ -3,14 +3,6 @@ package com.ntilde.listaexpandible;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ntilde.donantes.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * This is a custom array adapter used to populate the listview whose items will expand to display extra content in addition to the default display.
@@ -52,35 +48,55 @@ public class CustomArrayAdapter extends ArrayAdapter<ExpandableListItem> {
 
         final ExpandableListItem object = mData.get(position);
 
+        Holder holder = null;
+
         if (convertView == null) {
+
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
             convertView = inflater.inflate(mLayoutViewResourceId, parent, false);
+            holder = new Holder(convertView);
+
+            convertView.setTag(holder);
+
+        }else{
+            holder = (Holder) convertView.getTag();
         }
 
-        LinearLayout linearLayout = (LinearLayout) (convertView.findViewById(
-                R.id.item_linear_layout));
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams
                 (AbsListView.LayoutParams.MATCH_PARENT, object.getCollapsedHeight());
-        linearLayout.setLayoutParams(linearLayoutParams);
+        holder.linearLayout.setLayoutParams(linearLayoutParams);
 
-        ImageView imgView = (ImageView) convertView.findViewById(R.id.image_view);
-        TextView titleView = (TextView) convertView.findViewById(R.id.title_view);
-
-        titleView.setText(object.getTitle());
-        imgView.setImageBitmap(BitmapFactory.decodeResource(getContext().getResources(), object.getImgResource(), null));
+        holder.titleView.setText(object.getTitle());
+            //holder.imgView.setImageBitmap(BitmapFactory.decodeResource(getContext().getResources(), object.getImgResource(), null));
+        Picasso.with(mContext).load(object.getImgResource()).into(holder.imgView);
 
         convertView.setLayoutParams(new ListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT));
 
-        LinearLayout expandingLayout = (LinearLayout) convertView.findViewById(R.id.expanding_layout);
+        holder.expandingLayout = (LinearLayout) convertView.findViewById(R.id.expanding_layout);
 
         if (!object.isExpanded()) {
-            expandingLayout.setVisibility(View.GONE);
+            holder.expandingLayout.setVisibility(View.GONE);
         } else {
-            expandingLayout.setVisibility(View.VISIBLE);
+            holder.expandingLayout.setVisibility(View.VISIBLE);
 
         }
 
         return convertView;
+    }
+
+    static class Holder{
+        @InjectView(R.id.image_view)
+        ImageView imgView;
+        @InjectView(R.id.title_view)
+        TextView titleView;
+        @InjectView(R.id.item_linear_layout)
+        LinearLayout linearLayout;
+        @InjectView(R.id.expanding_layout)
+        LinearLayout expandingLayout;
+
+        public Holder(View v){
+            ButterKnife.inject(this,v);
+        }
     }
 
 

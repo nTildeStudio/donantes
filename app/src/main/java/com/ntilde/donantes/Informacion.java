@@ -93,7 +93,7 @@ public class Informacion extends AppCompatActivity {
             }
         });
 
-        List<ExpandableListItem> listItems = new ArrayList<ExpandableListItem>();
+        final List<ExpandableListItem> listItems = new ArrayList<ExpandableListItem>();
 
         String[] titles = getResources().getStringArray(R.array.titulos_informacion);
         String[] imageIds = getResources().getStringArray(R.array.imagenes_informacion);
@@ -113,6 +113,7 @@ public class Informacion extends AppCompatActivity {
                 mImageContainer = (LinearLayout) view.findViewById(R.id.expanding_layout);
                 Techniques techniques = mImageContainer.getVisibility() == View.GONE ? Techniques.FadeIn : Techniques.FadeOut;
                 YoYo.with(techniques).duration(700).withListener(mListener).playOn(mImageContainer);
+                listItems.get(position).setExpanded(mImageContainer.getVisibility() != View.VISIBLE);
 
             }
         });
