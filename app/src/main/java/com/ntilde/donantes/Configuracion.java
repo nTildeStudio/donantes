@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -25,6 +26,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.PushService;
 
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class Configuracion extends ActionBarActivity {
     @InjectView(R.id.configuracion_msg_centro) PTextView msg_centro;
     @InjectView(R.id.configuracion_msg_grupo) PTextView msg_grupo;
     @InjectView(R.id.configuracion_switch_notifications) Switch switch_notifications;
+    @InjectView(R.id.configuracion_et_numero_donante) EditText numerodonante;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +199,7 @@ public class Configuracion extends ActionBarActivity {
         editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
         editor.putString(Constantes.SP_SEXO, sexoSeleccionado);
         editor.putBoolean(Constantes.SP_NOTIFICACIONES, switch_notifications.isCheck());
+        editor.putString(Constantes.SP_NUMERO_DONANTE, numerodonante.getText().toString());
         editor.commit();
 
         ParseInstallation pi = ParseInstallation.getCurrentInstallation();
@@ -204,6 +208,7 @@ public class Configuracion extends ActionBarActivity {
         channel = channel.replace("+","POS").replace("-","NEG");
         if(switch_notifications.isCheck()) channels.add(channel);
         pi.put("channels", channels);
+        pi.put("numeroDonante", numerodonante.getText().toString());
         pi.saveInBackground();
 
         finish();
@@ -215,6 +220,7 @@ public class Configuracion extends ActionBarActivity {
         grupoSanguineoSeleccionado=prefs.getString(Constantes.SP_GRUPO, null);
         sexoSeleccionado=prefs.getString(Constantes.SP_SEXO, null);
         switch_notifications.setChecked(prefs.getBoolean(Constantes.SP_NOTIFICACIONES, false));
+        numerodonante.setText(prefs.getString(Constantes.SP_NUMERO_DONANTE, ""));
         for(ImageView grupo:gruposSanguineos){
             if(grupo.getTag().toString().equals(grupoSanguineoSeleccionado)){
                 switch(grupo.getTag().toString()){
@@ -243,8 +249,6 @@ public class Configuracion extends ActionBarActivity {
                         grupo.setImageResource(R.drawable.grupo_ab_pos_on);
                         break;
                 }
-//                grupo.setTextColor(getResources().getColor(R.color.rojo));
-//                grupo.setTextSize(25);
             }
         }
         for(Button sexo:sexos){

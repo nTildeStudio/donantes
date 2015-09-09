@@ -106,7 +106,7 @@
             android:layout_width="0px"
             android:layout_height="0px"
             app:pl_percentage_width="100"
-            app:pl_percentage_height="26"
+            app:pl_percentage_height="27.5"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -206,38 +206,6 @@
                         android:tag="AB+"
                         android:src="@drawable/grupo_ab_pos_off"/>
 
-                    <!--<Button-->
-                        <!--android:id="@+id/configuracion_grupo_0n"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="15dp"-->
-                        <!--android:text="0-"/>-->
-
-                    <!--<Button-->
-                        <!--android:id="@+id/configuracion_grupo_an"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="15dp"-->
-                        <!--android:text="A-"/>-->
-
-                    <!--<Button-->
-                        <!--android:id="@+id/configuracion_grupo_bn"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="15dp"-->
-                        <!--android:text="B-"/>-->
-
-                    <!--<Button-->
-                        <!--android:id="@+id/configuracion_grupo_abn"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="15dp"-->
-                        <!--android:text="AB-"/>-->
-
                 </com.ntilde.percentagelayout.PLinearLayout>
 
                 <LinearLayout
@@ -245,6 +213,32 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginTop="16dp"
+                    android:paddingLeft="16dp"
+                    android:weightSum="10"
+                    android:orientation="horizontal">
+
+                    <com.ntilde.percentagelayout.PTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:ptv_height="2.8"
+                        android:text="Nº Donante"
+                        android:textColor="#000"/>
+
+                    <EditText
+                        android:id="@+id/configuracion_et_numero_donante"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6.5"
+                        android:gravity="center_horizontal"
+                        android:lines="1"
+                        android:maxLength="15"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:paddingLeft="16dp"
                     android:orientation="horizontal">
 
@@ -264,50 +258,6 @@
                         materialdesign:check="true" />
 
                 </LinearLayout>
-
-
-
-                <!--<com.ntilde.percentagelayout.PLinearLayout-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="0dp"-->
-                    <!--app:pl_percentage_height="7.5"-->
-                    <!--app:pl_percentage_width="100"-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:gravity="center">-->
-
-                    <!--<Button-->
-                        <!--android:id="@+id/configuracion_grupo_0p"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="15dp"-->
-                        <!--android:text="0+"/>-->
-
-                    <!--<Button-->
-                        <!--android:id="@+id/configuracion_grupo_ap"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="15dp"-->
-                        <!--android:text="A+"/>-->
-
-                    <!--<Button-->
-                        <!--android:id="@+id/configuracion_grupo_bp"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="15dp"-->
-                        <!--android:text="B+"/>-->
-
-                    <!--<Button-->
-                        <!--android:id="@+id/configuracion_grupo_abp"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:textStyle="bold"-->
-                        <!--android:textSize="15dp"-->
-                        <!--android:text="AB+"/>-->
-
-                <!--</com.ntilde.percentagelayout.PLinearLayout>-->
 
             </com.ntilde.percentagelayout.PLinearLayout>
 
@@ -395,7 +345,7 @@
         </LinearLayout>
 
         <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-            app:pl_percentage_height="1.5"></com.ntilde.percentagelayout.PLinearLayout>
+            app:pl_percentage_height="1"></com.ntilde.percentagelayout.PLinearLayout>
 
     </LinearLayout>
 
