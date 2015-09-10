@@ -74,12 +74,6 @@ public class CustomArrayAdapter extends ArrayAdapter<ExpandableListItem> {
 
         holder.expandingLayout = (LinearLayout) convertView.findViewById(R.id.expanding_layout);
 
-        if (!object.isExpanded()) {
-            holder.expandingLayout.setVisibility(View.GONE);
-        } else {
-            holder.expandingLayout.setVisibility(View.VISIBLE);
-
-        }
 
         return convertView;
     }

@@ -92,6 +92,8 @@
             tools:context=".MainActivity"
             android:background="@android:color/white"
             android:scrollbars="none"
+            android:divider="@drawable/divider_list"
+            android:dividerHeight="1dp"
             />
 
     </com.ntilde.percentagelayout.PLinearLayout>

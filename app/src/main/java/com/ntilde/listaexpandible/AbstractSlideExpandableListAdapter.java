@@ -41,7 +41,7 @@ public abstract class AbstractSlideExpandableListAdapter extends WrapperListAdap
 	 * Default Animation duration
 	 * Set animation duration with @see setAnimationDuration
 	 */
-	private int animationDuration = 330;
+	private int animationDuration = 500;
 	
 	/**
 	 * A list of positions of all list items that are expanded.
