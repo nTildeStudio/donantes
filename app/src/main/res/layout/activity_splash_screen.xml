@@ -19,11 +19,53 @@
         android:layout_centerInParent="true"
         android:gravity="center">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_logotipo" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.github.jorgecastillo.FillableLoader
+                android:layout_gravity="center"
+                android:id="@+id/loaderGris"
+                android:layout_width="176px"
+                android:layout_height="238px"
+                app:originalWidth="176"
+                app:originalHeight="238"
+                app:strokeColor="#0000"
+                app:fillColor="#999999"
+                app:strokeWidth="0dp"
+                app:strokeDrawingDuration="0"
+                app:fillDuration="0"
+                app:clippingTransform="waves"/>
+
+            <com.github.jorgecastillo.FillableLoader
+                android:layout_gravity="center"
+                android:id="@+id/fillableLoader"
+                android:layout_width="176px"
+                android:layout_height="238px"
+                app:originalWidth="176"
+                app:originalHeight="238"
+                app:strokeColor="#000"
+                app:fillColor="#000"
+                app:strokeWidth="1dp"
+                app:strokeDrawingDuration="3000"
+                app:fillDuration="1000"
+                app:clippingTransform="waves"/>
+
+            <com.github.jorgecastillo.FillableLoader
+                android:layout_gravity="center"
+                android:id="@+id/loaderRed"
+                android:layout_width="176px"
+                android:layout_height="238px"
+                app:originalWidth="176"
+                app:originalHeight="238"
+                app:strokeColor="#0000"
+                app:fillColor="#c00"
+                app:strokeWidth="0dp"
+                app:strokeDrawingDuration="0"
+                app:fillDuration="3000"
+                app:clippingTransform="waves"/>
+
+        </FrameLayout>
 
     </com.ntilde.percentagelayout.PLinearLayout>
 
