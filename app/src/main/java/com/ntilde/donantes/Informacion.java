@@ -2,17 +2,13 @@ package com.ntilde.donantes;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-import com.nineoldandroids.animation.Animator;
 import com.ntilde.listaexpandible.CustomArrayAdapter;
 import com.ntilde.listaexpandible.ExpandableListItem;
+import com.ntilde.listaexpandible.SlideExpandableListAdapter;
 import com.ntilde.percentagelayout.PLinearLayout;
 
 import java.util.ArrayList;
@@ -32,42 +28,6 @@ public class Informacion extends AppCompatActivity {
     @InjectView(R.id.configuracion_borde_rojo_superior) PLinearLayout borde_rojo_superior;
     @InjectView(R.id.configuracion_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
     @InjectView(R.id.main_list_view)ListView mListView;
-
-    private LinearLayout mImageContainer;
-
-    private Animator.AnimatorListener mListener = new Animator.AnimatorListener() {
-
-        private int mLastVisibility;
-
-        @Override
-        public void onAnimationStart(Animator animation) {
-
-
-            if((mLastVisibility = mImageContainer.getVisibility()) == View.GONE){
-                mImageContainer.setVisibility(View.VISIBLE);
-            }
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-
-            if(mLastVisibility == View.VISIBLE){
-                mImageContainer.setVisibility(View.GONE);
-
-            }
-
-        }
-
-        @Override
-        public void onAnimationCancel(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
-
-        }
-    };
 
 
         @Override
@@ -104,19 +64,7 @@ public class Informacion extends AppCompatActivity {
         }
 
         mAdapter = new CustomArrayAdapter(Informacion.this,R.layout.list_view_item,listItems);
-        mListView.setAdapter(mAdapter);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                mImageContainer = (LinearLayout) view.findViewById(R.id.expanding_layout);
-                Techniques techniques = mImageContainer.getVisibility() == View.GONE ? Techniques.FadeIn : Techniques.FadeOut;
-                YoYo.with(techniques).duration(700).withListener(mListener).playOn(mImageContainer);
-                listItems.get(position).setExpanded(mImageContainer.getVisibility() != View.VISIBLE);
-
-            }
-        });
+        mListView.setAdapter(new SlideExpandableListAdapter(mAdapter, R.id.item_linear_layout, R.id.expanding_layout));
 
     }
 
