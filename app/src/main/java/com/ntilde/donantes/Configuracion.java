@@ -103,7 +103,6 @@ public class Configuracion extends ActionBarActivity {
                             LatLng latLng = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
                             otsLatLng.add(latLng);
                             gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")));
-                            //gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")).icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker)));
                             centrosRegionalesIdNombre.put(centroRegional.getString("Nombre"), centroRegional.getObjectId());
                         }
                     }
@@ -146,6 +145,7 @@ public class Configuracion extends ActionBarActivity {
         gruposSanguineos[5].setImageResource(R.drawable.grupo_b_pos_off);
         gruposSanguineos[6].setImageResource(R.drawable.grupo_ab_neg_off);
         gruposSanguineos[7].setImageResource(R.drawable.grupo_ab_pos_off);
+
 
         switch(grupo.getTag().toString()){
             case "0-":
