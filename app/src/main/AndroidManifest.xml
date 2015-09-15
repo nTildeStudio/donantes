@@ -29,6 +29,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAEfwvLkIqr2lykuFmKRnv8q-KVEKTl40Y" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="8369a218463c798b92253dbb0dd41007389605ac" />
+
         <activity
             android:name=".SplashScreen"
             android:label="@string/title_activity_splash_screen"
