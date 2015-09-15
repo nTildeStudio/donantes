@@ -6,9 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.parse.ParsePushBroadcastReceiver;
@@ -17,10 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -71,12 +68,16 @@ public class DonantesReceiver extends ParsePushBroadcastReceiver{
                         PendingIntent.FLAG_CANCEL_CURRENT);
 
                 Notification n;
+                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
                 if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
 
                     n = new Notification.Builder(context)
                             .setContentTitle("Calendario").setContentText("Se ha añadido una donación de " + data.getString("tipo"))
-                            .setSmallIcon(R.drawable.ic_launcher).getNotification();
+                            .setSmallIcon(R.drawable.ic_launcher)
+                            .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                            .setSound(alarmSound)
+                            .getNotification();
                 }else {
                     // build notification
                     // the addAction re-use the same intent to keep the example short
@@ -86,6 +87,8 @@ public class DonantesReceiver extends ParsePushBroadcastReceiver{
                             .setSmallIcon(R.drawable.ic_agenda)
                             .setContentIntent(contentIntent)
                             .setAutoCancel(true)
+                            .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                            .setSound(alarmSound)
                             .build();
                 }
 
