@@ -122,11 +122,19 @@ public class Ubicacion extends ActionBarActivity {
                                 gmMapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                     @Override
                                     public boolean onMarkerClick(Marker marker) {
-                                        puntoSeleccionado=centrosRegionalesIdNombre.get(marker.getTitle()).getString("Nombre");
+                                        puntoSeleccionado = centrosRegionalesIdNombre.get(marker.getTitle()).getString("Nombre");
                                         msg_seleccionar_punto.setVisibility(View.GONE);
                                         btComoLlegar.setVisibility(View.VISIBLE);
                                         btInformacion.setVisibility(View.VISIBLE);
                                         return false;
+                                    }
+                                });
+                                gmMapa.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                                    @Override
+                                    public void onMapClick(LatLng latLng) {
+                                        msg_seleccionar_punto.setVisibility(View.VISIBLE);
+                                        btComoLlegar.setVisibility(View.GONE);
+                                        btInformacion.setVisibility(View.GONE);
                                     }
                                 });
                             }
