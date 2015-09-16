@@ -3,29 +3,75 @@ package com.ntilde.donantes;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ntilde.donantes.adapters.FirstConfigViewPagerAdapter;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by 0011361 on 16/09/2015.
  */
 public class FirstConfig extends AppCompatActivity {
 
+    private int[] steps = {R.layout.first_config_step1, R.layout.first_config_step2, R.layout.first_config_step3};
+    private int step = 0;
+
+    @InjectView(R.id.first_config_left_button) TextView leftButton;
+    @InjectView(R.id.first_config_right_button) TextView rightButton;
+    @InjectView(R.id.first_config_viewpager) ViewPager viewPager;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_config);
-        Log.i("XXX", "FIRST CONFIG CREADA!");
-        loadUI();
+        ButterKnife.inject(this);
+        configureViewPager();
     }
 
-    private void loadUI(){
-        ViewPager viewPager = (ViewPager) findViewById(R.id.first_config_viewpager);
-        viewPager.setAdapter(new FirstConfigViewPagerAdapter(this));
+    private void configureViewPager(){
+        step = 0;
+        viewPager.setAdapter(new FirstConfigViewPagerAdapter(this, steps));
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-        TextView tvSkip = (TextView) findViewById(R.id.first_config_skip);
-        TextView tvNext = (TextView) findViewById(R.id.first_config_next);
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                step = position;
+                leftButton.setVisibility(step == 0 ? View.GONE : View.VISIBLE);
+                rightButton.setText(step == steps.length-1 ? "Finalizar" : "Siguiente");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
+
+    @OnClick({R.id.first_config_left_button, R.id.first_config_right_button})
+    public void onClickLeftTv(View v){
+        switch(v.getId()){
+            case R.id.first_config_left_button:
+                viewPager.setCurrentItem(--step);
+                break;
+            case R.id.first_config_right_button:
+                if(step==steps.length-1){
+                    Toast.makeText(getApplicationContext(), "Fin", Toast.LENGTH_SHORT).show();
+                }else {
+                    viewPager.setCurrentItem(++step);
+                }
+                break;
+        }
+    }
+
 }

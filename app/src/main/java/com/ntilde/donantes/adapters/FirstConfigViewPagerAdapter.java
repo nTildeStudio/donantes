@@ -6,23 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ntilde.donantes.R;
-
 /**
  * Created by 0011361 on 16/09/2015.
  */
 public class FirstConfigViewPagerAdapter extends PagerAdapter{
 
     private Context mContext;
-    private int[] steps = {R.layout.first_config_step1, R.layout.first_config_step2, R.layout.first_config_step3};
+    private int[] mSteps;
 
-    public FirstConfigViewPagerAdapter(Context context){
+    public FirstConfigViewPagerAdapter(Context context, int[] steps){
         mContext = context;
+        mSteps = steps;
     }
 
     @Override
     public int getCount() {
-        return steps.length;
+        return mSteps.length;
     }
 
     @Override
@@ -33,7 +32,7 @@ public class FirstConfigViewPagerAdapter extends PagerAdapter{
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         final View view;
-        view = LayoutInflater.from(mContext).inflate(steps[position], null);
+        view = LayoutInflater.from(mContext).inflate(mSteps[position], null);
 
         container.addView(view);
         return view;
@@ -43,4 +42,5 @@ public class FirstConfigViewPagerAdapter extends PagerAdapter{
     public void destroyItem(ViewGroup container, int position, Object view) {
         container.removeView((View) view);
     }
+
 }

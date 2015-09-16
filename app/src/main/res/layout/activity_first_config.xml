@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#7ff">
+    android:layout_height="match_parent">
 
     <com.ntilde.percentagelayout.PRelativeLayout
         android:layout_width="0dp"
@@ -29,19 +28,21 @@
         app:pl_percentage_height="10">
 
         <TextView
-            android:id="@+id/first_config_skip"
+            android:id="@+id/first_config_left_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Saltar"/>
+            android:background="@drawable/button_effect_drawable"
+            android:text="Anterior"/>
 
         <TextView
-            android:id="@+id/first_config_next"
+            android:id="@+id/first_config_right_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="@drawable/button_effect_drawable"
             android:text="Siguiente"/>
 
     </com.ntilde.percentagelayout.PLinearLayout>
