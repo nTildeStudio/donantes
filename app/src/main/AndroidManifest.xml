@@ -78,6 +78,12 @@
             android:label="@string/title_activity_mensajes"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".FirstConfig"
+            android:label="Inicio"
+            android:screenOrientation="portrait">
+        </activity>
+
 
         <!--PARSE NOTIFICATIONS -->
         <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_logotipo_blanco"/>
