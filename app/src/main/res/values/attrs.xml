@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="PLinearLayout">
         <attr name="pl_percentage_padding" format="float" />
@@ -44,7 +45,7 @@
         <attr name="plv_percentage_height" format="float" />
         <attr name="plv_percentage_width" format="float" />
     </declare-styleable>
-   <declare-styleable name="PGridView">
+    <declare-styleable name="PGridView">
         <attr name="gv_percentage_padding" format="float" />
         <attr name="gv_percentage_padding_left" format="float" />
         <attr name="gv_percentage_padding_right" format="float" />
@@ -77,24 +78,24 @@
         <attr name="ffv_validation_type" format="integer">
             <enum name="no_validation_first" value="-3"/>
             <enum name="no_validation_number" value="-2"/>
-        	<enum name="no_validation" value="-1"/>
-        	<enum name="email" value="0"/>
-        	<enum name="zipCode" value="1"/>
-        	<enum name="phone" value="2"/>
-        	<enum name="password" value="3"/>
-        	<enum name="visa" value="4"/>
-        	<enum name="mastercard" value="5"/>
-        	<enum name="diners" value="6"/>
-        	<enum name="americanExpress" value="7"/>
-        	<enum name="discover" value="8"/>
-        	<enum name="jcb" value="9"/>
-        	<enum name="cod" value="10"/>
-        	<enum name="affinity" value="11"/>
+            <enum name="no_validation" value="-1"/>
+            <enum name="email" value="0"/>
+            <enum name="zipCode" value="1"/>
+            <enum name="phone" value="2"/>
+            <enum name="password" value="3"/>
+            <enum name="visa" value="4"/>
+            <enum name="mastercard" value="5"/>
+            <enum name="diners" value="6"/>
+            <enum name="americanExpress" value="7"/>
+            <enum name="discover" value="8"/>
+            <enum name="jcb" value="9"/>
+            <enum name="cod" value="10"/>
+            <enum name="affinity" value="11"/>
             <enum name="cif" value="12"/>
             <enum name="nif" value="13"/>
-        	<enum name="positiveNumber" value="14"/>
+            <enum name="positiveNumber" value="14"/>
         </attr>
     </declare-styleable>
-    
-    
+
+
 </resources>

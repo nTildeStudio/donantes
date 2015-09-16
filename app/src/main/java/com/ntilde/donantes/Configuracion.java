@@ -1,14 +1,23 @@
 package com.ntilde.donantes;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.gc.materialdesign.views.Switch;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.ntilde.listaexpandible.ExpandCollapseAnimation;
 import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.percentagelayout.PTextView;
 import com.parse.FindCallback;
@@ -37,6 +47,7 @@ import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.InjectViews;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 public class Configuracion extends ActionBarActivity {
@@ -50,23 +61,22 @@ public class Configuracion extends ActionBarActivity {
     GoogleMap gmMapa;
     List<LatLng> otsLatLng;
 
-    @InjectView(R.id.iconos_margen_superior) PLinearLayout ic_margen_sup;
     @InjectView(R.id.configuracion_logotipo)ImageView logotipo;
-    @InjectView(R.id.configuracion_borde_rojo_superior) PLinearLayout borde_rojo_superior;
-    @InjectView(R.id.configuracion_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
     @InjectViews({R.id.configuracion_grupo_0n, R.id.configuracion_grupo_0p, R.id.configuracion_grupo_an, R.id.configuracion_grupo_ap,
             R.id.configuracion_grupo_bn, R.id.configuracion_grupo_bp, R.id.configuracion_grupo_abn, R.id.configuracion_grupo_abp}) ImageView[] gruposSanguineos;
-    @InjectViews({R.id.configuracion_sexo_masculino, R.id.configuracion_sexo_femenino}) Button[] sexos;
-    @InjectView(R.id.configuracion_msg_centro) PTextView msg_centro;
-    @InjectView(R.id.configuracion_msg_grupo) PTextView msg_grupo;
-    @InjectView(R.id.configuracion_switch_notifications) Switch switch_notifications;
     @InjectView(R.id.configuracion_et_numero_donante) EditText numerodonante;
+    @InjectView(R.id.enable_notifications)
+    CheckBox checkNotificationes;
+    @InjectView(R.id.mostrar_grupos) CheckBox mostrarGrupos;
+    @InjectView(R.id.container_grupos) PLinearLayout contenedorGrupos;
+    @InjectView(R.id.configuracion_cabecera) PLinearLayout cabecera;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
-        setContentView(R.layout.activity_configuracion);
+        setContentView(R.layout.activity_configuracion_v2);
 
         ButterKnife.inject(this);
 
@@ -74,41 +84,28 @@ public class Configuracion extends ActionBarActivity {
 
         try {
             gmMapa=smfMapa.getMap();
+            gmMapa.getUiSettings().setZoomControlsEnabled(false);
         } catch (Exception e) { }
 
-        ic_margen_sup.post(new Runnable(){
-            @Override
-            public void run(){
-                int valor=ic_margen_sup.getPHeight();
-                logotipo.setPadding(valor,valor/2,valor,valor/2);
-            }
-        });
 
-        borde_rojo_superior.post(new Runnable() {
-            @Override
-            public void run() {
-                borde_rojo_inferior.getLayoutParams().height = borde_rojo_superior.getPHeight();
-            }
-        });
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> centrosRegionales, ParseException e) {
-                if(e == null) {
+                if (e == null) {
                     otsLatLng = new ArrayList<>();
                     centrosRegionalesIdNombre = new HashMap<>();
-                    for(ParseObject centroRegional:centrosRegionales){
-                        ParseGeoPoint ubicacion=centroRegional.getParseGeoPoint("Ubicacion");
-                        if(ubicacion!=null) {
+                    for (ParseObject centroRegional : centrosRegionales) {
+                        ParseGeoPoint ubicacion = centroRegional.getParseGeoPoint("Ubicacion");
+                        if (ubicacion != null) {
                             LatLng latLng = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
                             otsLatLng.add(latLng);
                             gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")));
                             centrosRegionalesIdNombre.put(centroRegional.getString("Nombre"), centroRegional.getObjectId());
                         }
                     }
-                    gmMapa.getUiSettings().setZoomControlsEnabled(true);
                     LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                    for(LatLng otLatLng:otsLatLng){
+                    for (LatLng otLatLng : otsLatLng) {
                         builder.include(otLatLng);
                     }
                     LatLngBounds bounds = builder.build();
@@ -116,8 +113,7 @@ public class Configuracion extends ActionBarActivity {
                     gmMapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
-                            centroSeleccionado=centrosRegionalesIdNombre.get(marker.getTitle());
-                            msg_centro.setTextColor(Color.BLACK);
+                            centroSeleccionado = centrosRegionalesIdNombre.get(marker.getTitle());
                             return false;
                         }
                     });
@@ -125,18 +121,55 @@ public class Configuracion extends ActionBarActivity {
             }
         });
 
+        gmMapa.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                numerodonante.clearFocus();
+            }
+        });
+
+        cabecera.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                numerodonante.clearFocus();
+                return false;
+            }
+        });
+
+        checkNotificationes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                numerodonante.clearFocus();
+            }
+        });
+
+        numerodonante.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
+
         cargarPreferencias();
+
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        overridePendingTransition(R.anim.activity_open_scale,R.anim.activity_close_translate);
+        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
     }
 
     @OnClick({R.id.configuracion_grupo_0n, R.id.configuracion_grupo_0p, R.id.configuracion_grupo_an, R.id.configuracion_grupo_ap,
             R.id.configuracion_grupo_bn, R.id.configuracion_grupo_bp, R.id.configuracion_grupo_abn, R.id.configuracion_grupo_abp})
     public void onGrupoClick(ImageView grupo){
+
+        numerodonante.clearFocus();
+
         gruposSanguineos[0].setImageResource(R.drawable.grupo_0_neg_off);
         gruposSanguineos[1].setImageResource(R.drawable.grupo_0_pos_off);
         gruposSanguineos[2].setImageResource(R.drawable.grupo_a_neg_off);
@@ -180,25 +213,54 @@ public class Configuracion extends ActionBarActivity {
         grupoSanguineoSeleccionado=grupo.getTag().toString();
     }
 
-    @OnClick({R.id.configuracion_sexo_femenino, R.id.configuracion_sexo_masculino})
-    public void onSexoClick(Button sexo){
-        for(Button sexoAct:sexos){
-            sexoAct.setTextColor(Color.BLACK);
-            sexoAct.setTextSize(15);
-        }
-        sexo.setTextColor(getResources().getColor(R.color.rojo));
-        sexo.setTextSize(25);
-        sexoSeleccionado=sexo.getText().toString();
+
+
+    @OnCheckedChanged(R.id.mostrar_grupos)
+    public void mostrarGrupos(boolean checked){
+
+        numerodonante.clearFocus();
+
+        final int type = checked? ExpandCollapseAnimation.EXPAND : ExpandCollapseAnimation.COLLAPSE;
+
+        Animation anim = new ExpandCollapseAnimation(
+                contenedorGrupos,
+                type
+        );
+        anim.setDuration(500);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (type == ExpandCollapseAnimation.EXPAND) {
+                    contenedorGrupos.setVisibility(View.VISIBLE);
+                }else{
+                    contenedorGrupos.setVisibility(View.GONE);
+                }
+
+            }
+        });
+        contenedorGrupos.startAnimation(anim);
     }
 
     @OnClick(R.id.configuracion_buttonFloat)
     public void onGuardar(){
+
+        numerodonante.clearFocus();
+
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(Constantes.SP_CENTRO, centroSeleccionado);
         editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
         editor.putString(Constantes.SP_SEXO, sexoSeleccionado);
-        editor.putBoolean(Constantes.SP_NOTIFICACIONES, switch_notifications.isCheck());
+        editor.putBoolean(Constantes.SP_NOTIFICACIONES, checkNotificationes.isChecked());
         editor.putString(Constantes.SP_NUMERO_DONANTE, numerodonante.getText().toString());
         editor.commit();
 
@@ -206,7 +268,7 @@ public class Configuracion extends ActionBarActivity {
         ArrayList<String> channels = new ArrayList<>();
         String channel = centroSeleccionado+"_"+grupoSanguineoSeleccionado;
         channel = channel.replace("+","POS").replace("-","NEG");
-        if(switch_notifications.isCheck()) channels.add(channel);
+        if(checkNotificationes.isChecked()) channels.add(channel);
         pi.put("channels", channels);
         pi.put("numeroDonante", numerodonante.getText().toString());
         pi.saveInBackground();
@@ -219,7 +281,7 @@ public class Configuracion extends ActionBarActivity {
         centroSeleccionado=prefs.getString(Constantes.SP_CENTRO, null);
         grupoSanguineoSeleccionado=prefs.getString(Constantes.SP_GRUPO, null);
         sexoSeleccionado=prefs.getString(Constantes.SP_SEXO, null);
-        switch_notifications.setChecked(prefs.getBoolean(Constantes.SP_NOTIFICACIONES, false));
+        checkNotificationes.setChecked(prefs.getBoolean(Constantes.SP_NOTIFICACIONES, false));
         numerodonante.setText(prefs.getString(Constantes.SP_NUMERO_DONANTE, ""));
         for(ImageView grupo:gruposSanguineos){
             if(grupo.getTag().toString().equals(grupoSanguineoSeleccionado)){
@@ -249,12 +311,6 @@ public class Configuracion extends ActionBarActivity {
                         grupo.setImageResource(R.drawable.grupo_ab_pos_on);
                         break;
                 }
-            }
-        }
-        for(Button sexo:sexos){
-            if(sexo.getText().toString().equals(sexoSeleccionado)){
-                sexo.setTextColor(getResources().getColor(R.color.rojo));
-                sexo.setTextSize(25);
             }
         }
     }
