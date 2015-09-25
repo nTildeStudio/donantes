@@ -1,19 +1,28 @@
 package com.ntilde.donantes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.github.jorgecastillo.FillableLoader;
 import com.github.jorgecastillo.listener.OnStateChangeListener;
+import com.ntilde.rest.ParseManager;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SplashScreen extends ActionBarActivity{
+public class SplashScreen extends ActionBarActivity implements ParseManager.FinishedCallback{
 
-
+    private static final String TAG = SplashScreen.class.getName();
     String svgPathBlack ="M 34.01,156.37\n" +
             "           C 32.81,156.37 31.90,155.70 31.34,154.68\n" +
             "             29.85,151.97 32.30,148.63 28.35,143.01\n" +
@@ -123,12 +132,23 @@ public class SplashScreen extends ActionBarActivity{
     @InjectView(R.id.loaderRed) FillableLoader loaderRed;
     @InjectView(R.id.loaderGris) FillableLoader loaderGris;
 
+    private boolean startNextActivity = false; //Sólo usar el setter para modificar el valor dentro de esta clase
+    private String fechaUltimaActualizacion;
+    private String idCentroRegional;
+    private SharedPreferences prefs;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
         ButterKnife.inject(this);
+
+        //Cargamos preferences
+        prefs = getSharedPreferences(Constantes.SP_KEY,MODE_PRIVATE);
+        fechaUltimaActualizacion = prefs.getString(Constantes.SP_ULTIMA_ACTUALIZACION,"");
+        idCentroRegional = prefs.getString(Constantes.SP_CENTRO,"");
 
         fillableLoader.setSvgPath(svgPathBlack);
         loaderRed.setSvgPath(svgPathRed);
@@ -161,19 +181,115 @@ public class SplashScreen extends ActionBarActivity{
             @Override
             public void onStateChange(int state) {
                 if (state == 3){
-                    SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
-                    boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio"));
-                    ok=ok&&!"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
-                    if(ok){
-                        startActivity(new Intent(SplashScreen.this, MenuPrincipal.class));
-                    }
-                    else {
-                        startActivity(new Intent(SplashScreen.this, PrimerInicio.class));
+                    if(startNextActivity()){
+                        goToNextActivity();
+                    }else{
+                        setStartNextActivity(true);
                     }
                 }
             }
         });
+    }
 
+    /**
+     * Método encargado de comprobar que actividad es la que se debe mostrar a continuación
+     */
+    public void goToNextActivity(){
+        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
+        boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio"));
+        ok=ok&&!"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
+        if(ok){
+            startActivity(new Intent(SplashScreen.this, MenuPrincipal.class));
+        }
+        else {
+            startActivity(new Intent(SplashScreen.this, PrimerInicio.class));
+        }
+    }
 
+    public boolean startNextActivity(){
+        return  startNextActivity;
+    }
+
+    public synchronized void setStartNextActivity(boolean value){
+        startNextActivity = value;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ParseManager manager = DonantesApplication.getInstance().getParseManager();
+        manager.setFinishedCallback(this);
+        setStartNextActivity(false);
+
+        if(TextUtils.isEmpty(idCentroRegional)){
+            //iniciamos la descarga de los centros regionales
+            manager.recuperarCentrosRegionales(false);
+
+        }else{
+            //TODO recuperar fecha ultima actualizacion
+            //comprobar si es superior a la que tenemos
+            //meterla en preferences si es asi
+            //recuperar centro regional y actualizar toda la info referente a el
+            Date fecUltActualizacion = null;
+            if(!TextUtils.isEmpty(fechaUltimaActualizacion)) {
+                fecUltActualizacion = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+                try {
+                    fecUltActualizacion = dateFormat.parse(fechaUltimaActualizacion);
+
+                } catch (ParseException e) {
+                    Log.e(TAG,"Formato de fecha no correcto");
+
+                }
+            }
+
+            manager.recuperarUltimaActualizacion(idCentroRegional,fecUltActualizacion);
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Eliminar listener
+        DonantesApplication.getInstance().getParseManager().setFinishedCallback(null);
+    }
+
+    @Override
+    public void onSuccess() {
+        if(startNextActivity()){
+            goToNextActivity();
+        }else{
+            setStartNextActivity(true);
+        }
+    }
+
+    @Override
+    public void onError(String cause) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.error_dialog_title).setMessage(cause).create();
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                SplashScreen.this.finish();
+            }
+        });
+        builder.show();
+
+    }
+
+    @Override
+    public void onSaveInPreferences(Date newDate) {
+        SharedPreferences.Editor editor = prefs.edit();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        fechaUltimaActualizacion = dateFormat.format(newDate);
+        editor.putString(Constantes.SP_ULTIMA_ACTUALIZACION,fechaUltimaActualizacion).commit();
+        //TODO recuperar info centro
+
+        setStartNextActivity(true);
+        onSuccess();
     }
 }

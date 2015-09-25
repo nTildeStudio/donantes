@@ -20,4 +20,9 @@
 
     <string name="informacion_donante_title">Información al donante</string>
     <string name="hint_num_donante">Número de donante</string>
+    <string name="error_dialog_title">Fallo al iniciar la aplicación</string>
+    <string name="ok">Ok</string>
+    <string name="error_retrieving_data">No se pudieron obtener los datos</string>
+    <string name="error_date_updated">Error recuperando la fecha de actualización</string>
+    <string name="error_retrieving_centro_regional">Error recuperando centro Regional</string>
 </resources>

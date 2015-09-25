@@ -14,4 +14,5 @@ public class Constantes {
     public static final String SP_DONACIONES="donaciones";
     public static final String SP_NOTIFICACIONES = "notificaciones";
     public static final String SP_NUMERO_DONANTE = "numero_donante";
+    public static final String SP_ULTIMA_ACTUALIZACION = "ult_actualizacion";
 }
