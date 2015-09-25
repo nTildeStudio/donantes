@@ -5,9 +5,11 @@ import android.util.Log;
 import com.ntilde.donantes.DonantesApplication;
 import com.ntilde.donantes.R;
 import com.ntilde.modelo.CentroRegional;
+import com.ntilde.modelo.PuntosDonacion;
 import com.ntilde.modelo.UltimaActualizacion;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -85,11 +87,62 @@ public class ParseManager {
         ParseQuery<CentroRegional> query = ParseQuery.getQuery("CentrosRegionales");
         query.getInBackground(objectId, new GetCallback<CentroRegional>() {
             @Override
-            public void done(CentroRegional centroRegional, ParseException e) {
-                if(mCallback != null){
-                    if(e == null) mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_retrieving_centro_regional));
+            public void done(final CentroRegional centroRegional, ParseException e) {
+                if (mCallback != null) {
+                    if (e != null) {
+                        mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_retrieving_centro_regional));
+                        return;
+                    }
+                    //Almacenamos centro regional en la bd local
+                    centroRegional.pinInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_saving_centro_regional));
+                                return;
+                            }
+                            //Recuperar puntos de donacion relacionados con dicho centro regional
+                            recuperarPuntoDonancionesPorCentroRegional(centroRegional.getObjectId());
+
+                        }
+                    });
+
                 }
 
+            }
+        });
+    }
+
+    /**
+     * Recupera los puntos de donacion asociados a un centro en concreto
+     * @param objectId
+     */
+    public void recuperarPuntoDonancionesPorCentroRegional(String objectId){
+        ParseQuery<PuntosDonacion> query = ParseQuery.getQuery("PuntosDeDonacion");
+        ParseObject object = ParseObject.createWithoutData(CentroRegional.class, objectId);
+        query.whereEqualTo("CentroRegional", object);
+        query.findInBackground(new FindCallback<PuntosDonacion>() {
+            @Override
+            public void done(List<PuntosDonacion> list, ParseException e) {
+                if (mCallback != null) {
+                    if (e != null) {
+                        mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_retrieving_puntosdonacion));
+                        return;
+                    }
+
+                    //Actualizar todos los datos recuperados en local
+                    ParseObject.pinAllInBackground(list, new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e != null){
+                                mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_saving_puntos_donacion));
+                            }
+
+                            //TODO recuperar horarios
+                        }
+                    });
+
+                }
             }
         });
     }

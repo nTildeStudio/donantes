@@ -25,4 +25,7 @@
     <string name="error_retrieving_data">No se pudieron obtener los datos</string>
     <string name="error_date_updated">Error recuperando la fecha de actualización</string>
     <string name="error_retrieving_centro_regional">Error recuperando centro Regional</string>
+    <string name="error_retrieving_puntosdonacion">Error recuperando puntos de donación</string>
+    <string name="error_saving_centro_regional">Error almacenando centro de donación</string>
+    <string name="error_saving_puntos_donacion">Error almacenando puntos de donación</string>
 </resources>
