@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.ntilde.donantes.adapters.FirstConfigViewPagerAdapter;
 
+//import com.viewpagerindicator.CirclePageIndicator;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
@@ -21,15 +23,18 @@ public class FirstConfig extends AppCompatActivity {
     private int[] steps = {R.layout.first_config_step1, R.layout.first_config_step2, R.layout.first_config_step3};
     private int step = 0;
 
-    @InjectView(R.id.first_config_left_button) TextView leftButton;
+    @InjectView(R.id.first_config_left_button)
+    TextView leftButton;
     @InjectView(R.id.first_config_right_button) TextView rightButton;
-    @InjectView(R.id.first_config_viewpager) ViewPager viewPager;
+    @InjectView(R.id.first_config_viewpager)
+    ViewPager viewPager;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_config);
+
         ButterKnife.inject(this);
         configureViewPager();
     }
@@ -48,7 +53,7 @@ public class FirstConfig extends AppCompatActivity {
             public void onPageSelected(int position) {
                 step = position;
                 leftButton.setVisibility(step == 0 ? View.GONE : View.VISIBLE);
-                rightButton.setText(step == steps.length-1 ? "Finalizar" : "Siguiente");
+                rightButton.setText(step == steps.length - 1 ? "Finalizar" : "Siguiente");
             }
 
             @Override
@@ -56,6 +61,14 @@ public class FirstConfig extends AppCompatActivity {
 
             }
         });
+
+//        CirclePageIndicator mCirclePageIndicator = (CirclePageIndicator) findViewById(R.id.first_config_viewpager_indicator);
+//        mCirclePageIndicator.setPageColor(Color.WHITE);
+//        mCirclePageIndicator.setFillColor(getResources().getColor(R.color.rojo));
+//        mCirclePageIndicator.setStrokeColor(Color.BLACK);
+//        mCirclePageIndicator.setCentered(true);
+//        mCirclePageIndicator.setRadius(10);
+//        mCirclePageIndicator.setViewPager(viewPager);
     }
 
     @OnClick({R.id.first_config_left_button, R.id.first_config_right_button})

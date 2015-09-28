@@ -5,6 +5,10 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.ntilde.donantes.R;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by 0011361 on 16/09/2015.
@@ -31,9 +35,7 @@ public class FirstConfigViewPagerAdapter extends PagerAdapter{
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        final View view;
-        view = LayoutInflater.from(mContext).inflate(mSteps[position], null);
-
+        View view = generateViewFor(position);
         container.addView(view);
         return view;
     }
@@ -41,6 +43,26 @@ public class FirstConfigViewPagerAdapter extends PagerAdapter{
     @Override
     public void destroyItem(ViewGroup container, int position, Object view) {
         container.removeView((View) view);
+    }
+
+    private View generateViewFor(int position){
+        View v = LayoutInflater.from(mContext).inflate(mSteps[position], null);
+        int background = R.drawable.donantes;
+        switch(position){
+            case 0:
+                background = R.drawable.donantes;
+                break;
+            case 1:
+                background = R.drawable.donantes2;
+                break;
+            case 2:
+                background = R.drawable.donantes3;
+               break;
+        }
+
+
+        Picasso.with(mContext).load(background).into((ImageView) v.findViewById(R.id.background));
+        return v;
     }
 
 }

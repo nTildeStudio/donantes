@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.ntilde.percentagelayout.PRelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:pr_percentage_width="100"
-        app:pr_percentage_height="90">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/first_config_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/first_config_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    </com.ntilde.percentagelayout.PRelativeLayout>
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/first_config_viewpager_indicator"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
 
     <com.ntilde.percentagelayout.PLinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
         app:pl_percentage_width="100"
         app:pl_percentage_height="10">
 
@@ -34,7 +32,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:background="@drawable/button_effect_drawable"
-            android:text="Anterior"/>
+            android:text="Anterior"
+            android:textColor="#fff"/>
 
         <TextView
             android:id="@+id/first_config_right_button"
@@ -43,8 +42,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:background="@drawable/button_effect_drawable"
-            android:text="Siguiente"/>
+            android:text="Siguiente"
+            android:textColor="#fff"/>
 
     </com.ntilde.percentagelayout.PLinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
