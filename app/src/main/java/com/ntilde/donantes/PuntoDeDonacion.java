@@ -67,9 +67,11 @@ public class PuntoDeDonacion extends ActionBarActivity {
 
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
+        Calendar pastYear = Calendar.getInstance();
+        pastYear.add(Calendar.YEAR, -1);
 
         Date today = new Date();
-        calendar.init(today, nextYear.getTime()).withSelectedDate(today);
+        calendar.init(pastYear.getTime(), nextYear.getTime()).withSelectedDate(today);
 
         calendar.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override

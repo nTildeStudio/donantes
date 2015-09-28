@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -43,7 +42,7 @@ public class Agenda extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
+        overridePendingTransition(R.anim.activity_open_translate,R.anim.activity_close_scale);
         setContentView(R.layout.activity_agenda);
 
         ButterKnife.inject(this);
@@ -63,29 +62,32 @@ public class Agenda extends AppCompatActivity {
             }
         });
 
-        Calendar nextYear = Calendar.getInstance();
-        nextYear.add(Calendar.YEAR, 1);
-
-        Date today = new Date();
+        Date firstDate = null, lastDate = null;
 
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Agenda.MODE_PRIVATE);
         Set<String> donaciones = new HashSet<>(prefs.getStringSet(Constantes.SP_DONACIONES, new HashSet<String>()));
         donacionesMap=new HashMap<>();
-        Date fechaActual;
         for(String donacion:donaciones){
-            fechaActual=new Date(Long.parseLong(donacion.split("::")[0]));
-            donacionesMap.put(fechaActual, donacion.split("::")[1]);
-            Log.e("XXX", "Fecha guardada: " + fechaActual.getTime() + " (" + fechaActual + ")");
-            if(fechaActual.getTime()<today.getTime()){
-                today.setTime(fechaActual.getTime());
+            Date donacionDate=new Date(Long.parseLong(donacion.split("::")[0]));
+            donacionesMap.put(donacionDate,donacion.split("::")[1]);
+            if(firstDate==null||firstDate.getTime()>donacionDate.getTime()){
+                firstDate=donacionDate;
+            }
+            if(lastDate==null||lastDate.getTime()<donacionDate.getTime()){
+                lastDate=donacionDate;
             }
         }
-        calendar.init(today, nextYear.getTime()).withSelectedDate(today);
+
+        Calendar nextYear = Calendar.getInstance();
+        nextYear.setTime(lastDate);
+        nextYear.add(Calendar.YEAR, 1);
+
+        calendar.init(firstDate, nextYear.getTime());
+
         calendar.highlightDates(donacionesMap.keySet());
         calendar.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {
-                Log.e("XXX", "Fecha guardada: " + date.getTime() + " (" + date + ")");
                 if(msgSeleccioneFecha.getVisibility()== View.VISIBLE){
                     msgSeleccioneFecha.setVisibility(View.GONE);
                     for(Button tipoDonacion:tiposDonaciones){
@@ -93,7 +95,7 @@ public class Agenda extends AppCompatActivity {
                     }
                 }
                 for(Button tipoDonacion:tiposDonaciones){
-                    if(tipoDonacion.getText().toString().equalsIgnoreCase(donacionesMap.get(date))){
+                    if(tipoDonacion.getText().toString().equals(donacionesMap.get(date))){
                         tipoDonacion.setTextColor(getResources().getColor(R.color.rojo));
                     }
                     else{
