@@ -1,5 +1,6 @@
 package com.ntilde.donantes;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ntilde.donantes.adapters.FirstConfigViewPagerAdapter;
-
-//import com.viewpagerindicator.CirclePageIndicator;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -23,11 +23,10 @@ public class FirstConfig extends AppCompatActivity {
     private int[] steps = {R.layout.first_config_step1, R.layout.first_config_step2, R.layout.first_config_step3};
     private int step = 0;
 
-    @InjectView(R.id.first_config_left_button)
-    TextView leftButton;
+    @InjectView(R.id.first_config_left_button) TextView leftButton;
     @InjectView(R.id.first_config_right_button) TextView rightButton;
-    @InjectView(R.id.first_config_viewpager)
-    ViewPager viewPager;
+    @InjectView(R.id.first_config_viewpager) ViewPager viewPager;
+    @InjectView(R.id.first_config_viewpager_indicator) CirclePageIndicator viewPagerIndicator;
 
 
     @Override
@@ -41,6 +40,7 @@ public class FirstConfig extends AppCompatActivity {
 
     private void configureViewPager(){
         step = 0;
+
         viewPager.setAdapter(new FirstConfigViewPagerAdapter(this, steps));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -62,13 +62,14 @@ public class FirstConfig extends AppCompatActivity {
             }
         });
 
-//        CirclePageIndicator mCirclePageIndicator = (CirclePageIndicator) findViewById(R.id.first_config_viewpager_indicator);
-//        mCirclePageIndicator.setPageColor(Color.WHITE);
-//        mCirclePageIndicator.setFillColor(getResources().getColor(R.color.rojo));
-//        mCirclePageIndicator.setStrokeColor(Color.BLACK);
-//        mCirclePageIndicator.setCentered(true);
-//        mCirclePageIndicator.setRadius(10);
-//        mCirclePageIndicator.setViewPager(viewPager);
+
+        viewPagerIndicator.setPageColor(Color.parseColor("#777777"));
+        viewPagerIndicator.setFillColor(getResources().getColor(R.color.rojo));
+        viewPagerIndicator.setStrokeColor(Color.parseColor("#444444"));
+        viewPagerIndicator.setCentered(true);
+        viewPagerIndicator.setRadius(10);
+        viewPagerIndicator.setViewPager(viewPager);
+
     }
 
     @OnClick({R.id.first_config_left_button, R.id.first_config_right_button})
