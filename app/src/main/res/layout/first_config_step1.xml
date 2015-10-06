@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/first_config_step1_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"/>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:id="@+id/first_config_step1_map_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        app:pl_percentage_width="100"
+        app:pl_percentage_height="100">
+
+        <fragment
+            android:id="@+id/first_config_step1_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:id="@+id/first_config_step1_bottom_space"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        app:pl_percentage_width="100"
+        app:pl_percentage_height="10"
+        android:orientation="vertical"/>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/first_config_step1_bottom_space"
+        app:pl_percentage_width="100"
+        app:pl_percentage_height="20"
+        android:background="#dd000000"
+        android:orientation="vertical">
+
+        <com.ntilde.percentagelayout.PTextView
+            android:id="@+id/first_config_step1_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            app:ptv_height="2.8"
+            android:text="Seleccione un centro de donación"
+            android:textStyle="bold"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:textColor="#fff"/>
+
+        <com.ntilde.percentagelayout.PTextView
+            android:id="@+id/first_config_step1_centro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            app:ptv_height="2.8"
+            android:paddingTop="10dp"
+            android:paddingRight="16dp"
+            android:textColor="@color/rojo"/>
+
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+</RelativeLayout>

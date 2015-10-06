@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/first_config_step2_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/donantes2"/>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:id="@+id/first_config_step2_bottom_space"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        app:pl_percentage_width="100"
+        app:pl_percentage_height="10"
+        android:orientation="vertical"/>
+
+    <com.ntilde.percentagelayout.PLinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/first_config_step2_bottom_space"
+        app:pl_percentage_width="100"
+        app:pl_percentage_height="30"
+        android:background="#dd000000"
+        android:orientation="vertical">
+
+        <com.ntilde.percentagelayout.PTextView
+            android:id="@+id/first_config_step2_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            app:ptv_height="2.8"
+            android:text="Seleccione un centro de donación"
+            android:textStyle="bold"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:textColor="#fff"/>
+
+        <com.ntilde.percentagelayout.PTextView
+            android:id="@+id/first_config_step2_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            app:ptv_height="2.8"
+            android:paddingTop="10dp"
+            android:paddingRight="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/rojo"/>
+
+        <com.ntilde.percentagelayout.PLinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:pl_percentage_height="30"
+            app:pl_percentage_width="100"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/first_config_step2_iv_zeroNeg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="0-"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/grupo_0_neg_off"/>
+
+            <ImageView
+                android:id="@+id/first_config_step2_iv_zeroPos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="0+"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/grupo_0_pos_off"/>
+
+            <ImageView
+                android:id="@+id/first_config_step2_iv_aNeg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="A-"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/grupo_a_neg_off"/>
+
+            <ImageView
+                android:id="@+id/first_config_step2_iv_aPos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="A+"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/grupo_a_pos_off"/>
+
+            <ImageView
+                android:id="@+id/first_config_step2_iv_bNeg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="B-"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/grupo_b_neg_off"/>
+
+            <ImageView
+                android:id="@+id/first_config_step2_iv_bPos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="B+"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/grupo_b_pos_off"/>
+
+            <ImageView
+                android:id="@+id/first_config_step2_iv_abNeg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="AB-"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/grupo_ab_neg_off"/>
+
+            <ImageView
+                android:id="@+id/first_config_step2_iv_abPos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:tag="AB+"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/grupo_ab_pos_off"/>
+
+        </com.ntilde.percentagelayout.PLinearLayout>
+
+    </com.ntilde.percentagelayout.PLinearLayout>
+
+</RelativeLayout>
