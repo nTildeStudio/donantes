@@ -1,15 +1,22 @@
 package com.ntilde.donantes;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ntilde.donantes.adapters.FirstConfigViewPagerAdapter;
+import com.ntilde.donantes.fragments.FirstConfigStep1;
+import com.ntilde.donantes.fragments.FirstConfigStep2;
+import com.ntilde.donantes.fragments.FirstConfigStep3;
+import com.parse.ParseInstallation;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -20,7 +27,6 @@ import butterknife.OnClick;
  */
 public class FirstConfig extends AppCompatActivity {
 
-    private int[] steps = {R.layout.first_config_step1, R.layout.first_config_step2, R.layout.first_config_step3};
     private int step = 0;
 
     @InjectView(R.id.first_config_left_button) TextView leftButton;
@@ -41,7 +47,8 @@ public class FirstConfig extends AppCompatActivity {
     private void configureViewPager(){
         step = 0;
 
-        viewPager.setAdapter(new FirstConfigViewPagerAdapter(this, steps));
+        viewPager.setAdapter(new FirstConfigViewPagerAdapter(getSupportFragmentManager()));
+        viewPager.setOffscreenPageLimit(3);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -51,9 +58,7 @@ public class FirstConfig extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                step = position;
-                leftButton.setVisibility(step == 0 ? View.GONE : View.VISIBLE);
-                rightButton.setText(step == steps.length - 1 ? "Finalizar" : "Siguiente");
+                updateBottomButtons(position);
             }
 
             @Override
@@ -63,9 +68,9 @@ public class FirstConfig extends AppCompatActivity {
         });
 
 
-        viewPagerIndicator.setPageColor(Color.parseColor("#777777"));
+        viewPagerIndicator.setPageColor(Color.parseColor("#ffffff"));
         viewPagerIndicator.setFillColor(getResources().getColor(R.color.rojo));
-        viewPagerIndicator.setStrokeColor(Color.parseColor("#444444"));
+        viewPagerIndicator.setStrokeColor(Color.parseColor("#000000"));
         viewPagerIndicator.setCentered(true);
         viewPagerIndicator.setRadius(10);
         viewPagerIndicator.setViewPager(viewPager);
@@ -79,8 +84,8 @@ public class FirstConfig extends AppCompatActivity {
                 viewPager.setCurrentItem(--step);
                 break;
             case R.id.first_config_right_button:
-                if(step==steps.length-1){
-                    Toast.makeText(getApplicationContext(), "Fin", Toast.LENGTH_SHORT).show();
+                if(step==viewPager.getAdapter().getCount()-1){
+                    saveInfoGoToMain();
                 }else {
                     viewPager.setCurrentItem(++step);
                 }
@@ -88,4 +93,69 @@ public class FirstConfig extends AppCompatActivity {
         }
     }
 
+    private void saveInfoGoToMain(){
+
+        boolean datosOk = true;
+
+        String centroSeleccionado = ((FirstConfigStep1) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(0)).getCentroSeleccionado();
+        String grupoSanguineoSeleccionado = ((FirstConfigStep2) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(1)).getGrupoSanguineoSeleccionado();
+        Boolean notificationsEnabled = ((FirstConfigStep3) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(2)).isNotificationsEnabled();
+        String numDonante = ((FirstConfigStep3) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(2)).getNumDonante();
+
+
+        if(centroSeleccionado==null){
+            datosOk=false;
+            viewPager.setCurrentItem(0);
+            updateBottomButtons(viewPager.getCurrentItem());
+        }
+
+        if(grupoSanguineoSeleccionado==null){
+            datosOk=false;
+            updateBottomButtons(viewPager.getCurrentItem());
+        }
+
+//        if(numDonante==null){
+//            datosOk=false;
+//            updateBottomButtons(viewPager.getCurrentItem());
+//        }
+
+        if(datosOk) {
+            SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, PrimerInicio.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(Constantes.SP_CENTRO, centroSeleccionado);
+            editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
+            editor.putBoolean(Constantes.SP_NOTIFICACIONES, notificationsEnabled);
+            editor.putString(Constantes.SP_NUMERO_DONANTE, numDonante);
+            editor.commit();
+
+            ParseInstallation pi = ParseInstallation.getCurrentInstallation();
+            ArrayList<String> channels = new ArrayList<>();
+            String channel = centroSeleccionado+"_"+grupoSanguineoSeleccionado;
+            channel = channel.replace("+","POS").replace("-","NEG");
+            if(notificationsEnabled) channels.add(channel);
+            pi.put("channels", channels);
+            if(numDonante != null) pi.put("numeroDonante", numDonante);
+            pi.saveInBackground();
+            startActivity(new Intent(FirstConfig.this, MenuPrincipal.class));
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        switch (viewPager.getCurrentItem()){
+            case 0:
+                super.onBackPressed();
+                break;
+            default:
+                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                updateBottomButtons(viewPager.getCurrentItem());
+                break;
+        }
+    }
+
+    private void updateBottomButtons(int position){
+        step = position;
+        leftButton.setVisibility(step == 0 ? View.GONE : View.VISIBLE);
+        rightButton.setText(step == viewPager.getAdapter().getCount() - 1 ? "Finalizar" : "Siguiente");
+    }
 }
