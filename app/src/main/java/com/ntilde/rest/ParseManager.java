@@ -9,7 +9,6 @@ import com.ntilde.modelo.PuntosDonacion;
 import com.ntilde.modelo.UltimaActualizacion;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -56,13 +55,11 @@ public class ParseManager {
 
                             if (mCallback != null) {
                                 if (e != null) {//Error
-                                    Log.e(TAG, "Error almacenando los datos en local " + e.toString());
                                     mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_retrieving_data));
                                     return;
 
                                 }
                                 //Almacenamiento correcto de los datos
-                                Log.i(TAG, "Respuesta correcta");
                                 mCallback.onSuccess();
 
                             }
@@ -70,45 +67,9 @@ public class ParseManager {
                     });
                 } else {
                     //Ocurrió un error
-                    Log.e(TAG, "Error recuperando los centros regionales " + e.toString());
-                    if (mCallback != null)
+                     if (mCallback != null)
                         mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_retrieving_data));
                 }
-            }
-        });
-    }
-
-    /**
-     * Recupera toda la información asociada a un centro regional y la actualiza dentro de la
-     * base de datos
-     * @param objectId
-     */
-    public void recuperarInfoCentroRegional(String objectId){
-        ParseQuery<CentroRegional> query = ParseQuery.getQuery("CentrosRegionales");
-        query.getInBackground(objectId, new GetCallback<CentroRegional>() {
-            @Override
-            public void done(final CentroRegional centroRegional, ParseException e) {
-                if (mCallback != null) {
-                    if (e != null) {
-                        mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_retrieving_centro_regional));
-                        return;
-                    }
-                    //Almacenamos centro regional en la bd local
-                    centroRegional.pinInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_saving_centro_regional));
-                                return;
-                            }
-                            //Recuperar puntos de donacion relacionados con dicho centro regional
-                            recuperarPuntoDonancionesPorCentroRegional(centroRegional.getObjectId());
-
-                        }
-                    });
-
-                }
-
             }
         });
     }
@@ -117,16 +78,22 @@ public class ParseManager {
      * Recupera los puntos de donacion asociados a un centro en concreto
      * @param objectId
      */
-    public void recuperarPuntoDonancionesPorCentroRegional(String objectId){
+    public void recuperarPuntosDonancionesPorCentroRegional(String objectId){
         ParseQuery<PuntosDonacion> query = ParseQuery.getQuery("PuntosDeDonacion");
-        ParseObject object = ParseObject.createWithoutData(CentroRegional.class, objectId);
-        query.whereEqualTo("CentroRegional", object);
+        ParseObject pCentroRegional = ParseObject.createWithoutData(CentroRegional.class, objectId);
+        query.whereEqualTo("CentroRegional", pCentroRegional);
         query.findInBackground(new FindCallback<PuntosDonacion>() {
             @Override
-            public void done(List<PuntosDonacion> list, ParseException e) {
+            public void done(final List<PuntosDonacion> list, ParseException e) {
                 if (mCallback != null) {
                     if (e != null) {
                         mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_retrieving_puntosdonacion));
+                        return;
+                    }
+
+                    //Query vacía
+                    if(list.isEmpty()){
+                        mCallback.onError(DonantesApplication.getInstance().getString(R.string.empty_query_puntosdonacion));
                         return;
                     }
 
@@ -134,11 +101,12 @@ public class ParseManager {
                     ParseObject.pinAllInBackground(list, new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
+                            //Ocurrió un error
                             if(e != null){
                                 mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_saving_puntos_donacion));
+                                return;
                             }
-
-                            //TODO recuperar horarios
+                            mCallback.onSuccess();
                         }
                     });
 
@@ -150,9 +118,9 @@ public class ParseManager {
     /**
      * Recuperar la fecha de última modificacion de toda la información asociada a un centro regional
      * @param centroRegionalId
-     * @param fechaUltActualizacion
+     *
      */
-    public void recuperarUltimaActualizacion(String centroRegionalId, final Date fechaUltActualizacion){
+    public void recuperarUltimaActualizacion(String centroRegionalId){
         ParseQuery<UltimaActualizacion> query = ParseQuery.getQuery("UltimaActualizacion");
 
         ParseObject object = ParseObject.createWithoutData(CentroRegional.class, centroRegionalId);
@@ -161,22 +129,14 @@ public class ParseManager {
         query.findInBackground(new FindCallback<UltimaActualizacion>() {
             @Override
             public void done(List<UltimaActualizacion> list, ParseException e) {
-                if(mCallback != null){
-                    if (e == null){
-                        if(list.isEmpty()) mCallback.onSuccess(); //No se encontró dicho valor
-                        
-                        Date fechaUltActualizacionServidor = list.get(0).getUltimaActualizacion();
-                        if(fechaUltActualizacion == null ||
-                                fechaUltActualizacion.getTime() < fechaUltActualizacionServidor.getTime()){
-                            mCallback.onSaveInPreferences(fechaUltActualizacionServidor);
+                if(mCallback != null && e == null){
+                    if(list.isEmpty()) mCallback.onSuccess(); //No se encontró dicho valor
 
-                        }else{
-                            mCallback.onSuccess();
-                        }
+                    Date fechaUltActualizacionServidor = list.get(0).getUltimaActualizacion();
+                    mCallback.onSaveInPreferences(fechaUltActualizacionServidor);
 
-                    }else{
-                        mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_date_updated));
-                    }
+                }else{
+                    mCallback.onError(DonantesApplication.getInstance().getString(R.string.error_date_updated));
 
                 }
             }

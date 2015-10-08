@@ -12,6 +12,7 @@ import android.util.Log;
 import com.github.jorgecastillo.FillableLoader;
 import com.github.jorgecastillo.listener.OnStateChangeListener;
 import com.ntilde.rest.ParseManager;
+import com.ntilde.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -133,9 +134,10 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
     @InjectView(R.id.loaderGris) FillableLoader loaderGris;
 
     private boolean startNextActivity = false; //Sólo usar el setter para modificar el valor dentro de esta clase
-    private String fechaUltimaActualizacion;
+    private Date fechaUltimaActualizacion;
     private String idCentroRegional;
     private SharedPreferences prefs;
+    private ParseManager mManager;
 
 
     @Override
@@ -147,8 +149,9 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
 
         //Cargamos preferences
         prefs = getSharedPreferences(Constantes.SP_KEY,MODE_PRIVATE);
-        fechaUltimaActualizacion = prefs.getString(Constantes.SP_ULTIMA_ACTUALIZACION,"");
+        fechaUltimaActualizacion = Utils.convertStringToDate(prefs.getString(Constantes.SP_ULTIMA_ACTUALIZACION,""));
         idCentroRegional = prefs.getString(Constantes.SP_CENTRO,"");
+        mManager = DonantesApplication.getInstance().getParseManager();
 
         fillableLoader.setSvgPath(svgPathBlack);
         loaderRed.setSvgPath(svgPathRed);
@@ -195,15 +198,16 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
      * Método encargado de comprobar que actividad es la que se debe mostrar a continuación
      */
     public void goToNextActivity(){
-        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
-        boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio"));
-        ok=ok&&!"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
-        if(ok){
-            startActivity(new Intent(SplashScreen.this, MenuPrincipal.class));
+        if(startNextActivity()){
+            SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
+            boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio")) && !"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
+            startActivity(new Intent(SplashScreen.this, ok ? MenuPrincipal.class : PrimerInicio.class));
+
+        }else{
+            setStartNextActivity(true);
+
         }
-        else {
-            startActivity(new Intent(SplashScreen.this, PrimerInicio.class));
-        }
+
     }
 
     public boolean startNextActivity(){
@@ -218,34 +222,17 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
     protected void onResume() {
         super.onResume();
 
-        ParseManager manager = DonantesApplication.getInstance().getParseManager();
-        manager.setFinishedCallback(this);
+        mManager.setFinishedCallback(this);
         setStartNextActivity(false);
 
         if(TextUtils.isEmpty(idCentroRegional)){
             //iniciamos la descarga de los centros regionales
-            manager.recuperarCentrosRegionales(false);
+            mManager.recuperarCentrosRegionales(false);
 
         }else{
-            //TODO recuperar fecha ultima actualizacion
-            //comprobar si es superior a la que tenemos
-            //meterla en preferences si es asi
-            //recuperar centro regional y actualizar toda la info referente a el
-            Date fecUltActualizacion = null;
-            if(!TextUtils.isEmpty(fechaUltimaActualizacion)) {
-                fecUltActualizacion = new Date();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-                try {
-                    fecUltActualizacion = dateFormat.parse(fechaUltimaActualizacion);
-
-                } catch (ParseException e) {
-                    Log.e(TAG,"Formato de fecha no correcto");
-
-                }
-            }
-
-            manager.recuperarUltimaActualizacion(idCentroRegional,fecUltActualizacion);
+            //Tenemos centro regional, comprobamos su última fecha de
+            //actualización y actualizamos en caso de que sea necesario
+            mManager.recuperarUltimaActualizacion(idCentroRegional);
         }
 
     }
@@ -259,11 +246,7 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
 
     @Override
     public void onSuccess() {
-        if(startNextActivity()){
-            goToNextActivity();
-        }else{
-            setStartNextActivity(true);
-        }
+        goToNextActivity();
     }
 
     @Override
@@ -281,15 +264,24 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
 
     }
 
+
+
     @Override
     public void onSaveInPreferences(Date newDate) {
         SharedPreferences.Editor editor = prefs.edit();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        fechaUltimaActualizacion = dateFormat.format(newDate);
-        editor.putString(Constantes.SP_ULTIMA_ACTUALIZACION,fechaUltimaActualizacion).commit();
-        //TODO recuperar info centro
 
-        setStartNextActivity(true);
-        onSuccess();
+        if(fechaUltimaActualizacion == null){
+            fechaUltimaActualizacion = newDate;
+
+        }else{
+            long diff = newDate.getTime() - fechaUltimaActualizacion.getTime();
+            fechaUltimaActualizacion = diff > 0 ? newDate : fechaUltimaActualizacion;
+
+        }
+
+        editor.putString(Constantes.SP_ULTIMA_ACTUALIZACION,Utils.convertDateToString(fechaUltimaActualizacion)).commit();
+
+        //Recuperar los puntos de donación
+        mManager.recuperarPuntosDonancionesPorCentroRegional(idCentroRegional);
     }
 }
