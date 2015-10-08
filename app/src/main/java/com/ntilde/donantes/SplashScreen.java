@@ -270,18 +270,17 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
     public void onSaveInPreferences(Date newDate) {
         SharedPreferences.Editor editor = prefs.edit();
 
-        if(fechaUltimaActualizacion == null){
+        if(fechaUltimaActualizacion == null ||
+                newDate.getTime() - fechaUltimaActualizacion.getTime() > 0){
+
             fechaUltimaActualizacion = newDate;
+            editor.putString(Constantes.SP_ULTIMA_ACTUALIZACION,Utils.convertDateToString(fechaUltimaActualizacion)).commit();
+            mManager.recuperarCentroRegional(idCentroRegional,false);
 
         }else{
-            long diff = newDate.getTime() - fechaUltimaActualizacion.getTime();
-            fechaUltimaActualizacion = diff > 0 ? newDate : fechaUltimaActualizacion;
-
+            setStartNextActivity(true);
+            onSuccess();
         }
 
-        editor.putString(Constantes.SP_ULTIMA_ACTUALIZACION,Utils.convertDateToString(fechaUltimaActualizacion)).commit();
-
-        //Recuperar los puntos de donación
-        mManager.recuperarPuntosDonancionesPorCentroRegional(idCentroRegional);
     }
 }

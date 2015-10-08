@@ -74,6 +74,41 @@ public class ParseManager {
         });
     }
 
+
+    public void recuperarCentroRegional(String objectId, boolean local){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
+        query.whereEqualTo("objectId", objectId);
+
+        if(local) query.fromLocalDatastore();
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if( mCallback != null ){
+                    if(e != null || list.isEmpty()){
+                        mCallback.onError(DonantesApplication.getInstance().getString(R.string.centro_regional_not_found));
+                        return;
+
+                    }
+
+                    ParseObject.pinAllInBackground(list, new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if( e != null ){
+                                mCallback.onError(DonantesApplication.getInstance().getString(R.string.centroreg_error_storing));
+                                return;
+
+                            }
+
+                            mCallback.onSuccess();
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
     /**
      * Recupera los puntos de donacion asociados a un centro en concreto
      * @param objectId

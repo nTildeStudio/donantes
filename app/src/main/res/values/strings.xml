@@ -29,4 +29,6 @@
     <string name="error_saving_centro_regional">Error almacenando centro de donación</string>
     <string name="error_saving_puntos_donacion">Error almacenando puntos de donación</string>
     <string name="empty_query_puntosdonacion">No se obtuvieron puntos de donación para dicho centro regional</string>
+    <string name="centro_regional_not_found">No se encontró el centro regional buscado</string>
+    <string name="centroreg_error_storing">Error almacenando centro regional</string>
 </resources>
