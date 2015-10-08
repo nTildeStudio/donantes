@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             app:ptv_height="2.8"
-            android:text="Seleccione un centro de donación"
+            android:text="Seleccione su grupo sanguíneo"
             android:textStyle="bold"
             android:paddingTop="16dp"
             android:paddingRight="16dp"
