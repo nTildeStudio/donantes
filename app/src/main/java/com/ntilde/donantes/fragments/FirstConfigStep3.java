@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
  */
 public class FirstConfigStep3 extends Fragment{
 
-    private boolean notifications = false;
+    private boolean notifications = true;
     EditText etNumDonante;
 
 
@@ -40,14 +40,16 @@ public class FirstConfigStep3 extends Fragment{
         etNumDonante = (EditText) view.findViewById(R.id.first_config_step3_num_donante);
         etNumDonante.setHintTextColor(Color.parseColor("#dddddd"));
 
-        ImageView ivNotifications = (ImageView) view.findViewById(R.id.first_config_step3_notifications);
+        final ImageView ivNotifications = (ImageView) view.findViewById(R.id.first_config_step3_notifications);
+        ivNotifications.setImageResource(R.drawable.ic_notifications_active_white_24px);
+
         ivNotifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Animation zoomOut = AnimationUtils.loadAnimation(v.getContext(), R.anim.zoom_out);
                 v.startAnimation(zoomOut);
 
-                ((ImageView) v).setImageResource(notifications ? R.drawable.ic_notifications_off_white_24dp : R.drawable.ic_notifications_active_white_24px);
+                ivNotifications.setImageResource(notifications ? R.drawable.ic_notifications_off_white_24dp : R.drawable.ic_notifications_active_white_24px);
                 notifications = !notifications;
             }
         });

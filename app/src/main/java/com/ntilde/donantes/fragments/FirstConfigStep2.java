@@ -3,6 +3,7 @@ package com.ntilde.donantes.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,12 @@ public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
         abNeg.setImageResource(R.drawable.grupo_ab_neg_off);
         abPos.setImageResource(R.drawable.grupo_ab_pos_off);
 
+        if(v.getTag().toString().equals(grupoSanguineoSeleccionado)){
+            grupoSanguineoSeleccionado = null;
+            tvGroup.setText(" ");
+            return;
+        }
+
         switch(v.getTag().toString()){
             case "0-":
                 ((ImageView) v).setImageResource(R.drawable.grupo_0_neg_on);
@@ -110,6 +117,8 @@ public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
 
         grupoSanguineoSeleccionado=v.getTag().toString();
         tvGroup.setText(grupoSanguineoSeleccionado);
+
+        Log.i("XXX", "Fijo grupo sanguíneo");
     }
 
     public String getGrupoSanguineoSeleccionado(){

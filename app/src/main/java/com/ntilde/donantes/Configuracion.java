@@ -2,24 +2,17 @@ package com.ntilde.donantes;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
-import com.gc.materialdesign.views.Switch;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -29,15 +22,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ntilde.listaexpandible.ExpandCollapseAnimation;
 import com.ntilde.percentagelayout.PLinearLayout;
-import com.ntilde.percentagelayout.PTextView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.PushService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -207,9 +197,6 @@ public class Configuracion extends ActionBarActivity {
                 break;
         }
 
-//        grupo.setTextColor(getResources().getColor(R.color.rojo));
-//        grupo.setTextSize(25);
-//        msg_grupo.setTextColor(Color.BLACK);
         grupoSanguineoSeleccionado=grupo.getTag().toString();
     }
 

@@ -142,14 +142,9 @@ public class FirstConfig extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        switch (viewPager.getCurrentItem()){
-            case 0:
-                super.onBackPressed();
-                break;
-            default:
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-                updateBottomButtons(viewPager.getCurrentItem());
-                break;
+        if(viewPager.getCurrentItem() > 0){
+            viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+            updateBottomButtons(viewPager.getCurrentItem());
         }
     }
 
