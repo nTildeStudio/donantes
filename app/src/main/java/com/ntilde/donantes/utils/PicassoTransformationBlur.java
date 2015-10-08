@@ -4,13 +4,26 @@ import android.graphics.Bitmap;
 
 public class PicassoTransformationBlur implements com.squareup.picasso.Transformation {
 
-    public PicassoTransformationBlur() {
+    private int blurRadius = 10;
 
+    /**
+     * Aplica efecto de desenfoque en la imagen
+     * Radio de desenfoque por defecto: 10
+     */
+    public PicassoTransformationBlur() {
+    }
+
+    /**
+     * Aplica efecto de desenfoque en la imagen
+     * @param blurRadius radio de desenfoque (0 para no desenfocar)
+     */
+    public PicassoTransformationBlur(int blurRadius){
+        this.blurRadius = blurRadius;
     }
 
     @Override
     public Bitmap transform(final Bitmap source) {
-        Bitmap bitmapBlur = fastblur(source, 10);
+        Bitmap bitmapBlur = fastblur(source, blurRadius);
 
         if (bitmapBlur != source) {
             source.recycle();
@@ -32,7 +45,7 @@ public class PicassoTransformationBlur implements com.squareup.picasso.Transform
         try {
 
             if (radius < 1) {
-                return (null);
+                return sentBitmap;
             }
 
             int w = bitmap.getWidth();
