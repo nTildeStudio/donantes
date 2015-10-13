@@ -46,7 +46,7 @@
         android:layout_above="@id/first_config_step1_bottom_space"
         app:pl_percentage_width="100"
         app:pl_percentage_height="20"
-        android:background="#dd000000"
+        android:background="@color/first_configuration_translucent_black"
         android:orientation="vertical">
 
         <com.ntilde.percentagelayout.PTextView
