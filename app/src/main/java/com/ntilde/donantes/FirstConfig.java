@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -161,13 +160,9 @@ public class FirstConfig extends AppCompatActivity {
 
     public void selectCentroRegional(String title) {
         for(CentroRegional centro : mCentrosRegionales){
-            Log.i("XXX", "Comparamos: " + centro.getName() + " con: " + title);
             if(centro.getName().equals(title)){
-                Log.i("XXX", "Coinciden");
                 mSelectedCentroRegional = centro;
                 break;
-            }else{
-                Log.i("XXX", "No coinciden");
             }
         }
 

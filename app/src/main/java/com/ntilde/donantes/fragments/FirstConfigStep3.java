@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,17 +71,13 @@ public class FirstConfigStep3 extends Fragment{
     }
 
     public void updateBackground(){
-        Log.i("XXX", "Actualizamos el background en paso 3");
         String url;
         int blur;
 
         if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg2() != null){
-            Log.i("XXX", "El centro regional no es nulo");
             url = mActivity.mSelectedCentroRegional.getImagenCfg2().getUrl();
         }else{
-            Log.i("XXX", "Centro regional nulo, cogemos las settings");
             url = DefaultConfig.ImgCfg2.getUrl();
-            Log.i("XXX", url == null ? "Es nula la setting!" : ("No es nula la setting: " + url));
         }
 
         if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg2Radius() != null){

@@ -3,7 +3,6 @@ package com.ntilde.donantes.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,8 +124,6 @@ public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
 
         grupoSanguineoSeleccionado=v.getTag().toString();
         tvGroup.setText(grupoSanguineoSeleccionado);
-
-        Log.i("XXX", "Fijo grupo sanguíneo");
     }
 
     public String getGrupoSanguineoSeleccionado(){
@@ -134,17 +131,13 @@ public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
     }
 
     public void updateBackground(){
-        Log.i("XXX", "Actualizamos el background en paso 2");
         String url;
         int blur;
 
         if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg1() != null){
-            Log.i("XXX", "El centro regional no es nulo");
             url = mActivity.mSelectedCentroRegional.getImagenCfg1().getUrl();
         }else{
-            Log.i("XXX", "Centro regional nulo, cogemos las settings");
             url = DefaultConfig.ImgCfg1.getUrl();
-            Log.i("XXX", url == null ? "Es nula la setting!" : ("No es nula la setting: " + url));
         }
 
         if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg1Radius() != null){
