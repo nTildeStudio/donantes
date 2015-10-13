@@ -172,7 +172,7 @@ public class SplashScreen extends ActionBarActivity{
                     SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
                     boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio"));
                     ok=ok&&!"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
-                    if(!ok){
+                    if(ok){
                         startActivity(new Intent(SplashScreen.this, MenuPrincipal.class));
                     }
                     else {
