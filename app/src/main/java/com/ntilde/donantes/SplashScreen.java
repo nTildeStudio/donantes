@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.github.jorgecastillo.FillableLoader;
 import com.github.jorgecastillo.listener.OnStateChangeListener;
+import com.ntilde.donantes.utils.DefaultConfig;
+import com.parse.ConfigCallback;
+import com.parse.ParseConfig;
+import com.parse.ParseException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -128,6 +133,8 @@ public class SplashScreen extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        getParseConfig();
+
         ButterKnife.inject(this);
 
         fillableLoader.setSvgPath(svgPathBlack);
@@ -165,7 +172,7 @@ public class SplashScreen extends ActionBarActivity{
                     SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
                     boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio"));
                     ok=ok&&!"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
-                    if(ok){
+                    if(!ok){
                         startActivity(new Intent(SplashScreen.this, MenuPrincipal.class));
                     }
                     else {
@@ -176,5 +183,24 @@ public class SplashScreen extends ActionBarActivity{
         });
 
 
+    }
+
+    private void getParseConfig() {
+        Log.i("XXX", "Vamos a pedir las settings");
+
+        ParseConfig.getInBackground(new ConfigCallback() {
+            @Override
+            public void done(ParseConfig parseConfig, ParseException e) {
+                if(e == null){
+                    Log.i("XXX", "Recogida la configuración por defecto!");
+                    DefaultConfig.ImgCfg1 = parseConfig.getParseFile("ImagenCfg1"); if(DefaultConfig.ImgCfg1==null){Log.i("XXX", "Null1");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg1.getUrl());}
+                    DefaultConfig.ImgCfg2 = parseConfig.getParseFile("ImagenCfg2"); if(DefaultConfig.ImgCfg2==null){Log.i("XXX", "Null2");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg2.getUrl());}
+                    DefaultConfig.ImgCfg1Radius = parseConfig.getInt("ImagenCfg1Radio"); if(DefaultConfig.ImgCfg1Radius==0){Log.i("XXX", "Null3");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg1Radius);}
+                    DefaultConfig.ImgCfg2Radius = parseConfig.getInt("ImagenCfg2Radio"); if(DefaultConfig.ImgCfg2Radius==0){Log.i("XXX", "Null4");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg2Radius);}
+                }else{
+                    Log.e("XXX", "Error al obtener la configuración de parse");
+                }
+            }
+        });
     }
 }

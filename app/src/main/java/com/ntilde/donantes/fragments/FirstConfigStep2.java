@@ -12,12 +12,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ntilde.donantes.FirstConfig;
 import com.ntilde.donantes.R;
+import com.ntilde.donantes.utils.DefaultConfig;
 import com.ntilde.donantes.utils.PicassoTransformationBlur;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by 0011361 on 30/09/2015.
+ * Created by Julio on 30/09/2015.
  */
 public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
 
@@ -33,17 +35,23 @@ public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
     TextView tvGroup;
     String grupoSanguineoSeleccionado=null;
 
+    FirstConfig mActivity;
+    ImageView ivBackground;
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        mActivity = (FirstConfig) getActivity();
         View view = inflater.inflate(R.layout.first_config_step2, container, false);
         loadUI(view);
         return view;
     }
 
     private void loadUI(View view){
-        ImageView ivBackground = (ImageView) view.findViewById(R.id.first_config_step2_background);
-        Picasso.with(getActivity()).load(R.drawable.donantes2).transform(new PicassoTransformationBlur()).into(ivBackground);
+        ivBackground = (ImageView) view.findViewById(R.id.first_config_step2_background);
+        updateBackground();
 
         aPos = (ImageView) view.findViewById(R.id.first_config_step2_iv_aPos);
         aNeg = (ImageView) view.findViewById(R.id.first_config_step2_iv_aNeg);
@@ -125,5 +133,27 @@ public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
         return grupoSanguineoSeleccionado;
     }
 
+    public void updateBackground(){
+        Log.i("XXX", "Actualizamos el background en paso 2");
+        String url;
+        int blur;
+
+        if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg1() != null){
+            Log.i("XXX", "El centro regional no es nulo");
+            url = mActivity.mSelectedCentroRegional.getImagenCfg1().getUrl();
+        }else{
+            Log.i("XXX", "Centro regional nulo, cogemos las settings");
+            url = DefaultConfig.ImgCfg1.getUrl();
+            Log.i("XXX", url == null ? "Es nula la setting!" : ("No es nula la setting: " + url));
+        }
+
+        if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg1Radius() != null){
+            blur = mActivity.mSelectedCentroRegional.getImagenCfg1Radius();
+        }else{
+            blur = DefaultConfig.ImgCfg1Radius;
+        }
+
+        Picasso.with(mActivity).load(url).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
+    }
 
 }

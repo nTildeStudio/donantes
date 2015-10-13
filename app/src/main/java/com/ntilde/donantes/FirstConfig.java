@@ -6,26 +6,31 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ntilde.donantes.adapters.FirstConfigViewPagerAdapter;
-import com.ntilde.donantes.fragments.FirstConfigStep1;
 import com.ntilde.donantes.fragments.FirstConfigStep2;
 import com.ntilde.donantes.fragments.FirstConfigStep3;
+import com.ntilde.donantes.models.CentroRegional;
 import com.parse.ParseInstallation;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 /**
- * Created by 0011361 on 16/09/2015.
+ * Created by Julio on 16/09/2015.
  */
 public class FirstConfig extends AppCompatActivity {
+
+    public List<CentroRegional> mCentrosRegionales;
+    public CentroRegional mSelectedCentroRegional;
 
     private int step = 0;
 
@@ -41,6 +46,7 @@ public class FirstConfig extends AppCompatActivity {
         setContentView(R.layout.activity_first_config);
 
         ButterKnife.inject(this);
+        mCentrosRegionales = new ArrayList<>();
         configureViewPager();
     }
 
@@ -97,13 +103,12 @@ public class FirstConfig extends AppCompatActivity {
 
         boolean datosOk = true;
 
-        String centroSeleccionado = ((FirstConfigStep1) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(0)).getCentroSeleccionado();
         String grupoSanguineoSeleccionado = ((FirstConfigStep2) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(1)).getGrupoSanguineoSeleccionado();
         Boolean notificationsEnabled = ((FirstConfigStep3) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(2)).isNotificationsEnabled();
         String numDonante = ((FirstConfigStep3) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(2)).getNumDonante();
 
 
-        if(centroSeleccionado==null){
+        if(mSelectedCentroRegional==null){
             datosOk=false;
             viewPager.setCurrentItem(0);
             updateBottomButtons(viewPager.getCurrentItem());
@@ -122,7 +127,7 @@ public class FirstConfig extends AppCompatActivity {
         if(datosOk) {
             SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, PrimerInicio.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(Constantes.SP_CENTRO, centroSeleccionado);
+            editor.putString(Constantes.SP_CENTRO, mSelectedCentroRegional.getId());
             editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
             editor.putBoolean(Constantes.SP_NOTIFICACIONES, notificationsEnabled);
             editor.putString(Constantes.SP_NUMERO_DONANTE, numDonante);
@@ -130,7 +135,7 @@ public class FirstConfig extends AppCompatActivity {
 
             ParseInstallation pi = ParseInstallation.getCurrentInstallation();
             ArrayList<String> channels = new ArrayList<>();
-            String channel = centroSeleccionado+"_"+grupoSanguineoSeleccionado;
+            String channel = mSelectedCentroRegional.getId()+"_"+grupoSanguineoSeleccionado;
             channel = channel.replace("+","POS").replace("-","NEG");
             if(notificationsEnabled) channels.add(channel);
             pi.put("channels", channels);
@@ -153,4 +158,23 @@ public class FirstConfig extends AppCompatActivity {
         leftButton.setVisibility(step == 0 ? View.GONE : View.VISIBLE);
         rightButton.setText(step == viewPager.getAdapter().getCount() - 1 ? "Finalizar" : "Siguiente");
     }
+
+    public void selectCentroRegional(String title) {
+        for(CentroRegional centro : mCentrosRegionales){
+            Log.i("XXX", "Comparamos: " + centro.getName() + " con: " + title);
+            if(centro.getName().equals(title)){
+                Log.i("XXX", "Coinciden");
+                mSelectedCentroRegional = centro;
+                break;
+            }else{
+                Log.i("XXX", "No coinciden");
+            }
+        }
+
+        ((FirstConfigStep2) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(1)).updateBackground();
+        ((FirstConfigStep3) ((FirstConfigViewPagerAdapter) viewPager.getAdapter()).getItem(2)).updateBackground();
+    }
+
+
+
 }

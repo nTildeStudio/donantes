@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,30 +13,34 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.ntilde.donantes.FirstConfig;
 import com.ntilde.donantes.R;
+import com.ntilde.donantes.utils.DefaultConfig;
 import com.ntilde.donantes.utils.PicassoTransformationBlur;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by 0011361 on 30/09/2015.
+ * Created by Julio on 30/09/2015.
  */
 public class FirstConfigStep3 extends Fragment{
 
     private boolean notifications = true;
     EditText etNumDonante;
-
+    FirstConfig mActivity;
+    ImageView ivBackground;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mActivity = (FirstConfig) getActivity();
         View view = inflater.inflate(R.layout.first_config_step3, container, false);
         loadUI(view);
         return view;
     }
 
     private void loadUI(View view){
-        ImageView ivBackground = (ImageView) view.findViewById(R.id.first_config_step3_background);
-        Picasso.with(getActivity()).load(R.drawable.donantes3).transform(new PicassoTransformationBlur()).into(ivBackground);
+        ivBackground = (ImageView) view.findViewById(R.id.first_config_step3_background);
+        updateBackground();
 
         etNumDonante = (EditText) view.findViewById(R.id.first_config_step3_num_donante);
         etNumDonante.setHintTextColor(Color.parseColor("#dddddd"));
@@ -64,5 +69,28 @@ public class FirstConfigStep3 extends Fragment{
             return null;
         }
         return etNumDonante.getText().toString();
+    }
+
+    public void updateBackground(){
+        Log.i("XXX", "Actualizamos el background en paso 3");
+        String url;
+        int blur;
+
+        if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg2() != null){
+            Log.i("XXX", "El centro regional no es nulo");
+            url = mActivity.mSelectedCentroRegional.getImagenCfg2().getUrl();
+        }else{
+            Log.i("XXX", "Centro regional nulo, cogemos las settings");
+            url = DefaultConfig.ImgCfg2.getUrl();
+            Log.i("XXX", url == null ? "Es nula la setting!" : ("No es nula la setting: " + url));
+        }
+
+        if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg2Radius() != null){
+            blur = mActivity.mSelectedCentroRegional.getImagenCfg2Radius();
+        }else{
+            blur = DefaultConfig.ImgCfg2Radius;
+        }
+
+        Picasso.with(mActivity).load(url).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
     }
 }
