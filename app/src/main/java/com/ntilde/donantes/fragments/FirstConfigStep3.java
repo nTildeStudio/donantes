@@ -86,6 +86,7 @@ public class FirstConfigStep3 extends Fragment{
             blur = DefaultConfig.ImgCfg2Radius;
         }
 
+        Picasso.with(mActivity).invalidate(url);
         Picasso.with(mActivity).load(url).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
     }
 }

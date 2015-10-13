@@ -186,13 +186,11 @@ public class SplashScreen extends ActionBarActivity{
     }
 
     private void getParseConfig() {
-        Log.i("XXX", "Vamos a pedir las settings");
 
         ParseConfig.getInBackground(new ConfigCallback() {
             @Override
             public void done(ParseConfig parseConfig, ParseException e) {
                 if(e == null){
-                    Log.i("XXX", "Recogida la configuración por defecto!");
                     DefaultConfig.ImgCfg1 = parseConfig.getParseFile("ImagenCfg1"); if(DefaultConfig.ImgCfg1==null){Log.i("XXX", "Null1");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg1.getUrl());}
                     DefaultConfig.ImgCfg2 = parseConfig.getParseFile("ImagenCfg2"); if(DefaultConfig.ImgCfg2==null){Log.i("XXX", "Null2");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg2.getUrl());}
                     DefaultConfig.ImgCfg1Radius = parseConfig.getInt("ImagenCfg1Radio"); if(DefaultConfig.ImgCfg1Radius==0){Log.i("XXX", "Null3");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg1Radius);}

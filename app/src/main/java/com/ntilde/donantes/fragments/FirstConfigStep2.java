@@ -146,6 +146,7 @@ public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
             blur = DefaultConfig.ImgCfg1Radius;
         }
 
+        Picasso.with(mActivity).invalidate(url);
         Picasso.with(mActivity).load(url).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
     }
 
