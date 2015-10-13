@@ -191,10 +191,10 @@ public class SplashScreen extends ActionBarActivity{
             @Override
             public void done(ParseConfig parseConfig, ParseException e) {
                 if(e == null){
-                    DefaultConfig.ImgCfg1 = parseConfig.getParseFile("ImagenCfg1"); if(DefaultConfig.ImgCfg1==null){Log.i("XXX", "Null1");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg1.getUrl());}
-                    DefaultConfig.ImgCfg2 = parseConfig.getParseFile("ImagenCfg2"); if(DefaultConfig.ImgCfg2==null){Log.i("XXX", "Null2");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg2.getUrl());}
-                    DefaultConfig.ImgCfg1Radius = parseConfig.getInt("ImagenCfg1Radio"); if(DefaultConfig.ImgCfg1Radius==0){Log.i("XXX", "Null3");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg1Radius);}
-                    DefaultConfig.ImgCfg2Radius = parseConfig.getInt("ImagenCfg2Radio"); if(DefaultConfig.ImgCfg2Radius==0){Log.i("XXX", "Null4");}else{Log.i("XXX", "1: " + DefaultConfig.ImgCfg2Radius);}
+                    DefaultConfig.ImgCfg1 = parseConfig.getParseFile("ImagenCfg1");
+                    DefaultConfig.ImgCfg2 = parseConfig.getParseFile("ImagenCfg2");
+                    DefaultConfig.ImgCfg1Radius = parseConfig.getInt("ImagenCfg1Radio");
+                    DefaultConfig.ImgCfg2Radius = parseConfig.getInt("ImagenCfg2Radio");
                 }else{
                     Log.e("XXX", "Error al obtener la configuración de parse");
                 }
