@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
-import com.parse.ParseInstallation;
 import com.parse.PushService;
 
 import io.fabric.sdk.android.Fabric;

@@ -10,6 +10,7 @@ import com.github.jorgecastillo.FillableLoader;
 import com.github.jorgecastillo.listener.OnStateChangeListener;
 import com.ntilde.donantes.utils.DefaultConfig;
 import com.parse.ConfigCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
 
@@ -132,6 +133,8 @@ public class SplashScreen extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
 
         getParseConfig();
 

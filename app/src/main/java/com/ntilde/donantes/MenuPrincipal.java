@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,11 +19,15 @@ import com.ntilde.percentagelayout.PImageView;
 import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.percentagelayout.PTextView;
 import com.parse.GetCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -166,6 +171,21 @@ public class MenuPrincipal extends ActionBarActivity {
             R.id.info_ubicacion,R.id.info_agenda,R.id.info_informacion,R.id.info_mensajes,R.id.info_configuracion
             })
     public void clickMenu(View elemento){
+
+
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("menuOption", ((String)elemento.getTag()).split("_")[0]);
+        ParseAnalytics.trackEventInBackground("click", parameters, new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.i("XXX", "Se ha enviado analytics");
+                } else {
+                    Log.i("XXX", "Error al enviar analytics");
+                }
+            }
+        });
+
         switch(((String)elemento.getTag()).split("_")[0]){
             case "ubicacion":
                 startActivity(new Intent(this,Ubicacion.class));
