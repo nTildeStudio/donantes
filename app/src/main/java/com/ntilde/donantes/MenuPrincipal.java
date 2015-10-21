@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
 import java.util.HashMap;
 import java.util.List;
@@ -175,16 +173,7 @@ public class MenuPrincipal extends ActionBarActivity {
 
         Map<String, String> parameters = new HashMap<>();
         parameters.put("menuOption", ((String)elemento.getTag()).split("_")[0]);
-        ParseAnalytics.trackEventInBackground("click", parameters, new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.i("XXX", "Se ha enviado analytics");
-                } else {
-                    Log.i("XXX", "Error al enviar analytics");
-                }
-            }
-        });
+        ParseAnalytics.trackEventInBackground("click", parameters);
 
         switch(((String)elemento.getTag()).split("_")[0]){
             case "ubicacion":
