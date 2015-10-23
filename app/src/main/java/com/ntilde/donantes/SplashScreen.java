@@ -2,6 +2,7 @@ package com.ntilde.donantes;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -13,6 +14,7 @@ import com.parse.ConfigCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseConfig;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -170,6 +172,7 @@ public class SplashScreen extends ActionBarActivity{
         loaderGris.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
             public void onStateChange(int state) {
+                registerDevice();
                 if (state == 3){
                     startActivity(new Intent(SplashScreen.this, FirstConfig.class));
                     SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
@@ -188,6 +191,31 @@ public class SplashScreen extends ActionBarActivity{
 
     }
 
+
+    /**
+     * Register or update device info on parse
+     */
+    private void registerDevice(){
+        boolean update = false;
+
+        ParseInstallation pi = ParseInstallation.getCurrentInstallation();
+        if(!pi.has("deviceManufacturer") || !pi.getString("deviceManufacturer").equals(Build.MANUFACTURER)){
+            pi.put("deviceManufacturer", Build.MANUFACTURER);
+            update = true;
+        }
+        if(!pi.has("deviceModel") || !pi.getString("deviceModel").equals(Build.MODEL)){
+            pi.put("deviceModel", Build.MODEL);
+            update = true;
+        }
+
+        if(update){
+            pi.saveInBackground();
+        }
+    }
+
+    /**
+     * Get default config from parse
+     */
     private void getParseConfig() {
 
         ParseConfig.getInBackground(new ConfigCallback() {
