@@ -3,14 +3,15 @@ package com.ntilde.donantes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,19 +19,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ntilde.percentagelayout.PLinearLayout;
+import com.parse.ParseAnalytics;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class Mensajes extends ActionBarActivity {
+public class Mensajes extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
     @InjectView(R.id.iconos_margen_superior) PLinearLayout ic_margen_sup;
     @InjectView(R.id.mensajes_logotipo)ImageView logotipo;
@@ -38,6 +40,7 @@ public class Mensajes extends ActionBarActivity {
     @InjectView(R.id.mensajes_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
     @InjectView(R.id.mensajes_list) ListView lvMensajes;
     @InjectView(R.id.mensajes_no_hay) TextView tvNoHayMensajes;
+    ListViewAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,9 @@ public class Mensajes extends ActionBarActivity {
             }
         });
 
-        lvMensajes.setAdapter(new ListViewAdapter(alertas, this));
+        mAdapter = new ListViewAdapter(alertas, this);
+        lvMensajes.setAdapter(mAdapter);
+        lvMensajes.setOnItemClickListener(this);
         lvMensajes.setVisibility(alertas.size() > 0 ? View.VISIBLE : View.GONE);
         tvNoHayMensajes.setVisibility(alertas.size() > 0 ? View.GONE : View.VISIBLE);
 
@@ -101,6 +106,14 @@ public class Mensajes extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("messages", "text");
+        parameters.put("messageText", mAdapter.getItem(position).split("::")[1]);
+        ParseAnalytics.trackEventInBackground("click", parameters);
     }
 
 
@@ -162,6 +175,11 @@ public class Mensajes extends ActionBarActivity {
             vh.ivShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Map<String, String> parameters = new HashMap<>();
+                    parameters.put("messages", "share");
+                    parameters.put("messageText", getItem(position).split("::")[1]);
+                    ParseAnalytics.trackEventInBackground("click", parameters);
+
                     Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
                     sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Donantes");
@@ -174,4 +192,11 @@ public class Mensajes extends ActionBarActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("messages", "onBack");
+        ParseAnalytics.trackEventInBackground("click", parameters);
+        super.onBackPressed();
+    }
 }
