@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.ntilde.percentagelayout.PLinearLayout;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -126,6 +127,10 @@ public class Ubicacion extends ActionBarActivity {
                                         msg_seleccionar_punto.setVisibility(View.GONE);
                                         btComoLlegar.setVisibility(View.VISIBLE);
                                         btInformacion.setVisibility(View.VISIBLE);
+                                        Map<String, String> parameters = new HashMap<>();
+                                        parameters.put("dondeDonar", "marker");
+                                        parameters.put("markerName", puntoSeleccionado);
+                                        ParseAnalytics.trackEventInBackground("click", parameters);
                                         return false;
                                     }
                                 });
@@ -159,9 +164,11 @@ public class Ubicacion extends ActionBarActivity {
 
     @OnClick({R.id.ubicacion_informacion,R.id.ubicacion_como_llegar})
     public void onClick(View view){
+        Map<String, String> parameters = new HashMap<>();
         ParseObject punto=(ParseObject)centrosRegionalesIdNombre.get(puntoSeleccionado);
         switch (view.getId()){
             case R.id.ubicacion_como_llegar:
+                parameters.put("dondeDonar", "comoLlegar");
                 ParseGeoPoint geopunto = punto.getParseGeoPoint("Ubicacion");
                 Intent comoLlegar = new Intent(
                         "android.intent.action.VIEW",
@@ -170,6 +177,7 @@ public class Ubicacion extends ActionBarActivity {
                 startActivity(comoLlegar);
                 break;
             case R.id.ubicacion_informacion:
+                parameters.put("dondeDonar", "verInfo");
                 Intent mostrarDetalles=new Intent(this, PuntoDeDonacion.class);
                 mostrarDetalles.putExtra("puntoNombre",punto.getString("Nombre"));
                 mostrarDetalles.putExtra("puntoId",punto.getObjectId());
@@ -178,5 +186,16 @@ public class Ubicacion extends ActionBarActivity {
                 startActivity(mostrarDetalles);
                 break;
         }
+
+        parameters.put("markerName", puntoSeleccionado);
+        ParseAnalytics.trackEventInBackground("click", parameters);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("dondeDonar", "onBack");
+        ParseAnalytics.trackEventInBackground("click", parameters);
+        super.onBackPressed();
     }
 }
