@@ -13,11 +13,14 @@ import com.ntilde.donantes.adapters.FirstConfigViewPagerAdapter;
 import com.ntilde.donantes.fragments.FirstConfigStep2;
 import com.ntilde.donantes.fragments.FirstConfigStep3;
 import com.ntilde.donantes.models.CentroRegional;
+import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -84,11 +87,16 @@ public class FirstConfig extends AppCompatActivity {
 
     @OnClick({R.id.first_config_left_button, R.id.first_config_right_button})
     public void onClickLeftTv(View v){
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("paso", "" + viewPager.getCurrentItem());
+
         switch(v.getId()){
             case R.id.first_config_left_button:
+                parameters.put("configuracionInicial", "anterior");
                 viewPager.setCurrentItem(--step);
                 break;
             case R.id.first_config_right_button:
+                parameters.put("configuracionInicial", "siguiente");
                 if(step==viewPager.getAdapter().getCount()-1){
                     saveInfoGoToMain();
                 }else {
@@ -96,6 +104,8 @@ public class FirstConfig extends AppCompatActivity {
                 }
                 break;
         }
+
+        ParseAnalytics.trackEventInBackground("click", parameters);
     }
 
     private void saveInfoGoToMain(){
@@ -146,6 +156,11 @@ public class FirstConfig extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("configuracionInicial", "onBack");
+        parameters.put("paso", ""+viewPager.getCurrentItem());
+        ParseAnalytics.trackEventInBackground("click", parameters);
+
         if(viewPager.getCurrentItem() > 0){
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
             updateBottomButtons(viewPager.getCurrentItem());

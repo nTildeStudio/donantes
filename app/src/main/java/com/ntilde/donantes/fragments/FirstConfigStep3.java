@@ -16,7 +16,11 @@ import com.ntilde.donantes.FirstConfig;
 import com.ntilde.donantes.R;
 import com.ntilde.donantes.utils.DefaultConfig;
 import com.ntilde.donantes.utils.PicassoTransformationBlur;
+import com.parse.ParseAnalytics;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Julio on 30/09/2015.
@@ -43,6 +47,14 @@ public class FirstConfigStep3 extends Fragment{
 
         etNumDonante = (EditText) view.findViewById(R.id.first_config_step3_num_donante);
         etNumDonante.setHintTextColor(Color.parseColor("#dddddd"));
+        etNumDonante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("configuracionInicial", "numeroDeDonante");
+                ParseAnalytics.trackEventInBackground("click", parameters);
+            }
+        });
 
         final ImageView ivNotifications = (ImageView) view.findViewById(R.id.first_config_step3_notifications);
         ivNotifications.setImageResource(R.drawable.ic_notifications_active_white_24px);
@@ -55,6 +67,11 @@ public class FirstConfigStep3 extends Fragment{
 
                 ivNotifications.setImageResource(notifications ? R.drawable.ic_notifications_off_white_24dp : R.drawable.ic_notifications_active_white_24px);
                 notifications = !notifications;
+
+                Map<String, String> parameters = new HashMap<>();
+                parameters.put("configuracionInicial", "alertas");
+                parameters.put("estado", notifications ? "on" : "off");
+                ParseAnalytics.trackEventInBackground("click", parameters);
             }
         });
     }

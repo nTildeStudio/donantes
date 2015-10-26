@@ -21,13 +21,16 @@ import com.ntilde.donantes.FirstConfig;
 import com.ntilde.donantes.R;
 import com.ntilde.donantes.models.CentroRegional;
 import com.parse.FindCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Julio on 30/09/2015.
@@ -86,6 +89,11 @@ public class FirstConfigStep1 extends Fragment implements OnMapReadyCallback {
                     gmMapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
+                            Map<String, String> parameters = new HashMap<>();
+                            parameters.put("configuracionInicial", "marker");
+                            parameters.put("markerName", marker.getTitle());
+                            ParseAnalytics.trackEventInBackground("click", parameters);
+
                             mActivity.selectCentroRegional(marker.getTitle());
                             tvCentro.setText(marker.getTitle());
                             return false;

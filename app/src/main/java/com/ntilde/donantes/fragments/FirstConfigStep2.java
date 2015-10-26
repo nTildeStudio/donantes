@@ -15,7 +15,11 @@ import com.ntilde.donantes.FirstConfig;
 import com.ntilde.donantes.R;
 import com.ntilde.donantes.utils.DefaultConfig;
 import com.ntilde.donantes.utils.PicassoTransformationBlur;
+import com.parse.ParseAnalytics;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Julio on 30/09/2015.
@@ -124,6 +128,11 @@ public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
 
         grupoSanguineoSeleccionado=v.getTag().toString();
         tvGroup.setText(grupoSanguineoSeleccionado);
+
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("configuracionInicial", "grupoSanguineo");
+        parameters.put("grupoSanguineo", grupoSanguineoSeleccionado);
+        ParseAnalytics.trackEventInBackground("click", parameters);
     }
 
     public String getGrupoSanguineoSeleccionado(){

@@ -16,6 +16,10 @@ public class DonantesApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        // Enable Crash Reporting
+        //ParseCrashReporting.enable(this);
+
+        //Setup Parse
         Parse.initialize(this, "9qm1kVlIwYlGQ8ZBvJiAj6GEj7mfBpfLmE2eGCh0", "tD7aDDlGmcd2InKOho2g2KQCfg1OWUQhIfOdsAre");
         PushService.setDefaultPushCallback(this, MenuPrincipal.class, R.drawable.ic_logotipo_blanco);
         Fabric.with(this, new Crashlytics());
