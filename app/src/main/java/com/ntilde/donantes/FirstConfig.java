@@ -53,7 +53,7 @@ public class FirstConfig extends AppCompatActivity {
     }
 
     private void configureViewPager(){
-        step = 0;
+        updateBottomButtons(step);
 
         viewPager.setAdapter(new FirstConfigViewPagerAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(3);
@@ -170,7 +170,7 @@ public class FirstConfig extends AppCompatActivity {
     private void updateBottomButtons(int position){
         step = position;
         leftButton.setVisibility(step == 0 ? View.GONE : View.VISIBLE);
-        rightButton.setText(step == viewPager.getAdapter().getCount() - 1 ? "Finalizar" : "Siguiente");
+        rightButton.setText(viewPager !=null && viewPager.getAdapter() != null && step == viewPager.getAdapter().getCount() - 1 ? "Finalizar" : "Siguiente");
     }
 
     public void selectCentroRegional(String title) {
