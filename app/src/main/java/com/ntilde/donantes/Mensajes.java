@@ -53,20 +53,12 @@ public class Mensajes extends AppCompatActivity implements AdapterView.OnItemCli
 
         ButterKnife.inject(this);
 
-        ic_margen_sup.post(new Runnable() {
-            @Override
-            public void run() {
+        ic_margen_sup.post(() -> {
                 int valor = ic_margen_sup.getPHeight();
                 logotipo.setPadding(valor, valor / 2, valor, valor / 2);
-            }
-        });
+            });
 
-        borde_rojo_superior.post(new Runnable(){
-            @Override
-            public void run(){
-                borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight();
-            }
-        });
+        borde_rojo_superior.post(() -> borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight());
 
         mAdapter = new ListViewAdapter(alertas, this);
         lvMensajes.setAdapter(mAdapter);
@@ -172,9 +164,7 @@ public class Mensajes extends AppCompatActivity implements AdapterView.OnItemCli
             vh.tvDate.setText(sdf.format(calendar.getTime()));
             vh.tvAlert.setText(getItem(position).split("::")[1]);
 
-            vh.ivShare.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            vh.ivShare.setOnClickListener(v -> {
                     Map<String, String> parameters = new HashMap<>();
                     parameters.put("messages", "share");
                     parameters.put("messageText", getItem(position).split("::")[1]);
@@ -185,8 +175,7 @@ public class Mensajes extends AppCompatActivity implements AdapterView.OnItemCli
                     sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Donantes");
                     sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, getItem(position).split("::")[1] + " (" + sdf.format(calendar.getTime()) + ")");
                     startActivity(Intent.createChooser(sharingIntent, "Compartir"));
-                }
-            });
+                });
 
             return convertView;
         }

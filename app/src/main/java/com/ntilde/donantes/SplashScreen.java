@@ -149,29 +149,21 @@ public class SplashScreen extends ActionBarActivity{
         fillableLoader.reset();
         fillableLoader.start();
 
-        fillableLoader.setOnStateChangeListener(new OnStateChangeListener() {
-            @Override
-            public void onStateChange(int state) {
+        fillableLoader.setOnStateChangeListener((state) -> {
                 if (state == 2) {
                     loaderRed.reset();
                     loaderRed.start();
                 }
-            }
-        });
+            });
 
-        loaderRed.setOnStateChangeListener(new OnStateChangeListener() {
-            @Override
-            public void onStateChange(int state) {
+        loaderRed.setOnStateChangeListener((state) -> {
                 if(state == 3) {
                     loaderGris.reset();
                     loaderGris.start();
                 }
-            }
-        });
+            });
 
-        loaderGris.setOnStateChangeListener(new OnStateChangeListener() {
-            @Override
-            public void onStateChange(int state) {
+        loaderGris.setOnStateChangeListener((state) -> {
                 registerDevice();
                 if (state == 3){
                     startActivity(new Intent(SplashScreen.this, FirstConfig.class));
@@ -185,8 +177,7 @@ public class SplashScreen extends ActionBarActivity{
                         startActivity(new Intent(SplashScreen.this, FirstConfig.class));
                     }
                 }
-            }
-        });
+            });
 
 
     }
@@ -218,9 +209,7 @@ public class SplashScreen extends ActionBarActivity{
      */
     private void getParseConfig() {
 
-        ParseConfig.getInBackground(new ConfigCallback() {
-            @Override
-            public void done(ParseConfig parseConfig, ParseException e) {
+        ParseConfig.getInBackground((parseConfig, e) -> {
                 if(e == null){
                     DefaultConfig.ImgCfg1 = parseConfig.getParseFile("ImagenCfg1");
                     DefaultConfig.ImgCfg2 = parseConfig.getParseFile("ImagenCfg2");
@@ -229,7 +218,6 @@ public class SplashScreen extends ActionBarActivity{
                 }else{
                     Log.e("XXX", "Error al obtener la configuración de parse");
                 }
-            }
-        });
+            });
     }
 }

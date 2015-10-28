@@ -69,31 +69,21 @@ public class Ubicacion extends ActionBarActivity {
             gmMapa=smfMapa.getMap();
         } catch (Exception e) { }
 
-        ic_margen_sup.post(new Runnable(){
-            @Override
-            public void run(){
+        ic_margen_sup.post(() -> {
                 int valor=ic_margen_sup.getPHeight();
                 logotipo.setPadding(valor,valor/2,valor,valor/2);
-            }
-        });
+            });
 
-        borde_rojo_superior.post(new Runnable(){
-            @Override
-            public void run(){
-                borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight();
-            }
-        });
+        borde_rojo_superior.post(() -> borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight());
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("CentrosRegionales");
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Ubicacion.MODE_PRIVATE);
         String centroSeleccionado = prefs.getString(Constantes.SP_CENTRO, "");
-        query.getInBackground(centroSeleccionado, new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
+        query1.getInBackground(centroSeleccionado, (object , e) -> {
                 if (e == null) {
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("PuntosDeDonacion").whereEqualTo("CentroRegional",object);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> puntosDeDonacion, ParseException e) {
-                            if(e == null) {
+                    query.findInBackground((puntosDeDonacion, e2) -> {
+                            if(e2 == null) {
                                 otsLatLng = new ArrayList<>();
                                 centrosRegionalesIdNombre = new HashMap<>();
                                 boolean puntosIncluidos=false;
@@ -120,9 +110,7 @@ public class Ubicacion extends ActionBarActivity {
                                 }
                                 LatLngBounds bounds = builder.build();
                                 gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
-                                gmMapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                    @Override
-                                    public boolean onMarkerClick(Marker marker) {
+                                gmMapa.setOnMarkerClickListener((marker) -> {
                                         puntoSeleccionado = centrosRegionalesIdNombre.get(marker.getTitle()).getString("Nombre");
                                         msg_seleccionar_punto.setVisibility(View.GONE);
                                         btComoLlegar.setVisibility(View.VISIBLE);
@@ -132,22 +120,16 @@ public class Ubicacion extends ActionBarActivity {
                                         parameters.put("markerName", puntoSeleccionado);
                                         ParseAnalytics.trackEventInBackground("click", parameters);
                                         return false;
-                                    }
-                                });
-                                gmMapa.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                                    @Override
-                                    public void onMapClick(LatLng latLng) {
+                                    });
+                                gmMapa.setOnMapClickListener((latLng) -> {
                                         msg_seleccionar_punto.setVisibility(View.VISIBLE);
                                         btComoLlegar.setVisibility(View.GONE);
                                         btInformacion.setVisibility(View.GONE);
-                                    }
-                                });
+                                    });
                             }
-                        }
-                    });
+                        });
                 }
-            }
-        });
+            });
 
     }
 

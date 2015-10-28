@@ -47,20 +47,12 @@ public class Agenda extends AppCompatActivity {
 
         ButterKnife.inject(this);
 
-        ic_margen_sup.post(new Runnable() {
-            @Override
-            public void run() {
+        ic_margen_sup.post(() -> {
                 int valor = ic_margen_sup.getPHeight();
                 logotipo.setPadding(valor, valor / 2, valor, valor / 2);
-            }
-        });
+            });
 
-        borde_rojo_superior.post(new Runnable() {
-            @Override
-            public void run() {
-                borde_rojo_inferior.getLayoutParams().height = borde_rojo_superior.getPHeight();
-            }
-        });
+        borde_rojo_superior.post(() -> borde_rojo_inferior.getLayoutParams().height = borde_rojo_superior.getPHeight());
 
         Date firstDate = null, lastDate = null;
 

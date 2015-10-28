@@ -80,8 +80,7 @@ public class Configuracion extends ActionBarActivity {
 
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> centrosRegionales, ParseException e) {
+        query.findInBackground((centrosRegionales, e) -> {
                 if (e == null) {
                     otsLatLng = new ArrayList<>();
                     centrosRegionalesIdNombre = new HashMap<>();
@@ -100,48 +99,30 @@ public class Configuracion extends ActionBarActivity {
                     }
                     LatLngBounds bounds = builder.build();
                     gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
-                    gmMapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(Marker marker) {
+                    gmMapa.setOnMarkerClickListener(marker -> {
                             centroSeleccionado = centrosRegionalesIdNombre.get(marker.getTitle());
                             return false;
-                        }
-                    });
+                        });
                 }
-            }
-        });
+            });
 
-        gmMapa.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
+        gmMapa.setOnMapClickListener(latLng -> {
                 numerodonante.clearFocus();
-            }
-        });
+            });
 
-        cabecera.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+        cabecera.setOnTouchListener((v, event) -> {
                 numerodonante.clearFocus();
                 return false;
-            }
-        });
+            });
 
-        checkNotificationes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                numerodonante.clearFocus();
-            }
-        });
+        checkNotificationes.setOnCheckedChangeListener((buttonView, isChecked) -> numerodonante.clearFocus());
 
-        numerodonante.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+        numerodonante.setOnFocusChangeListener((v, hasFocus) -> {
                 if (!hasFocus) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
-            }
-        });
+            });
 
         cargarPreferencias();
 

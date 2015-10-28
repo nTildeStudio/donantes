@@ -78,8 +78,7 @@ public class MenuPrincipal extends ActionBarActivity {
                     ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
                     ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes del "+object.getString("Nombre"));
                 }
-            }
-        );
+            });
 
         ic_margen_sup.post(() -> {
                 int valor=ic_margen_sup.getPHeight();
@@ -88,8 +87,7 @@ public class MenuPrincipal extends ActionBarActivity {
                 for(PLinearLayout mensaje:mensajes) {
                     mensaje.setPadding(valor * 2, 0, 0, 0);
                 }
-            }
-        );
+            });
         borde_rojo_superior.post(() -> borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight());
         int delay=0;
         for(PImageView icono:iconos){
@@ -117,8 +115,7 @@ public class MenuPrincipal extends ActionBarActivity {
                     ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
                     ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes del "+object.getString("Nombre"));
                 }
-            }
-        );
+            });
     }
 
     @Override

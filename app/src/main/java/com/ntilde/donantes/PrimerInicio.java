@@ -68,24 +68,17 @@ public class PrimerInicio extends ActionBarActivity {
             gmMapa=smfMapa.getMap();
         } catch (Exception e) { }
 
-        ic_margen_sup.post(new Runnable(){
-            @Override
-            public void run(){
+        ic_margen_sup.post(() -> {
                 int valor=ic_margen_sup.getPHeight();
                 logotipo.setPadding(valor,valor/2,valor,valor/2);
-            }
-        });
+            });
 
-        borde_rojo_superior.post(new Runnable(){
-            @Override
-            public void run(){
+        borde_rojo_superior.post(() -> {
                 borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight();
-            }
-        });
+            });
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> centrosRegionales, ParseException e) {
+        query.findInBackground((centrosRegionales, e) -> {
                 if(e == null) {
                     otsLatLng = new ArrayList<>();
                     centrosRegionalesIdNombre = new HashMap<>();
@@ -104,17 +97,13 @@ public class PrimerInicio extends ActionBarActivity {
                     }
                     LatLngBounds bounds = builder.build();
                     gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
-                    gmMapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(Marker marker) {
+                    gmMapa.setOnMarkerClickListener((marker) -> {
                             centroSeleccionado=centrosRegionalesIdNombre.get(marker.getTitle());
                             msg_centro.setTextColor(Color.BLACK);
                             return false;
-                        }
-                    });
+                        });
                 }
-            }
-        });
+            });
     }
 
     @OnClick({R.id.primer_inicio_grupo_0n, R.id.primer_inicio_grupo_0p, R.id.primer_inicio_grupo_an, R.id.primer_inicio_grupo_ap,

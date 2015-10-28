@@ -45,7 +45,7 @@ public class PuntoDeDonacion extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.activity_open_translate,R.anim.activity_close_scale);
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
         setContentView(R.layout.activity_punto_de_donacion);
 
         ButterKnife.inject(this);
@@ -58,12 +58,7 @@ public class PuntoDeDonacion extends ActionBarActivity {
             }
         });
 
-        borde_rojo_superior.post(new Runnable(){
-            @Override
-            public void run(){
-                borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight();
-            }
-        });
+        borde_rojo_superior.post(() -> borde_rojo_inferior.getLayoutParams().height = borde_rojo_superior.getPHeight());
 
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
@@ -91,14 +86,12 @@ public class PuntoDeDonacion extends ActionBarActivity {
         subtitulo.setText(getIntent().getExtras().getString("puntoNombre"));
         msg_direccion.setText(getIntent().getExtras().getString("puntoDireccion"));
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("PuntosDeDonacion");
-        query.getInBackground(getIntent().getExtras().getString("puntoId"), new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (e == null) {
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("HorariosDeDonacion").whereEqualTo("PuntoDeDonacion",object);
-                    query.findInBackground(new FindCallback<ParseObject>() {
-                        public void done(List<ParseObject> horarios, ParseException e) {
-                            if(e == null) {
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("PuntosDeDonacion");
+        query1.getInBackground(getIntent().getExtras().getString("puntoId"), (object, e1) -> {
+                if (e1 == null) {
+                    ParseQuery<ParseObject> query2 = ParseQuery.getQuery("HorariosDeDonacion").whereEqualTo("PuntoDeDonacion",object);
+                    query2.findInBackground((horarios, e2) -> {
+                            if(e2 == null) {
                                 for(ParseObject horario:horarios){
                                     Date inicio=horario.getDate("FechaInicio");
                                     Date fin=horario.getDate("FechaFin");
@@ -119,11 +112,9 @@ public class PuntoDeDonacion extends ActionBarActivity {
                                     calendar.highlightDates(fechas.keySet());
                                 }
                             }
-                        }
-                    });
+                        });
                 }
-            }
-        });
+            });
     }
 
     @Override

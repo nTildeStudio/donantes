@@ -62,8 +62,7 @@ public class FirstConfigStep1 extends Fragment implements OnMapReadyCallback {
 
     private void getMarkers(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> centrosRegionales, ParseException e) {
+        query.findInBackground((centrosRegionales, e) -> {
                 if(e == null) {
                     otsLatLng = new ArrayList<>();
                     for(ParseObject centroRegional:centrosRegionales){
@@ -86,9 +85,7 @@ public class FirstConfigStep1 extends Fragment implements OnMapReadyCallback {
                     }
                     LatLngBounds bounds = builder.build();
                     gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
-                    gmMapa.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(Marker marker) {
+                    gmMapa.setOnMarkerClickListener(marker -> {
                             Map<String, String> parameters = new HashMap<>();
                             parameters.put("configuracionInicial", "marker");
                             parameters.put("markerName", marker.getTitle());
@@ -97,13 +94,11 @@ public class FirstConfigStep1 extends Fragment implements OnMapReadyCallback {
                             mActivity.selectCentroRegional(marker.getTitle());
                             tvCentro.setText(marker.getTitle());
                             return false;
-                        }
-                    });
+                        });
                 }else{
                     Toast.makeText(getActivity(), "Se ha producido un error al obtener los centros regionales", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
+            });
     }
 
     @Override

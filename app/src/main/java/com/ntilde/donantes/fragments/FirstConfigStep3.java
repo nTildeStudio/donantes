@@ -47,21 +47,16 @@ public class FirstConfigStep3 extends Fragment{
 
         etNumDonante = (EditText) view.findViewById(R.id.first_config_step3_num_donante);
         etNumDonante.setHintTextColor(Color.parseColor("#dddddd"));
-        etNumDonante.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        etNumDonante.setOnClickListener(v -> {
                 Map<String, String> parameters = new HashMap<>();
                 parameters.put("configuracionInicial", "numeroDeDonante");
                 ParseAnalytics.trackEventInBackground("click", parameters);
-            }
-        });
+            });
 
         final ImageView ivNotifications = (ImageView) view.findViewById(R.id.first_config_step3_notifications);
         ivNotifications.setImageResource(R.drawable.ic_notifications_active_white_24px);
 
-        ivNotifications.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        ivNotifications.setOnClickListener(v -> {
                 Animation zoomOut = AnimationUtils.loadAnimation(v.getContext(), R.anim.zoom_out);
                 v.startAnimation(zoomOut);
 
@@ -72,8 +67,7 @@ public class FirstConfigStep3 extends Fragment{
                 parameters.put("configuracionInicial", "alertas");
                 parameters.put("estado", notifications ? "on" : "off");
                 ParseAnalytics.trackEventInBackground("click", parameters);
-            }
-        });
+            });
     }
 
     public boolean isNotificationsEnabled() {
