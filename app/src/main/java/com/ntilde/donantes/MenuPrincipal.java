@@ -72,19 +72,16 @@ public class MenuPrincipal extends ActionBarActivity {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, MenuPrincipal.MODE_PRIVATE);
         String centroSeleccionado = prefs.getString(Constantes.SP_CENTRO, "");
-        query.getInBackground(centroSeleccionado, new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
+        query.getInBackground(centroSeleccionado, (object, e) -> {
                 if (e == null) {
                     nombre_centro.setText(object.getString("Descripcion"));
                     ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
                     ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes del "+object.getString("Nombre"));
                 }
             }
-        });
+        );
 
-        ic_margen_sup.post(new Runnable(){
-            @Override
-            public void run(){
+        ic_margen_sup.post(() -> {
                 int valor=ic_margen_sup.getPHeight();
                 margenIzquierdo=valor;
                 logotipo.setPadding(valor,valor/2,valor,valor/2);
@@ -92,13 +89,8 @@ public class MenuPrincipal extends ActionBarActivity {
                     mensaje.setPadding(valor * 2, 0, 0, 0);
                 }
             }
-        });
-        borde_rojo_superior.post(new Runnable(){
-            @Override
-            public void run(){
-                borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight();
-            }
-        });
+        );
+        borde_rojo_superior.post(() -> borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight());
         int delay=0;
         for(PImageView icono:iconos){
             icono.post(new MenuAnimatorRunnable(icono,delay));
@@ -119,15 +111,14 @@ public class MenuPrincipal extends ActionBarActivity {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, MenuPrincipal.MODE_PRIVATE);
         String centroSeleccionado = prefs.getString(Constantes.SP_CENTRO, "");
-        query.getInBackground(centroSeleccionado, new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
+        query.getInBackground(centroSeleccionado, (object, e) -> {
                 if (e == null) {
                     nombre_centro.setText(object.getString("Descripcion"));
                     ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
                     ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes del "+object.getString("Nombre"));
                 }
             }
-        });
+        );
     }
 
     @Override

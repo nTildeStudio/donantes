@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 22
@@ -17,6 +18,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -42,4 +48,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.+'
 }
