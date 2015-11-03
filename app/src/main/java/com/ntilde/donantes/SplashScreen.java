@@ -1,27 +1,33 @@
 package com.ntilde.donantes;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.text.TextUtils;
 
 import com.github.jorgecastillo.FillableLoader;
 import com.github.jorgecastillo.listener.OnStateChangeListener;
-import com.ntilde.donantes.utils.DefaultConfig;
-import com.parse.ConfigCallback;
-import com.parse.ParseAnalytics;
-import com.parse.ParseConfig;
-import com.parse.ParseException;
-import com.parse.ParseInstallation;
+import com.ntilde.exception.InvalidQueryException;
+import com.ntilde.modelo.CentroRegional;
+import com.ntilde.modelo.UltimaActualizacion;
+import com.ntilde.rest.ParseManager;
+import com.ntilde.rest.ParseResponse;
+import com.ntilde.utils.ParseConstantes;
+import com.ntilde.utils.Utils;
+import com.parse.ParseQuery;
+
+import java.util.Date;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SplashScreen extends ActionBarActivity{
+public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
-
+    private static final String TAG = SplashScreen.class.getName();
     String svgPathBlack ="M 34.01,156.37\n" +
             "           C 32.81,156.37 31.90,155.70 31.34,154.68\n" +
             "             29.85,151.97 32.30,148.63 28.35,143.01\n" +
@@ -131,16 +137,25 @@ public class SplashScreen extends ActionBarActivity{
     @InjectView(R.id.loaderRed) FillableLoader loaderRed;
     @InjectView(R.id.loaderGris) FillableLoader loaderGris;
 
+    private boolean startNextActivity = false; //Sólo usar el setter para modificar el valor dentro de esta clase
+    private Date fechaUltimaActualizacion;
+    private String idCentroRegional;
+    private SharedPreferences prefs;
+    private ParseManager mManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
-
-        getParseConfig();
-
         ButterKnife.inject(this);
+
+        //Cargamos preferences
+        prefs = getSharedPreferences(Constantes.SP_KEY,MODE_PRIVATE);
+        fechaUltimaActualizacion = Utils.convertStringToDate(prefs.getString(Constantes.SP_ULTIMA_ACTUALIZACION,""));
+        idCentroRegional = prefs.getString(Constantes.SP_CENTRO,"");
+        mManager = DonantesApplication.getInstance().getParseManager();
 
         fillableLoader.setSvgPath(svgPathBlack);
         loaderRed.setSvgPath(svgPathRed);
@@ -149,75 +164,148 @@ public class SplashScreen extends ActionBarActivity{
         fillableLoader.reset();
         fillableLoader.start();
 
-        fillableLoader.setOnStateChangeListener((state) -> {
+        fillableLoader.setOnStateChangeListener(new OnStateChangeListener() {
+            @Override
+            public void onStateChange(int state) {
                 if (state == 2) {
                     loaderRed.reset();
                     loaderRed.start();
                 }
-            });
+            }
+        });
 
-        loaderRed.setOnStateChangeListener((state) -> {
+        loaderRed.setOnStateChangeListener(new OnStateChangeListener() {
+            @Override
+            public void onStateChange(int state) {
                 if(state == 3) {
                     loaderGris.reset();
                     loaderGris.start();
                 }
-            });
+            }
+        });
 
-        loaderGris.setOnStateChangeListener((state) -> {
-                registerDevice();
+        loaderGris.setOnStateChangeListener(new OnStateChangeListener() {
+            @Override
+            public void onStateChange(int state) {
                 if (state == 3){
-                    startActivity(new Intent(SplashScreen.this, FirstConfig.class));
-                    SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
-                    boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio"));
-                    ok=ok&&!"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
-                    if(ok){
-                        startActivity(new Intent(SplashScreen.this, MenuPrincipal.class));
-                    }
-                    else {
-                        startActivity(new Intent(SplashScreen.this, FirstConfig.class));
+                    if(startNextActivity()){
+                        goToNextActivity();
+                    }else{
+                        setStartNextActivity(true);
                     }
                 }
-            });
+            }
+        });
+    }
+
+    /**
+     * Método encargado de comprobar que actividad es la que se debe mostrar a continuación
+     */
+    public void goToNextActivity(){
+        if(startNextActivity()){
+            SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
+            boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio")) && !"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
+            startActivity(new Intent(SplashScreen.this, ok ? MenuPrincipal.class : PrimerInicio.class));
+
+        }else{
+            setStartNextActivity(true);
+
+        }
+
+    }
+
+    public boolean startNextActivity(){
+        return  startNextActivity;
+    }
+
+    public synchronized void setStartNextActivity(boolean value){
+        startNextActivity = value;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setStartNextActivity(false);
+
+        try{
+            recuperarDatos();
+
+        }catch(InvalidQueryException e){
+            //Mensaje por defecto
+            createDialog(e.getMessage());
+        }
 
 
     }
 
+    public void recuperarDatos() throws InvalidQueryException{
+        if(TextUtils.isEmpty(idCentroRegional)){
+            //iniciamos la descarga de los centros regionales
+            ParseQuery<CentroRegional> query = mManager.crearQuery(ParseConstantes.QUERY_CENTROS_REGIONALES,null);
+            mManager.recuperar(ParseConstantes.QUERY_CENTROS_REGIONALES,query,false,this);
 
-    /**
-     * Register or update device info on parse
-     */
-    private void registerDevice(){
-        boolean update = false;
-
-        ParseInstallation pi = ParseInstallation.getCurrentInstallation();
-        if(!pi.has("deviceManufacturer") || !pi.getString("deviceManufacturer").equals(Build.MANUFACTURER)){
-            pi.put("deviceManufacturer", Build.MANUFACTURER);
-            update = true;
-        }
-        if(!pi.has("deviceModel") || !pi.getString("deviceModel").equals(Build.MODEL)){
-            pi.put("deviceModel", Build.MODEL);
-            update = true;
-        }
-
-        if(update){
-            pi.saveInBackground();
+        }else{
+            //Tenemos centro regional, comprobamos su última fecha de
+            //actualización y actualizamos en caso de que sea necesario
+            ParseQuery<UltimaActualizacion> query = mManager.crearQuery(ParseConstantes.QUERY_ULTIMA_ACTUALIZACION,null);
+            mManager.recuperar(ParseConstantes.QUERY_ULTIMA_ACTUALIZACION,query,false,this);
         }
     }
 
-    /**
-     * Get default config from parse
-     */
-    private void getParseConfig() {
+    public void createDialog(String cause){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.error_dialog_title).setMessage(cause).create();
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                SplashScreen.this.finish();
+            }
+        });
+        builder.show();
 
-        ParseConfig.getInBackground((parseConfig, e) -> {
-                if(e == null){
-                    DefaultConfig.ImgCfg1 = parseConfig.getParseFile("ImagenCfg1");
-                    DefaultConfig.ImgCfg2 = parseConfig.getParseFile("ImagenCfg2");
-                    DefaultConfig.ImgCfg1Radius = parseConfig.getInt("ImagenCfg1Radio");
-                    DefaultConfig.ImgCfg2Radius = parseConfig.getInt("ImagenCfg2Radio");
-                }else{
-                    Log.e("XXX", "Error al obtener la configuración de parse");
-                }
-            });
+    }
+
+    public void onSaveInPreferences(Date newDate) {
+        SharedPreferences.Editor editor = prefs.edit();
+
+        if(fechaUltimaActualizacion == null ||
+                newDate.getTime() - fechaUltimaActualizacion.getTime() > 0){
+
+            fechaUltimaActualizacion = newDate;
+            editor.putString(Constantes.SP_ULTIMA_ACTUALIZACION,Utils.convertDateToString(fechaUltimaActualizacion)).commit();
+            ParseQuery<CentroRegional> query = mManager.crearQuery(ParseConstantes.QUERY_CENTRO_REGIONAL,null);
+            try {
+                mManager.recuperar(ParseConstantes.QUERY_CENTRO_REGIONAL, query, false, this);
+
+            }catch (InvalidQueryException e) {
+                //Mensaje por defecto
+                createDialog(e.getMessage());
+            }
+
+        }else{
+            setStartNextActivity(true);
+            goToNextActivity();
+        }
+
+    }
+
+    @Override
+    public void onSuccess(List result) {
+
+        if (!result.isEmpty() && result.get(0) instanceof UltimaActualizacion){
+            onSaveInPreferences(((UltimaActualizacion)result.get(0)).getUltimaActualizacion());
+            return;
+        }
+
+        setStartNextActivity(true);
+        goToNextActivity();
+
+    }
+
+    @Override
+    public void onError(int message) {
+        createDialog(getString(message));
     }
 }
