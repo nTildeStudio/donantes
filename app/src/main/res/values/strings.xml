@@ -23,10 +23,14 @@
     <string name="error_dialog_title">Fallo al iniciar la aplicación</string>
     <string name="ok">Ok</string>
     <string name="error_retrieving_data">No se pudieron obtener los datos</string>
-    <string name="error_date_updated">Error recuperando la fecha de actualización</string>
+    <string name="error_saving_data">No se pudieron almacenar los datos</string>
+    <string name="error_retrieving_last_updated_date">Error recuperando la fecha de actualización</string>
+    <string name="error_saving_last_updated_date">Error almacenando la fecha de actualización</string>
     <string name="error_retrieving_centro_regional">Error recuperando centro Regional</string>
+    <string name="error_retrieving_centros_regionales">Error recuperando centros Regionales</string>
     <string name="error_retrieving_puntosdonacion">Error recuperando puntos de donación</string>
     <string name="error_saving_centro_regional">Error almacenando centro de donación</string>
+    <string name="error_saving_centros_regionales">Error almacenando centros de donaciones</string>
     <string name="error_saving_puntos_donacion">Error almacenando puntos de donación</string>
     <string name="empty_query_puntosdonacion">No se obtuvieron puntos de donación para dicho centro regional</string>
     <string name="centro_regional_not_found">No se encontró el centro regional buscado</string>

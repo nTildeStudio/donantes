@@ -8,6 +8,7 @@ import com.ntilde.modelo.HorariosDonacion;
 import com.ntilde.modelo.PuntosDonacion;
 import com.ntilde.modelo.UltimaActualizacion;
 import com.ntilde.rest.ParseManager;
+import com.ntilde.rest.ParseManagerImpl;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.PushService;
@@ -41,7 +42,7 @@ public class DonantesApplication extends Application{
     }
 
     public ParseManager getParseManager(){
-        return new ParseManager();
+        return new ParseManagerImpl();
     }
 
     /**

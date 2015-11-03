@@ -7,21 +7,25 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.github.jorgecastillo.FillableLoader;
 import com.github.jorgecastillo.listener.OnStateChangeListener;
+import com.ntilde.exception.InvalidQueryException;
+import com.ntilde.modelo.CentroRegional;
+import com.ntilde.modelo.UltimaActualizacion;
 import com.ntilde.rest.ParseManager;
+import com.ntilde.rest.ParseResponse;
+import com.ntilde.utils.ParseConstantes;
 import com.ntilde.utils.Utils;
+import com.parse.ParseQuery;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SplashScreen extends ActionBarActivity implements ParseManager.FinishedCallback{
+public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
     private static final String TAG = SplashScreen.class.getName();
     String svgPathBlack ="M 34.01,156.37\n" +
@@ -222,35 +226,34 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
     protected void onResume() {
         super.onResume();
 
-        mManager.setFinishedCallback(this);
         setStartNextActivity(false);
 
+        try{
+            recuperarDatos();
+
+        }catch(InvalidQueryException e){
+            //Mensaje por defecto
+            createDialog(e.getMessage());
+        }
+
+
+    }
+
+    public void recuperarDatos() throws InvalidQueryException{
         if(TextUtils.isEmpty(idCentroRegional)){
             //iniciamos la descarga de los centros regionales
-            mManager.recuperarCentrosRegionales(false);
+            ParseQuery<CentroRegional> query = mManager.crearQuery(ParseConstantes.QUERY_CENTROS_REGIONALES,null);
+            mManager.recuperar(ParseConstantes.QUERY_CENTROS_REGIONALES,query,false,this);
 
         }else{
             //Tenemos centro regional, comprobamos su última fecha de
             //actualización y actualizamos en caso de que sea necesario
-            mManager.recuperarUltimaActualizacion(idCentroRegional);
+            ParseQuery<UltimaActualizacion> query = mManager.crearQuery(ParseConstantes.QUERY_ULTIMA_ACTUALIZACION,null);
+            mManager.recuperar(ParseConstantes.QUERY_ULTIMA_ACTUALIZACION,query,false,this);
         }
-
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //Eliminar listener
-        DonantesApplication.getInstance().getParseManager().setFinishedCallback(null);
-    }
-
-    @Override
-    public void onSuccess() {
-        goToNextActivity();
-    }
-
-    @Override
-    public void onError(String cause) {
+    public void createDialog(String cause){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.error_dialog_title).setMessage(cause).create();
         builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -264,9 +267,6 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
 
     }
 
-
-
-    @Override
     public void onSaveInPreferences(Date newDate) {
         SharedPreferences.Editor editor = prefs.edit();
 
@@ -275,12 +275,37 @@ public class SplashScreen extends ActionBarActivity implements ParseManager.Fini
 
             fechaUltimaActualizacion = newDate;
             editor.putString(Constantes.SP_ULTIMA_ACTUALIZACION,Utils.convertDateToString(fechaUltimaActualizacion)).commit();
-            mManager.recuperarCentroRegional(idCentroRegional,false);
+            ParseQuery<CentroRegional> query = mManager.crearQuery(ParseConstantes.QUERY_CENTRO_REGIONAL,null);
+            try {
+                mManager.recuperar(ParseConstantes.QUERY_CENTRO_REGIONAL, query, false, this);
+
+            }catch (InvalidQueryException e) {
+                //Mensaje por defecto
+                createDialog(e.getMessage());
+            }
 
         }else{
             setStartNextActivity(true);
-            onSuccess();
+            goToNextActivity();
         }
 
+    }
+
+    @Override
+    public void onSuccess(List result) {
+
+        if (!result.isEmpty() && result.get(0) instanceof UltimaActualizacion){
+            onSaveInPreferences(((UltimaActualizacion)result.get(0)).getUltimaActualizacion());
+            return;
+        }
+
+        setStartNextActivity(true);
+        goToNextActivity();
+
+    }
+
+    @Override
+    public void onError(int message) {
+        createDialog(getString(message));
     }
 }
