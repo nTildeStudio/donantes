@@ -73,7 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:pl_percentage_width="100"
-        app:pl_percentage_height="73">
+        app:pl_percentage_height="75.4">
 
         <fragment
             android:id="@+id/configuracion_mapa"
@@ -124,8 +124,5 @@
         android:layout_width="match_parent" android:layout_height="0px"
         android:background="#c00" android:orientation="horizontal">
     </LinearLayout>
-
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        app:pl_percentage_height="1.5"></com.ntilde.percentagelayout.PLinearLayout>
 
 </LinearLayout>

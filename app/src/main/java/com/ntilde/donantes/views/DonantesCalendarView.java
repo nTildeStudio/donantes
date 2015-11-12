@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
 import com.ntilde.donantes.R;
 
 import java.util.Calendar;
@@ -272,24 +273,24 @@ public class DonantesCalendarView extends View{
 
         if(mDisplayMonthName){
             Rect area=new Rect(0, top, canvas.getClipBounds().width(), mDayHeight);
-            mMonthText.setTextSize(canvas.getClipBounds().width()/17);
-            mSelectedMonthText.setTextSize(canvas.getClipBounds().width()/17);
+            mMonthText.setTextSize(Math.min(mDayWidth, mDayHeight)/2.4f);
+            mSelectedMonthText.setTextSize(Math.min(mDayWidth,mDayHeight) / 2.4f);
             drawCenter(canvas, mPreselectedTitle ? mSelectedMonthText : mMonthText, mYearName, area);
             top+=mDayHeight;
             bottom+=mMonthHeight;
 
-            if(triangleLeft==null) {
-                triangleLeft = new Path();
-                triangleLeft.moveTo(mDayWidth * 0.3f, mDayHeight / 2);
-                triangleLeft.lineTo(mDayWidth * 0.6f, mDayHeight * 0.3f);
-                triangleLeft.lineTo(mDayWidth * 0.6f, mDayHeight * 0.7f);
-                triangleLeft.close();
-                triangleRight = new Path();
-                triangleRight.moveTo(canvas.getClipBounds().width() - mDayWidth * 0.3f, mDayHeight / 2);
-                triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.3f);
-                triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.7f);
-                triangleRight.close();
-            }
+            int diff = Math.abs(mDayWidth-mDayHeight);
+            triangleLeft = new Path();
+            triangleLeft.moveTo(mDayWidth * 0.3f + diff*0.3f, mDayHeight / 2);
+            triangleLeft.lineTo(mDayWidth * 0.6f, mDayHeight * 0.3f);
+            triangleLeft.lineTo(mDayWidth * 0.6f, mDayHeight * 0.7f);
+            triangleLeft.close();
+            triangleRight = new Path();
+            triangleRight.moveTo(canvas.getClipBounds().width() - mDayWidth * 0.3f - diff * 0.3f, mDayHeight / 2);
+            triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.3f);
+            triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.7f);
+            triangleRight.close();
+
             canvas.drawPath(triangleLeft, mPreselectedLeft?mSelectedMonthText:mMonthText);
             canvas.drawPath(triangleRight, mPreselectedRight?mSelectedMonthText:mMonthText);
         }
@@ -304,7 +305,7 @@ public class DonantesCalendarView extends View{
 
                 Rect area=new Rect(mMonthWidth*month, top, mMonthWidth*(month+1), top+mDayHeight/2);
                 String monthName=String.format(Locale.getDefault(), "%tB", cal).substring(0,3).toUpperCase();
-                mMonthText.setTextSize(canvas.getClipBounds().width() / 30);
+                mMonthText.setTextSize(Math.min(mDayWidth, mDayHeight)/4.2f);
                 drawCenter(canvas, mMonthText, monthName, area);
 
                 cal.set(Calendar.DAY_OF_MONTH, 1);
@@ -320,8 +321,8 @@ public class DonantesCalendarView extends View{
                             int r=(left+(mMonthWidth)/7*(day+1));
                             int b=top+mDayHeight/2+(mMonthHeight-mDayHeight/2)/6*(week+1);
                             Rect dayArea=new Rect(l, t, r, b);
-                            mMonthText.setTextSize(canvas.getClipBounds().width() / 47);
-                            mDaysNameText.setTextSize(canvas.getClipBounds().width() / 47);
+                            mMonthText.setTextSize(Math.min(mDayWidth, mDayHeight)/6.7f);
+                            mDaysNameText.setTextSize(Math.min(mDayWidth, mDayHeight)/6.7f);
                             if(cal.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY||cal.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY) {
                                 drawCenter(canvas, mDaysNameText, cal.get(Calendar.DAY_OF_MONTH) + "", dayArea);
                             }
@@ -364,24 +365,24 @@ public class DonantesCalendarView extends View{
 
         if(mDisplayMonthName){
             Rect area=new Rect(0, top, canvas.getClipBounds().width(), mDayHeight);
-            mMonthText.setTextSize(canvas.getClipBounds().width()/17);
-            mSelectedMonthText.setTextSize(canvas.getClipBounds().width()/17);
+            mMonthText.setTextSize(Math.min(mDayWidth,mDayHeight)/2.4f);
+            mSelectedMonthText.setTextSize(Math.min(mDayWidth,mDayHeight / 2.4f));
             drawCenter(canvas, mPreselectedTitle ? mSelectedMonthText : mMonthText, mMonthName, area);
             top+=mDayHeight;
             bottom+=mDayHeight;
 
-            if(triangleLeft==null) {
-                triangleLeft = new Path();
-                triangleLeft.moveTo(mDayWidth * 0.3f, mDayHeight / 2);
-                triangleLeft.lineTo(mDayWidth * 0.6f, mDayHeight * 0.3f);
-                triangleLeft.lineTo(mDayWidth * 0.6f, mDayHeight * 0.7f);
-                triangleLeft.close();
-                triangleRight = new Path();
-                triangleRight.moveTo(canvas.getClipBounds().width() - mDayWidth * 0.3f, mDayHeight / 2);
-                triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.3f);
-                triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.7f);
-                triangleRight.close();
-            }
+            int diff = Math.abs(mDayWidth-mDayHeight);
+            triangleLeft = new Path();
+            triangleLeft.moveTo(mDayWidth * 0.3f + diff*0.3f, mDayHeight / 2);
+            triangleLeft.lineTo(mDayWidth * 0.6f, mDayHeight * 0.3f);
+            triangleLeft.lineTo(mDayWidth * 0.6f, mDayHeight * 0.7f);
+            triangleLeft.close();
+            triangleRight = new Path();
+            triangleRight.moveTo(canvas.getClipBounds().width() - mDayWidth * 0.3f - diff * 0.3f, mDayHeight / 2);
+            triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.3f);
+            triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.7f);
+            triangleRight.close();
+
             canvas.drawPath(triangleLeft, mPreselectedLeft?mSelectedMonthText:mMonthText);
             canvas.drawPath(triangleRight, mPreselectedRight?mSelectedMonthText:mMonthText);
         }
@@ -391,7 +392,7 @@ public class DonantesCalendarView extends View{
             for(int dia=0;dia<7;dia++){
                 String titulo=String.format(Locale.getDefault(),"%ta",calDaysName).substring(0,2);
                 titulo=Character.toUpperCase(titulo.charAt(0)) + titulo.substring(1);
-                mDaysNameText.setTextSize(canvas.getClipBounds().width()/22);
+                mDaysNameText.setTextSize(Math.min(mDayWidth, mDayHeight)/3.14f);
                 drawCenter(canvas, mDaysNameText, titulo, area);
                 area.left+=mDayWidth+mDayBoxStrokeWidth;
                 area.right+=mDayWidth+mDayBoxStrokeWidth;
@@ -402,7 +403,7 @@ public class DonantesCalendarView extends View{
         }
 
         int radius = Math.min(mDayWidth,mDayHeight) / 2;
-        mEnabledDayText.setTextSize(canvas.getClipBounds().width() / 20);
+        mEnabledDayText.setTextSize(Math.min(mDayWidth, mDayHeight)/2.8f);
         mBlankDays=0;
         for(int week=0;week<=mWeekCount;week++){
             left=0;
@@ -585,7 +586,7 @@ public class DonantesCalendarView extends View{
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        mDayWidth=w/7-mDayBoxStrokeWidth;
+        mDayWidth=w/7;
         //mDayHeight=mDayWidth;
         mDayHeight=(h-(mDisplayMonthName?mDayWidth:0)-(mDisplayDaysName?mDayWidth/2:0))/6;
         mMonthWidth=w/4-mDayBoxStrokeWidth;

@@ -48,5 +48,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.+'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.6'
 }

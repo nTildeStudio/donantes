@@ -74,7 +74,7 @@
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_width="100"
-        app:pl_percentage_height="62"
+        app:pl_percentage_height="64.4"
         app:pl_percentage_padding_left="5"
         app:pl_percentage_padding_right="5">
 
@@ -145,8 +145,5 @@
         android:layout_width="match_parent" android:layout_height="0px"
         android:background="#c00" android:orientation="horizontal">
     </LinearLayout>
-
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        app:pl_percentage_height="1.5"></com.ntilde.percentagelayout.PLinearLayout>
 
 </LinearLayout>
