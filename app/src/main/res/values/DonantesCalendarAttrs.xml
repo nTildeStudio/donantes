@@ -1,0 +1,24 @@
+<resources>
+    <declare-styleable name="DonantesCalendarView">
+        <attr name="displayMonthName" format="boolean" />
+        <attr name="displayDaysName" format="boolean" />
+        <attr name="selectedDayTextColor" format="color" />
+        <attr name="selectedDayBackgroundColor" format="color" />
+        <attr name="disabledDayTextColor" format="color" />
+        <attr name="disabledDayBackgroundColor" format="color" />
+        <attr name="enabledDayTextColor" format="color" />
+        <attr name="enabledDayBackgroundColor" format="color" />
+        <attr name="todayDayTextColor" format="color" />
+        <attr name="todayDayBackgroundColro" format="color" />
+        <attr name="highlightToday" format="boolean" />
+        <attr name="firstDayOfWeek" format="enum">
+            <enum name="monday" value="1" />
+            <enum name="tuesday" value="2" />
+            <enum name="wednesday" value="3" />
+            <enum name="thursday" value="4" />
+            <enum name="friday" value="5" />
+            <enum name="saturday" value="6" />
+            <enum name="sunday" value="7" />
+        </attr>
+    </declare-styleable>
+</resources>

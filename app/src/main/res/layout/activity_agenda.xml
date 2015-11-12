@@ -73,15 +73,18 @@
     <com.ntilde.percentagelayout.PLinearLayout
         android:layout_width="0px"
         android:layout_height="0px"
-        app:pl_percentage_height="73.1"
+        app:pl_percentage_height="75.4"
         android:background="#fff"
         app:pl_percentage_width="100">
 
-        <com.squareup.timessquare.CalendarPickerView
+        <com.ntilde.donantes.views.DonantesCalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            app:displayMonthName="true"
+            app:displayDaysName="true"
+            app:highlightToday="true"
+            app:firstDayOfWeek="monday"/>
     </com.ntilde.percentagelayout.PLinearLayout>
 
 
@@ -140,8 +143,5 @@
         android:layout_width="match_parent" android:layout_height="0px"
         android:background="#c00" android:orientation="horizontal">
     </LinearLayout>
-
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-                                               app:pl_percentage_height="1.5"></com.ntilde.percentagelayout.PLinearLayout>
 
 </LinearLayout>
