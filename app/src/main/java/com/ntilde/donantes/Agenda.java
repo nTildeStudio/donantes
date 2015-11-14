@@ -10,12 +10,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ntilde.donantes.views.DonantesCalendarEvent;
+import com.ntilde.donantes.views.DonantesCalendarView;
 import com.ntilde.percentagelayout.PLinearLayout;
-import com.squareup.timessquare.CalendarPickerView;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,7 @@ public class Agenda extends AppCompatActivity {
     @InjectView(R.id.configuracion_logotipo)ImageView logotipo;
     @InjectView(R.id.configuracion_borde_rojo_superior) PLinearLayout borde_rojo_superior;
     @InjectView(R.id.configuracion_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
-    @InjectView(R.id.calendar_view) CalendarPickerView calendar;
+    @InjectView(R.id.calendar_view) DonantesCalendarView calendar;
     @InjectView(R.id.agenda_msg_seleccionar_fecha) TextView msgSeleccioneFecha;
     @InjectViews({R.id.agenda_no_done, R.id.agenda_done_plaquetas, R.id.agenda_done_plasma, R.id.agenda_done_sangre}) List<Button> tiposDonaciones;
 
@@ -57,64 +56,30 @@ public class Agenda extends AppCompatActivity {
         Date firstDate = null, lastDate = null;
 
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Agenda.MODE_PRIVATE);
-        Set<String> donaciones = new HashSet<>(prefs.getStringSet(Constantes.SP_DONACIONES, new HashSet<String>()));
-        donacionesMap=new HashMap<>();
+        Set<String> donaciones = new HashSet<>(prefs.getStringSet(Constantes.SP_DONACIONES, new HashSet<>()));
+
         for(String donacion:donaciones){
             Date donacionDate=new Date(Long.parseLong(donacion.split("::")[0]));
-            donacionesMap.put(donacionDate,donacion.split("::")[1]);
-            if(firstDate==null||firstDate.getTime()>donacionDate.getTime()){
-                firstDate=donacionDate;
-            }
-            if(lastDate==null||lastDate.getTime()<donacionDate.getTime()){
-                lastDate=donacionDate;
-            }
+            String tipo=donacion.split("::")[1];
+            calendar.addEvent(new DonantesCalendarEvent(tipo, donacionDate, Color.rgb(0, 128, 0), Color.rgb(255, 221, 85), 90, Color.rgb(212, 0, 0), 30));
         }
 
-        Calendar nextYear = Calendar.getInstance();
-        nextYear.setTime(lastDate);
-        nextYear.add(Calendar.YEAR, 1);
-
-        calendar.init(firstDate, nextYear.getTime());
-
-        calendar.highlightDates(donacionesMap.keySet());
-        calendar.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Date date) {
-                if(msgSeleccioneFecha.getVisibility()== View.VISIBLE){
-                    msgSeleccioneFecha.setVisibility(View.GONE);
-                    for(Button tipoDonacion:tiposDonaciones){
-                        tipoDonacion.setVisibility(View.VISIBLE);
-                    }
-                }
-                for(Button tipoDonacion:tiposDonaciones){
-                    if(tipoDonacion.getText().toString().equals(donacionesMap.get(date))){
-                        tipoDonacion.setTextColor(getResources().getColor(R.color.rojo));
+        calendar.setOnSelectedDateChangeListener((selectedDate, event) -> {
+                if(selectedDate!=null){
+                    if(event!=null){
+                        msgSeleccioneFecha.setText(String.format(getString(R.string.agenda_dono),event.getEventInfo()));
                     }
                     else{
-                        tipoDonacion.setTextColor(Color.BLACK);
+                        msgSeleccioneFecha.setText(getString(R.string.agenda_no_dono));
                     }
                 }
-                if(!donacionesMap.containsKey(date)){
-                    tiposDonaciones.get(0).setTextColor(getResources().getColor(R.color.rojo));
+                else{
+                    msgSeleccioneFecha.setText(getString(R.string.agenda_seleccione_fecha));
                 }
-//                    Log.e("Donantes", "Insertamos evento");
-//                    donacionesMap.put(date,"Sangre");
-//                    SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Agenda.MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = prefs.edit();
-//                    Set<String> donacionesSet=new HashSet<String>();
-//                    for(Map.Entry<Date,String> donacion:donacionesMap.entrySet()){
-//                        donacionesSet.add(donacion.getKey().getTime()+"::"+donacion.getValue());
-//                    }
-//                    editor.putStringSet(Constantes.SP_DONACIONES, donacionesSet);
-//                    editor.commit();
-//                    calendar.clearHighlightedDates();
-//                    calendar.highlightDates(donacionesMap.keySet());
-//                }
             }
+        );
 
-            @Override
-            public void onDateUnselected(Date date) {}
-        });
+
     }
 
     @OnClick({R.id.agenda_no_done, R.id.agenda_done_plaquetas, R.id.agenda_done_plasma, R.id.agenda_done_sangre})
@@ -138,8 +103,8 @@ public class Agenda extends AppCompatActivity {
         }
         editor.putStringSet(Constantes.SP_DONACIONES, donacionesSet);
         editor.commit();
-        calendar.clearHighlightedDates();
-        calendar.highlightDates(donacionesMap.keySet());
+//        calendar.clearHighlightedDates();
+//        calendar.highlightDates(donacionesMap.keySet());
 
         for(Button donacion:tiposDonaciones){
             donacion.setTextColor(Color.BLACK);

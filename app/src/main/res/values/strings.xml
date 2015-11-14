@@ -18,6 +18,10 @@
     <string name="title_activity_mensajes">Mensajes</string>
     <string name="title_activity_punto_de_donacion">PuntoDeDonacion</string>
 
+    <string name="agenda_seleccione_fecha">Seleccione una fecha</string>
+    <string name="agenda_no_dono">En la fecha seleccionada no donó</string>
+    <string name="agenda_dono">En la fecha seleccionada donó %s</string>
+
     <string name="informacion_donante_title">Información al donante</string>
     <string name="hint_num_donante">Número de donante</string>
     <string name="error_dialog_title">Fallo al iniciar la aplicación</string>
