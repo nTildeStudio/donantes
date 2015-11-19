@@ -83,7 +83,7 @@
             android:layout_height="1px"
             app:piv_height="13"
             android:alpha="0"
-            android:src="@drawable/ic_ubicacion"/>
+            android:src="@drawable/ic_ubicacion_v2"/>
 
         <com.ntilde.percentagelayout.PLinearLayout
             android:id="@+id/info_ubicacion"
@@ -132,7 +132,7 @@
             android:layout_height="1px"
             app:piv_height="13"
             android:alpha="0"
-            android:src="@drawable/ic_agenda"/>
+            android:src="@drawable/ic_agenda_v2"/>
 
         <com.ntilde.percentagelayout.PLinearLayout
             android:id="@+id/info_agenda"
@@ -181,7 +181,7 @@
             android:layout_height="1px"
             app:piv_height="13"
             android:alpha="0"
-            android:src="@drawable/ic_informacion"/>
+            android:src="@drawable/ic_informacion_v2"/>
 
         <com.ntilde.percentagelayout.PLinearLayout
             android:id="@+id/info_informacion"
@@ -230,7 +230,7 @@
             android:layout_height="1px"
             app:piv_height="13"
             android:alpha="0"
-            android:src="@drawable/ic_mensajes"/>
+            android:src="@drawable/ic_mensajes_v2"/>
 
         <com.ntilde.percentagelayout.PLinearLayout
             android:id="@+id/info_mensajes"
@@ -279,7 +279,7 @@
             android:layout_height="1px"
             app:piv_height="13"
             android:alpha="0"
-            android:src="@drawable/ic_configuracion"/>
+            android:src="@drawable/ic_configuracion_v2"/>
 
         <com.ntilde.percentagelayout.PLinearLayout
             android:id="@+id/info_configuracion"
