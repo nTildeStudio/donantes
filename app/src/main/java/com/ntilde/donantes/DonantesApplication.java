@@ -9,6 +9,7 @@ import com.ntilde.modelo.PuntosDonacion;
 import com.ntilde.modelo.UltimaActualizacion;
 import com.ntilde.rest.ParseManager;
 import com.ntilde.rest.ParseManagerImpl;
+import com.ntilde.utils.DonantesPreferences;
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.PushService;
@@ -28,6 +29,8 @@ public class DonantesApplication extends Application{
 
         sInstance = this;
 
+        //Cargar SharedPreferences
+
         //Registramos clases pertenecientes al modelo local
         registrarModeloLocalParse();
         //Habilitamos almacenamieto local de datos
@@ -43,6 +46,10 @@ public class DonantesApplication extends Application{
 
     public ParseManager getParseManager(){
         return new ParseManagerImpl();
+    }
+
+    public DonantesPreferences getPrefrences(){
+        return DonantesPreferences.getPreferences(this);
     }
 
     /**

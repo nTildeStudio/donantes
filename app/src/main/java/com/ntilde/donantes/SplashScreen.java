@@ -11,10 +11,13 @@ import android.text.TextUtils;
 import com.github.jorgecastillo.FillableLoader;
 import com.github.jorgecastillo.listener.OnStateChangeListener;
 import com.ntilde.exception.InvalidQueryException;
+import com.ntilde.exception.InvalidValueType;
+import com.ntilde.exception.NonStoredValue;
 import com.ntilde.modelo.CentroRegional;
 import com.ntilde.modelo.UltimaActualizacion;
 import com.ntilde.rest.ParseManager;
 import com.ntilde.rest.ParseResponse;
+import com.ntilde.utils.DonantesPreferences;
 import com.ntilde.utils.ParseConstantes;
 import com.ntilde.utils.Utils;
 import com.parse.ParseQuery;
@@ -140,7 +143,7 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
     private boolean startNextActivity = false; //Sólo usar el setter para modificar el valor dentro de esta clase
     private Date fechaUltimaActualizacion;
     private String idCentroRegional;
-    private SharedPreferences prefs;
+    private DonantesPreferences prefs = DonantesApplication.getInstance().getPrefrences();
     private ParseManager mManager;
 
 
@@ -151,10 +154,6 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
         ButterKnife.inject(this);
 
-        //Cargamos preferences
-        prefs = getSharedPreferences(Constantes.SP_KEY,MODE_PRIVATE);
-        fechaUltimaActualizacion = Utils.convertStringToDate(prefs.getString(Constantes.SP_ULTIMA_ACTUALIZACION,""));
-        idCentroRegional = prefs.getString(Constantes.SP_CENTRO,"");
         mManager = DonantesApplication.getInstance().getParseManager();
 
         fillableLoader.setSvgPath(svgPathBlack);
@@ -198,36 +197,11 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
         });
     }
 
-    /**
-     * Método encargado de comprobar que actividad es la que se debe mostrar a continuación
-     */
-    public void goToNextActivity(){
-        if(startNextActivity()){
-            SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
-            boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio")) && !"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
-            startActivity(new Intent(SplashScreen.this, ok ? MenuPrincipal.class : PrimerInicio.class));
-
-        }else{
-            setStartNextActivity(true);
-
-        }
-
-    }
-
-    public boolean startNextActivity(){
-        return  startNextActivity;
-    }
-
-    public synchronized void setStartNextActivity(boolean value){
-        startNextActivity = value;
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
 
         setStartNextActivity(false);
-
         try{
             recuperarDatos();
 
@@ -239,18 +213,50 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
     }
 
+    public synchronized void setStartNextActivity(boolean value){
+        startNextActivity = value;
+    }
+
+
+    public boolean startNextActivity(){
+        return  startNextActivity;
+    }
+
     public void recuperarDatos() throws InvalidQueryException{
-        if(TextUtils.isEmpty(idCentroRegional)){
-            //iniciamos la descarga de los centros regionales
-            ParseQuery<CentroRegional> query = mManager.crearQuery(ParseConstantes.QUERY_CENTROS_REGIONALES,null);
-            mManager.recuperar(ParseConstantes.QUERY_CENTROS_REGIONALES,query,false,this);
+
+        try {
+            idCentroRegional = prefs.getIdCentroRegional();
+            comprobarUltimaActualizacion();
+
+        } catch (NonStoredValue nonStoredValue) {
+            recuperarCentrosRegionales();
+        }
+    }
+
+    public void comprobarUltimaActualizacion() throws InvalidQueryException {
+        ParseQuery<UltimaActualizacion> query = mManager.crearQuery(ParseConstantes.QUERY_ULTIMA_ACTUALIZACION,null);
+        mManager.recuperar(ParseConstantes.QUERY_ULTIMA_ACTUALIZACION, query, false, this);
+
+    }
+
+    public void recuperarCentrosRegionales() throws InvalidQueryException {
+        ParseQuery<CentroRegional> query = mManager.crearQuery(ParseConstantes.QUERY_CENTROS_REGIONALES,null);
+        mManager.recuperar(ParseConstantes.QUERY_CENTROS_REGIONALES,query,false,this);
+
+    }
+
+
+    public void goToNextActivity(){
+        if(startNextActivity()){
+            SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, SplashScreen.MODE_PRIVATE);
+            boolean ok=!"vacio".equals(prefs.getString(Constantes.SP_CENTRO,"vacio")) && !"vacio".equals(prefs.getString(Constantes.SP_GRUPO,"vacio"));
+            startActivity(new Intent(SplashScreen.this, ok ? MenuPrincipal.class : PrimerInicio.class));
 
         }else{
-            //Tenemos centro regional, comprobamos su última fecha de
-            //actualización y actualizamos en caso de que sea necesario
-            ParseQuery<UltimaActualizacion> query = mManager.crearQuery(ParseConstantes.QUERY_ULTIMA_ACTUALIZACION,null);
-            mManager.recuperar(ParseConstantes.QUERY_ULTIMA_ACTUALIZACION,query,false,this);
+            setStartNextActivity(true);
+
         }
+
     }
 
     public void createDialog(String cause){
@@ -268,7 +274,6 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
     }
 
     public void onSaveInPreferences(Date newDate) {
-        SharedPreferences.Editor editor = prefs.edit();
 
         if(fechaUltimaActualizacion == null ||
                 newDate.getTime() - fechaUltimaActualizacion.getTime() > 0){
