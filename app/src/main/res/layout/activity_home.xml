@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    app:ptv_height="5"
+                    app:ptv_height="4.5"
                     android:text="Donación de sangre"
                     android:textColor="#c00"/>
                 <com.ntilde.percentagelayout.PTextView
@@ -51,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    app:ptv_height="2.2"
+                    app:ptv_height="2"
                     android:text="Centro Regional de Transfusiones de Galicia"
                     android:textColor="#444"/>
             </LinearLayout>
@@ -98,13 +98,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_donde_donar_titulo"
-                app:ptv_height="4"
+                app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_donde_donar_descripcion"
-                app:ptv_height="2"
+                app:ptv_height="1.7"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
@@ -147,13 +147,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_agenda_titulo"
-                app:ptv_height="4"
+                app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_agenda_descripcion"
-                app:ptv_height="2"
+                app:ptv_height="1.7"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
@@ -196,13 +196,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Información al donante"
-                app:ptv_height="4"
+                app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Todo lo que necesitas saber sobre donaciones"
-                app:ptv_height="2"
+                app:ptv_height="1.7"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
@@ -245,13 +245,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mensajes del CRTG"
-                app:ptv_height="4"
+                app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Vuelve a leer los mensajes del CRT"
-                app:ptv_height="2"
+                app:ptv_height="1.7"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
@@ -294,13 +294,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Configuración"
-                app:ptv_height="4"
+                app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gestiona tu perfil de usuario y alertas"
-                app:ptv_height="2"
+                app:ptv_height="1.7"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"

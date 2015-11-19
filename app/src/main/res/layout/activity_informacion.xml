@@ -51,7 +51,7 @@
                     android:gravity="center"
                     android:text="Información al donante"
                     android:textColor="#c00"
-                    app:ptv_height="4.5"/>
+                    app:ptv_height="4"/>
 
                 <com.ntilde.percentagelayout.PTextView
                     android:layout_width="match_parent"
