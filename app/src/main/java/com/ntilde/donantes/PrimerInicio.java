@@ -1,11 +1,9 @@
 package com.ntilde.donantes;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -16,12 +14,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.ntilde.exception.InvalidValueType;
+import com.ntilde.modelo.CentroRegional;
 import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.percentagelayout.PTextView;
-import com.parse.FindCallback;
-import com.parse.ParseException;
+import com.ntilde.rest.ParseManager;
+import com.ntilde.rest.ParseQueryFactory;
+import com.ntilde.rest.ParseResponse;
+import com.ntilde.utils.ParseConstantes;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -36,15 +37,19 @@ import butterknife.InjectView;
 import butterknife.InjectViews;
 import butterknife.OnClick;
 
-public class PrimerInicio extends ActionBarActivity {
+public class PrimerInicio extends ActionBarActivity implements ParseResponse {
 
     private String centroSeleccionado=null;
     private String grupoSanguineoSeleccionado=null;
     private Map<String,String> centrosRegionalesIdNombre;
 
+    private ParseManager manager;
+
     SupportMapFragment smfMapa;
     GoogleMap gmMapa;
     List<LatLng> otsLatLng;
+
+    private DonantesPreferences prefs = DonantesApplication.getInstance().getPrefrences();
 
     @InjectView(R.id.iconos_margen_superior) PLinearLayout ic_margen_sup;
     @InjectView(R.id.primer_inicio_logotipo)ImageView logotipo;
@@ -61,60 +66,47 @@ public class PrimerInicio extends ActionBarActivity {
         setContentView(R.layout.activity_primer_inicio);
 
         ButterKnife.inject(this);
+        initBorders();
+        initMap();
+        initManager();
+        executeQuery();
 
-        smfMapa=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.primer_inicio_mapa);
+    }
 
-        try {
-            gmMapa=smfMapa.getMap();
-        } catch (Exception e) { }
-
+    private void initBorders(){
         ic_margen_sup.post(() -> {
-                int valor=ic_margen_sup.getPHeight();
-                logotipo.setPadding(valor,valor/2,valor,valor/2);
-            });
+            int valor = ic_margen_sup.getPHeight();
+            logotipo.setPadding(valor, valor / 2, valor, valor / 2);
+        });
 
         borde_rojo_superior.post(() -> {
-                borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight();
-            });
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
-        query.findInBackground((centrosRegionales, e) -> {
-                if(e == null) {
-                    otsLatLng = new ArrayList<>();
-                    centrosRegionalesIdNombre = new HashMap<>();
-                    for(ParseObject centroRegional:centrosRegionales){
-                        ParseGeoPoint ubicacion=centroRegional.getParseGeoPoint("Ubicacion");
-                        LatLng latLng=new LatLng(ubicacion.getLatitude(),ubicacion.getLongitude());
-                        otsLatLng.add(latLng);
-                        MarkerOptions a=new MarkerOptions();
-                        gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")));
-                        centrosRegionalesIdNombre.put(centroRegional.getString("Nombre"),centroRegional.getObjectId());
-                    }
-                    gmMapa.getUiSettings().setZoomControlsEnabled(true);
-                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                    for(LatLng otLatLng:otsLatLng){
-                        builder.include(otLatLng);
-                    }
-                    LatLngBounds bounds = builder.build();
-                    gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
-                    gmMapa.setOnMarkerClickListener((marker) -> {
-                            centroSeleccionado=centrosRegionalesIdNombre.get(marker.getTitle());
-                            msg_centro.setTextColor(Color.BLACK);
-                            return false;
-                        });
-                }
-            });
+            borde_rojo_inferior.getLayoutParams().height = borde_rojo_superior.getPHeight();
+        });
     }
+
+    private void initMap(){
+
+        try {
+            smfMapa=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.primer_inicio_mapa);
+            gmMapa=smfMapa.getMap();
+
+        } catch (Exception e) { }
+    }
+
+    private void initManager(){
+        manager = DonantesApplication.getInstance().getParseManager();
+    }
+
+    private void executeQuery(){
+        ParseQuery<CentroRegional> query = ParseQueryFactory.centrosRegionalesQuery();
+        manager.recuperar(ParseConstantes.QUERY_CENTROS_REGIONALES,query,false,this);
+    }
+
+
 
     @OnClick({R.id.primer_inicio_grupo_0n, R.id.primer_inicio_grupo_0p, R.id.primer_inicio_grupo_an, R.id.primer_inicio_grupo_ap,
             R.id.primer_inicio_grupo_bn, R.id.primer_inicio_grupo_bp, R.id.primer_inicio_grupo_abn, R.id.primer_inicio_grupo_abp})
     public void onGrupoClick(ImageView grupo){
-//        for(ImageView grupoSanguineo:gruposSanguineos){
-//            grupoSanguineo.setTextColor(Color.BLACK);
-//            grupoSanguineo.setTextSize(15);
-//        }
-//        grupo.setTextColor(getResources().getColor(R.color.rojo));
-//        grupo.setTextSize(25);
 
         gruposSanguineos[0].setImageResource(R.drawable.grupo_0_neg_off);
         gruposSanguineos[1].setImageResource(R.drawable.grupo_0_pos_off);
@@ -157,28 +149,89 @@ public class PrimerInicio extends ActionBarActivity {
 
     @OnClick(R.id.primer_inicio_boton_guardar)
     public void onGuardar(){
-        boolean datosOk=true;
-        if(centroSeleccionado==null){
-            datosOk=false;
-            msg_centro.setTextColor(getResources().getColor(R.color.rojo));
-            YoYo.with(Techniques.Shake).duration(1000).playOn(msg_centro);
+        boolean todoRelleno = isCentroSeleccionado() & isGrupoSeleccionado();
+        if(todoRelleno) {
+            goToNextActivity();
         }
-        if(grupoSanguineoSeleccionado==null){
-            datosOk=false;
-            msg_grupo.setTextColor(getResources().getColor(R.color.rojo));
-            YoYo.with(Techniques.Shake).duration(1000).playOn(msg_grupo);
-        }
-        if(datosOk) {
-            SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, PrimerInicio.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(Constantes.SP_CENTRO, centroSeleccionado);
-            editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
-            editor.commit();
+    }
+
+    public boolean isCentroSeleccionado(){
+        if(centroSeleccionado !=null) return true;
+
+        msg_centro.setTextColor(getResources().getColor(R.color.rojo));
+        YoYo.with(Techniques.Shake).duration(1000).playOn(msg_centro);
+        return false;
+    }
+
+    public boolean isGrupoSeleccionado(){
+        if(grupoSanguineoSeleccionado !=null) return true;
+
+        msg_grupo.setTextColor(getResources().getColor(R.color.rojo));
+        YoYo.with(Techniques.Shake).duration(1000).playOn(msg_grupo);
+        return false;
+    }
+
+    public void goToNextActivity(){
+        try{
+            saveInPreferences();
+
+        }catch (InvalidValueType invalidValueType) {
+            invalidValueType.printStackTrace();
+
+        }finally {
             startActivity(new Intent(PrimerInicio.this, MenuPrincipal.class));
         }
     }
 
+    private void saveInPreferences() throws InvalidValueType{
+        prefs.put(Constantes.SP_CENTRO, centroSeleccionado);
+        prefs.put(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
+    }
+
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    public void onSuccess(int type, List result) {
+
+        generatePoints((List<CentroRegional>) result);
+        LatLngBounds bounds = buildBounds();
+        gmMapa.getUiSettings().setZoomControlsEnabled(true);
+        gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+        gmMapa.setOnMarkerClickListener((marker) -> {
+            centroSeleccionado = centrosRegionalesIdNombre.get(marker.getTitle());
+            msg_centro.setTextColor(Color.BLACK);
+            return false;
+        });
+
+    }
+
+    private void generatePoints(List<CentroRegional> centros){
+        otsLatLng = new ArrayList<>();
+        centrosRegionalesIdNombre = new HashMap<>();
+
+        for (ParseObject centroRegional : centros) {
+            ParseGeoPoint ubicacion = centroRegional.getParseGeoPoint("Ubicacion");
+            LatLng latLng = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
+            otsLatLng.add(latLng);
+            gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")));
+            centrosRegionalesIdNombre.put(centroRegional.getString("Nombre"), centroRegional.getObjectId());
+        }
+
+    }
+
+    private LatLngBounds buildBounds(){
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (LatLng otLatLng : otsLatLng) {
+            builder.include(otLatLng);
+        }
+        LatLngBounds bounds = builder.build();
+        return bounds;
+    }
+
+    @Override
+    public void onError(int message) {
+        //TODO manage error
     }
 }
