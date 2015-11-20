@@ -18,9 +18,11 @@ public class DonantesPreferences {
     private static DonantesPreferences donantesPreferences  = null;
 
     private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     private DonantesPreferences(Context context){
         preferences = context.getSharedPreferences(Constantes.SP_KEY, context.MODE_PRIVATE);
+        editor = preferences.edit();
     }
 
     public static DonantesPreferences getPreferences(Context context){
@@ -32,8 +34,6 @@ public class DonantesPreferences {
     }
 
     public void put(String key, Object value) throws InvalidValueType{
-
-        SharedPreferences.Editor editor = preferences.edit();
 
         if(value instanceof String){
             putString(editor, key, (String) value);
@@ -64,8 +64,6 @@ public class DonantesPreferences {
         if(!isValidType(value)){
             throw new InvalidValueType("Valor con tipo no almacenable en preferencias");
         }
-
-        commit(editor);
 
     }
 
@@ -125,7 +123,10 @@ public class DonantesPreferences {
        editor.putStringSet(key,value);
     }
 
-    private void commit(SharedPreferences.Editor editor){
+    public void commit(){
         editor.commit();
+    }
+    public void apply(){
+        editor.apply();
     }
 }

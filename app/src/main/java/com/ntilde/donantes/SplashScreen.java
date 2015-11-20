@@ -230,6 +230,7 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
         try {
             prefs.put(Constantes.SP_ULTIMA_ACTUALIZACION, DateUtils.convertDateToString(newDate));
+            prefs.commit();
 
         } catch (InvalidValueType invalidValueType) {
             Log.e(TAG, invalidValueType.getMessage());

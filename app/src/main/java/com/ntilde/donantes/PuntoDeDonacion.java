@@ -12,9 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ntilde.percentagelayout.PLinearLayout;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseException;
+import com.ntilde.rest.ParseQueryFactory;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.squareup.timessquare.CalendarPickerView;
@@ -22,7 +20,6 @@ import com.squareup.timessquare.CalendarPickerView;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -115,6 +112,10 @@ public class PuntoDeDonacion extends ActionBarActivity {
                         });
                 }
             });
+    }
+
+    public void recuperarPuntosDonacion(){
+        ParseQuery query = ParseQueryFactory.puntoDonacionQuery();
     }
 
     @Override

@@ -186,6 +186,8 @@ public class PrimerInicio extends ActionBarActivity implements ParseResponse {
     private void saveInPreferences() throws InvalidValueType{
         prefs.put(Constantes.SP_CENTRO, centroSeleccionado);
         prefs.put(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
+        prefs.commit();
+
     }
 
     @Override
