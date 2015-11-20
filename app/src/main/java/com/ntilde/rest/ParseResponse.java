@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface ParseResponse<T extends ParseObject> {
 
-    void onSuccess(List<T> result);
+    void onSuccess(int type, List<T> result);
     void onError(int message);
 }

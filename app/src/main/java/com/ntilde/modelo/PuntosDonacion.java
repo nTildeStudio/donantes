@@ -39,4 +39,5 @@ public class PuntosDonacion extends ParseObject {
     public CentroRegional getCentroRegional(){
         return (CentroRegional) get("CentroRegional");
     }
+
 }

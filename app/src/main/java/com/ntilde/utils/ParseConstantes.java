@@ -9,4 +9,5 @@ public class ParseConstantes {
     public static final int QUERY_CENTROS_REGIONALES = 1;
     public static final int QUERY_PUNTO_DONACION = 2;
     public static final int QUERY_ULTIMA_ACTUALIZACION = 3;
+    public static final int QUERY_HORARIOS_DONACION = 4;
 }

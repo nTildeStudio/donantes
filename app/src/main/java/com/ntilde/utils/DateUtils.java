@@ -7,9 +7,12 @@ import java.util.Date;
 /**
  * Created by 3003012 on 08/10/2015.
  */
-public class Utils {
+public class DateUtils {
+
+
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
 
     /**
      * Convierte una cadena con el formato yyyy-MM-dd HH:mm a una objeto de tipo fecha

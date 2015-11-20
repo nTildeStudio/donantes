@@ -1,12 +1,6 @@
 package com.ntilde.rest;
 
-import android.support.annotation.Nullable;
-
 import com.ntilde.donantes.R;
-import com.ntilde.exception.InvalidQueryException;
-import com.ntilde.modelo.CentroRegional;
-import com.ntilde.modelo.PuntosDonacion;
-import com.ntilde.modelo.UltimaActualizacion;
 import com.ntilde.utils.ParseConstantes;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -22,10 +16,7 @@ import java.util.List;
 public class ParseManagerImpl<T extends ParseObject> implements ParseManager {
 
     @Override
-    public void recuperar(final int type,ParseQuery query,final boolean fromLocalStorage, final ParseResponse callback) throws InvalidQueryException {
-
-        //Lanzar error si la query es inválida
-        if(query == null) throw new InvalidQueryException("Query inválida");
+    public void recuperar(final int type,ParseQuery query,final boolean fromLocalStorage, final ParseResponse callback) {
 
         //Recuperar de almacenamiento local
         if(fromLocalStorage) query.fromLocalDatastore();
@@ -35,18 +26,32 @@ public class ParseManagerImpl<T extends ParseObject> implements ParseManager {
             public void done(List<T> list, ParseException e) {
 
                 if(e!=null){
-                    callback.onError(crearMensajeError(type,false));
+                    callback.onError(crearMensajeError(type, false));
                     return;
                 }
 
 
-                if(!fromLocalStorage){
-                    almacenar(type,list,callback);
+                callback.onSuccess(type,list);
 
-                }else{
-                    callback.onSuccess(list);
 
+            }
+        });
+    }
+
+    @Override
+    public void recuperarYAlmacenar(final int type,ParseQuery query, final ParseResponse callback) {
+
+
+        query.findInBackground(new FindCallback<T>() {
+            @Override
+            public void done(List<T> list, ParseException e) {
+
+                if(e!=null){
+                    callback.onError(crearMensajeError(type, false));
+                    return;
                 }
+
+                almacenar(type,list,callback);
             }
         });
     }
@@ -61,40 +66,11 @@ public class ParseManagerImpl<T extends ParseObject> implements ParseManager {
                     return;
                 }
 
-                callback.onSuccess(objects);
+                callback.onSuccess(type, objects);
             }
         });
     }
 
-    @Override
-    public ParseQuery crearQuery(int type, @Nullable String objectId) {
-        switch (type){
-
-            case ParseConstantes.QUERY_CENTRO_REGIONAL:
-                ParseQuery<CentroRegional> centroRegionalQuery = ParseQuery.getQuery("CentrosRegionales");
-                centroRegionalQuery.whereEqualTo("objectId", objectId);
-                return centroRegionalQuery;
-
-            case ParseConstantes.QUERY_CENTROS_REGIONALES:
-                ParseQuery<CentroRegional> centrosRegionalesQuery = ParseQuery.getQuery("CentrosRegionales");
-                return centrosRegionalesQuery;
-
-            case ParseConstantes.QUERY_PUNTO_DONACION:
-                ParseQuery<PuntosDonacion> puntosDonacionQuery = ParseQuery.getQuery("PuntosDeDonacion");
-                ParseObject pCentroRegional = ParseObject.createWithoutData(CentroRegional.class, objectId);
-                puntosDonacionQuery.whereEqualTo("CentroRegional", pCentroRegional);
-                return puntosDonacionQuery;
-
-            case ParseConstantes.QUERY_ULTIMA_ACTUALIZACION:
-                ParseQuery<UltimaActualizacion> ultimaActualizacionQuery = ParseQuery.getQuery("UltimaActualizacion");
-                ParseObject object = ParseObject.createWithoutData(CentroRegional.class, objectId);
-                ultimaActualizacionQuery.whereEqualTo("CentroRegional", object);
-                return ultimaActualizacionQuery;
-        }
-
-        //No debería nunca estar aquí
-        return null;
-    }
 
 
     private int crearMensajeError(int type, boolean storing) {
