@@ -141,7 +141,7 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
     }
 
     public void recuperarCentroRegional(){
-        ParseQuery<CentroRegional> query = ParseQueryFactory.centrosRegionalQuery(idCentroRegional);
+        ParseQuery<CentroRegional> query = ParseQueryFactory.centroRegionalQuery(idCentroRegional);
         mManager.recuperarYAlmacenar(ParseConstantes.QUERY_CENTRO_REGIONAL, query, this);
     }
 

@@ -17,7 +17,7 @@ public class ParseQueryFactory {
         return centrosRegionalesQuery;
     }
 
-    public static ParseQuery<CentroRegional> centrosRegionalQuery(String objectId){
+    public static ParseQuery<CentroRegional> centroRegionalQuery(String objectId){
         ParseQuery<CentroRegional> centroRegionalQuery = ParseQuery.getQuery("CentrosRegionales");
         centroRegionalQuery.whereEqualTo("objectId", objectId);
         return centroRegionalQuery;

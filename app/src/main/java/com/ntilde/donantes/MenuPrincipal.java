@@ -1,7 +1,6 @@
 package com.ntilde.donantes;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,13 +13,15 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.ntilde.Techniques.MenuIn;
+import com.ntilde.modelo.CentroRegional;
 import com.ntilde.percentagelayout.PImageView;
 import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.percentagelayout.PTextView;
-import com.parse.GetCallback;
+import com.ntilde.rest.ParseManager;
+import com.ntilde.rest.ParseQueryFactory;
+import com.ntilde.rest.ParseResponse;
+import com.ntilde.utils.ParseConstantes;
 import com.parse.ParseAnalytics;
-import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.HashMap;
@@ -33,7 +34,7 @@ import butterknife.InjectViews;
 import butterknife.OnClick;
 
 
-public class MenuPrincipal extends ActionBarActivity {
+public class MenuPrincipal extends ActionBarActivity implements ParseResponse {
 
     @InjectViews({
             R.id.icono_ubicacion,
@@ -61,24 +62,16 @@ public class MenuPrincipal extends ActionBarActivity {
     })
     List<PLinearLayout> mensajes;
 
+    private DonantesPreferences prefs = DonantesApplication.getInstance().getPrefrences();
+    private ParseManager manager = DonantesApplication.getInstance().getParseManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.activity_open_translate,R.anim.activity_close_scale);
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
         setContentView(R.layout.activity_home);
 
         ButterKnife.inject(this);
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
-        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, MenuPrincipal.MODE_PRIVATE);
-        String centroSeleccionado = prefs.getString(Constantes.SP_CENTRO, "");
-        query.getInBackground(centroSeleccionado, (object, e) -> {
-                if (e == null) {
-                    nombre_centro.setText(object.getString("Descripcion"));
-                    ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
-                    ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes del "+object.getString("Nombre"));
-                }
-            });
 
         ic_margen_sup.post(() -> {
                 int valor=ic_margen_sup.getPHeight();
@@ -95,32 +88,36 @@ public class MenuPrincipal extends ActionBarActivity {
             delay+=150;
         }
         YoYo.with(Techniques.FadeIn).duration(1000).playOn(home_cabecera);
-    }
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        overridePendingTransition(0,R.anim.application_close);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
-        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, MenuPrincipal.MODE_PRIVATE);
-        String centroSeleccionado = prefs.getString(Constantes.SP_CENTRO, "");
-        query.getInBackground(centroSeleccionado, (object, e) -> {
-                if (e == null) {
-                    nombre_centro.setText(object.getString("Descripcion"));
-                    ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+object.getString("Nombre"));
-                    ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes del "+object.getString("Nombre"));
-                }
-            });
+        ParseQuery<CentroRegional> query = ParseQueryFactory.centroRegionalQuery(prefs.getIdCentroRegional());
+        manager.recuperar(ParseConstantes.QUERY_CENTRO_REGIONAL, query, true, this);
     }
 
     @Override
-    protected void onDestroy(){
-        super.onDestroy();
+    protected void onPause(){
+        super.onPause();
+        overridePendingTransition(0, R.anim.application_close);
+    }
+
+
+    @Override
+    public void onSuccess(int type, List result) {
+        CentroRegional centroRegional = ((List<CentroRegional>) result).get(0);
+        nombre_centro.setText(centroRegional.getDescripcion());
+        ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+ centroRegional.getNombre());
+        ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes del " + centroRegional.getNombre());
+
+    }
+
+    @Override
+    public void onError(int message) {
+        //TODO manage error
     }
 
     private class MenuAnimatorRunnable implements Runnable{
