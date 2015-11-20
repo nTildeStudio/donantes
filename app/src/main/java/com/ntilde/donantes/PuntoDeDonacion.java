@@ -84,7 +84,7 @@ public class PuntoDeDonacion extends ActionBarActivity {
         msg_direccion.setText(getIntent().getExtras().getString("puntoDireccion"));
 
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery("PuntosDeDonacion");
-        query1.getInBackground(getIntent().getExtras().getString("puntoId"), (object, e1) -> {
+        query1.getInBackground(, (object, e1) -> {
                 if (e1 == null) {
                     ParseQuery<ParseObject> query2 = ParseQuery.getQuery("HorariosDeDonacion").whereEqualTo("PuntoDeDonacion",object);
                     query2.findInBackground((horarios, e2) -> {
@@ -115,7 +115,8 @@ public class PuntoDeDonacion extends ActionBarActivity {
     }
 
     public void recuperarPuntosDonacion(){
-        ParseQuery query = ParseQueryFactory.puntoDonacionQuery();
+        ParseQuery query = ParseQueryFactory.puntoDonacionQuery(getIntent().getExtras().getString("puntoId"));
+        //TODO add manager
     }
 
     @Override
