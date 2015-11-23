@@ -78,11 +78,10 @@
         app:pl_percentage_padding_left="5"
         app:pl_percentage_padding_right="5">
 
-        <com.squareup.timessquare.CalendarPickerView
+        <com.ntilde.donantes.views.DonantesCalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="wrap_content" />
 
     </com.ntilde.percentagelayout.PLinearLayout>
 

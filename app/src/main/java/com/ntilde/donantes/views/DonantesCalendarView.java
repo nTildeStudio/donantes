@@ -617,7 +617,7 @@ public class DonantesCalendarView extends View{
         heightInWeeks+=mDisplayDaysName?0.5:0;
 
         int desiredWidth = (int)((heightSize+mDayBoxStrokeWidth+1)/heightInWeeks*7);
-        int desiredHeight = (int)((widthSize+mDayBoxStrokeWidth+1)/7*heightInWeeks);
+        int desiredHeight = (int)((widthSize+mDayBoxStrokeWidth+1)/7*heightInWeeks)+mDayBoxStrokeWidth*5;
 
         int width;
         int height;

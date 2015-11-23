@@ -1,6 +1,7 @@
 package com.ntilde.donantes;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -11,18 +12,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ntilde.donantes.views.DonantesCalendarEvent;
+import com.ntilde.donantes.views.DonantesCalendarRange;
+import com.ntilde.donantes.views.DonantesCalendarView;
 import com.ntilde.percentagelayout.PLinearLayout;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.squareup.timessquare.CalendarPickerView;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -36,7 +34,7 @@ public class PuntoDeDonacion extends ActionBarActivity {
     @InjectView(R.id.punto_de_donacion_borde_rojo_superior) PLinearLayout borde_rojo_superior;
     @InjectView(R.id.punto_de_donacion_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
     @InjectView(R.id.punto_de_donacion_subtitulo) TextView subtitulo;
-    @InjectView(R.id.calendar_view) CalendarPickerView calendar;
+    @InjectView(R.id.calendar_view) DonantesCalendarView calendar;
     @InjectView(R.id.ubicacion_msg_seleccionar_fecha) TextView msg_horario;
     @InjectView(R.id.ubicacion_msg_direccion) TextView msg_direccion;
 
@@ -50,38 +48,30 @@ public class PuntoDeDonacion extends ActionBarActivity {
 
         ButterKnife.inject(this);
 
-        ic_margen_sup.post(new Runnable(){
+        ic_margen_sup.post(new Runnable() {
             @Override
-            public void run(){
-                int valor=ic_margen_sup.getPHeight();
-                logotipo.setPadding(valor,valor/2,valor,valor/2);
+            public void run() {
+                int valor = ic_margen_sup.getPHeight();
+                logotipo.setPadding(valor, valor / 2, valor, valor / 2);
             }
         });
 
         borde_rojo_superior.post(() -> borde_rojo_inferior.getLayoutParams().height = borde_rojo_superior.getPHeight());
 
-        Calendar nextYear = Calendar.getInstance();
-        nextYear.add(Calendar.YEAR, 1);
-        Calendar pastYear = Calendar.getInstance();
-        pastYear.add(Calendar.YEAR, -1);
 
-        Date today = new Date();
-        calendar.init(pastYear.getTime(), nextYear.getTime()).withSelectedDate(today);
-
-        calendar.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Date date) {
-                if(fechas !=null && fechas.containsKey(date)){
-                    msg_horario.setText("Horario: "+fechas.get(date));
+        calendar.setOnSelectedDateChangeListener(
+                (selectedDate, event, range) -> {
+                    if (selectedDate != null) {
+                        if (event != null) {
+                            msg_horario.setText("Horario: " + event.getEventInfo());
+                        } else {
+                            msg_horario.setText("Cerrado");
+                        }
+                    } else {
+                        msg_horario.setText("Seleccione una fecha");
+                    }
                 }
-                else{
-                    msg_horario.setText("Cerrado");
-                }
-            }
-
-            @Override
-            public void onDateUnselected(Date date) {}
-        });
+        );
 
         subtitulo.setText(getIntent().getExtras().getString("puntoNombre"));
         msg_direccion.setText(getIntent().getExtras().getString("puntoDireccion"));
@@ -96,20 +86,21 @@ public class PuntoDeDonacion extends ActionBarActivity {
                                     Date inicio=horario.getDate("FechaInicio");
                                     Date fin=horario.getDate("FechaFin");
                                     String horas=horario.getString("Horario");
-                                    Calendar cal = Calendar.getInstance();
-                                    fechas=new HashMap<>();
-                                    do{
-                                        cal.setTime(inicio);
-                                        cal.add(Calendar.DATE, 1);
-                                        cal.set(Calendar.HOUR_OF_DAY,0);
-                                        cal.set(Calendar.MINUTE,0);
-                                        cal.set(Calendar.SECOND,0);
-                                        cal.set(Calendar.MILLISECOND,0);
-                                        inicio = cal.getTime();
-                                        fechas.put(inicio,horas);
-                                    }while(inicio.getTime()<fin.getTime());
-                                    calendar.clearHighlightedDates();
-                                    calendar.highlightDates(fechas.keySet());
+                                    Calendar c1 = Calendar.getInstance();
+                                    c1.setTime(inicio);
+                                    c1.set(Calendar.HOUR_OF_DAY, 0);
+                                    c1.set(Calendar.MINUTE, 0);
+                                    c1.set(Calendar.SECOND, 0);
+                                    c1.set(Calendar.MILLISECOND, 0);
+                                    Calendar c2 = Calendar.getInstance();
+                                    c2.setTime(fin);
+                                    c2.set(Calendar.HOUR_OF_DAY,0);
+                                    c2.set(Calendar.MINUTE, 0);
+                                    c2.set(Calendar.SECOND,0);
+                                    c2.set(Calendar.MILLISECOND,0);
+                                    int duracionEnDias=(int)((c2.getTimeInMillis()-c1.getTimeInMillis())/(24*60*60*1000))+1;
+                                    DonantesCalendarRange evento=new DonantesCalendarRange(c1.getTime(), duracionEnDias, DonantesCalendarRange.UNITS.DAYS, Color.rgb(0, 128, 0));
+                                    calendar.addEvent(new DonantesCalendarEvent(horas, evento));
                                 }
                             }
                         });
