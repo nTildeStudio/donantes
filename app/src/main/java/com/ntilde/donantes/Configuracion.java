@@ -18,11 +18,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ntilde.listaexpandible.ExpandCollapseAnimation;
+import com.ntilde.modelo.CentroRegional;
 import com.ntilde.percentagelayout.PLinearLayout;
+import com.ntilde.rest.ParseManager;
+import com.ntilde.rest.response.ParseResponse;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ import butterknife.InjectViews;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public class Configuracion extends ActionBarActivity {
+public class Configuracion extends ActionBarActivity implements ParseResponse{
 
     private String centroSeleccionado=null;
     private String grupoSanguineoSeleccionado=null;
@@ -57,6 +58,8 @@ public class Configuracion extends ActionBarActivity {
     @InjectView(R.id.configuracion_cabecera) PLinearLayout cabecera;
 
 
+    private ParseManager manager = DonantesApplication.getInstance().getParseManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,33 +76,6 @@ public class Configuracion extends ActionBarActivity {
         } catch (Exception e) { }
 
 
-        //TODO cambiar por parse manager
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
-        query.findInBackground((centrosRegionales, e) -> {
-                if (e == null) {
-                    otsLatLng = new ArrayList<>();
-                    centrosRegionalesIdNombre = new HashMap<>();
-                    for (ParseObject centroRegional : centrosRegionales) {
-                        ParseGeoPoint ubicacion = centroRegional.getParseGeoPoint("Ubicacion");
-                        if (ubicacion != null) {
-                            LatLng latLng = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
-                            otsLatLng.add(latLng);
-                            gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")));
-                            centrosRegionalesIdNombre.put(centroRegional.getString("Nombre"), centroRegional.getObjectId());
-                        }
-                    }
-                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                    for (LatLng otLatLng : otsLatLng) {
-                        builder.include(otLatLng);
-                    }
-                    LatLngBounds bounds = builder.build();
-                    gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
-                    gmMapa.setOnMarkerClickListener(marker -> {
-                            centroSeleccionado = centrosRegionalesIdNombre.get(marker.getTitle());
-                            return false;
-                        });
-                }
-            });
 
         gmMapa.setOnMapClickListener(latLng -> {
                 numerodonante.clearFocus();
@@ -122,6 +98,12 @@ public class Configuracion extends ActionBarActivity {
         cargarPreferencias();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        manager.getCentrosRegionales(this);
     }
 
     @Override
@@ -204,7 +186,7 @@ public class Configuracion extends ActionBarActivity {
             public void onAnimationEnd(Animation animation) {
                 if (type == ExpandCollapseAnimation.EXPAND) {
                     contenedorGrupos.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     contenedorGrupos.setVisibility(View.GONE);
                 }
 
@@ -278,4 +260,49 @@ public class Configuracion extends ActionBarActivity {
         }
     }
 
+    @Override
+    public void onSuccess(int type, List result) {
+        List<CentroRegional> centrosRegionales = result;
+        generatePoints(centrosRegionales);
+        LatLngBounds bounds = buildBounds();
+        gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+        gmMapa.setOnMarkerClickListener(marker -> {
+            centroSeleccionado = centrosRegionalesIdNombre.get(marker.getTitle());
+            return false;
+        });
+    }
+
+    private void generatePoints(List<CentroRegional> centros){
+        otsLatLng = new ArrayList<>();
+        centrosRegionalesIdNombre = new HashMap<>();
+
+        for (CentroRegional centroRegional : centros) {
+            ParseGeoPoint ubicacion = centroRegional.getLocalizacion();
+            LatLng latLng = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
+            otsLatLng.add(latLng);
+            gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getNombre()));
+            centrosRegionalesIdNombre.put(centroRegional.getNombre(), centroRegional.getObjectId());
+        }
+
+    }
+
+    private LatLngBounds buildBounds(){
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (LatLng otLatLng : otsLatLng) {
+            builder.include(otLatLng);
+        }
+        LatLngBounds bounds = builder.build();
+        return bounds;
+    }
+
+
+    @Override
+    public void onError(int type, int message) {
+        //TODO manage error
+    }
+
+    @Override
+    public void onLocalError(int type, int message) {
+        //Do nothing here
+    }
 }

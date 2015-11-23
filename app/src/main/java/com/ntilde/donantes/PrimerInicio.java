@@ -22,7 +22,6 @@ import com.ntilde.percentagelayout.PTextView;
 import com.ntilde.rest.ParseManager;
 import com.ntilde.rest.response.ParseResponse;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -219,12 +218,12 @@ public class PrimerInicio extends ActionBarActivity implements ParseResponse {
         otsLatLng = new ArrayList<>();
         centrosRegionalesIdNombre = new HashMap<>();
 
-        for (ParseObject centroRegional : centros) {
-            ParseGeoPoint ubicacion = centroRegional.getParseGeoPoint("Ubicacion");
+        for (CentroRegional centroRegional : centros) {
+            ParseGeoPoint ubicacion = centroRegional.getLocalizacion();
             LatLng latLng = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
             otsLatLng.add(latLng);
-            gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")));
-            centrosRegionalesIdNombre.put(centroRegional.getString("Nombre"), centroRegional.getObjectId());
+            gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getNombre()));
+            centrosRegionalesIdNombre.put(centroRegional.getNombre(), centroRegional.getObjectId());
         }
 
     }
