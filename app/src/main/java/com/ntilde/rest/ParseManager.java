@@ -1,7 +1,7 @@
 package com.ntilde.rest;
 
+import com.ntilde.rest.response.ParseResponse;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.List;
 
@@ -10,7 +10,12 @@ import java.util.List;
  */
 public interface ParseManager<T extends ParseObject> {
 
-    void recuperar(int type,ParseQuery<T> query, boolean fromLocalStorage, ParseResponse callback);
-    void recuperarYAlmacenar(int type,ParseQuery<T> query, ParseResponse callback);
     void almacenar(int type,List<T> objects, ParseResponse callback);
+
+    void getCentrosRegionales(ParseResponse callback);
+    void getCentroRegional(String centroRegionalId,boolean fromLocal, ParseResponse callback);
+    void getUltimaActualizacion(String centroRegionalId, ParseResponse callback);
+    void getPuntosDonacion(String centroRegionalId, boolean fromLocal, ParseResponse callback);
+    void getHorarios(String puntoDonacionId, boolean fromLocal,ParseResponse callback);
+
 }

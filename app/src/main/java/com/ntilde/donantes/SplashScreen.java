@@ -9,18 +9,15 @@ import android.util.Log;
 import com.github.jorgecastillo.FillableLoader;
 import com.github.jorgecastillo.listener.OnStateChangeListener;
 import com.ntilde.exception.InvalidValueType;
-import com.ntilde.modelo.CentroRegional;
-import com.ntilde.modelo.HorariosDonacion;
 import com.ntilde.modelo.PuntosDonacion;
 import com.ntilde.modelo.UltimaActualizacion;
 import com.ntilde.rest.ParseManager;
-import com.ntilde.rest.ParseQueryFactory;
-import com.ntilde.rest.ParseResponse;
+import com.ntilde.rest.response.ParseResponse;
+import com.ntilde.rest.response.SplashHorariosParseResponse;
 import com.ntilde.utils.DateUtils;
 import com.ntilde.utils.NetworkUtilities;
 import com.ntilde.utils.ParseConstantes;
 import com.ntilde.utils.VectorPath;
-import com.parse.ParseQuery;
 
 import java.util.Date;
 import java.util.List;
@@ -119,7 +116,7 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
     public void comprobarUltimaActualizacion(){
 
         if(NetworkUtilities.hasNetworkConnection()){
-            recuperarUltimaActualizacion();
+            mManager.getUltimaActualizacion(idCentroRegional,this);
 
         }else{
             downloadFinished = true;
@@ -130,51 +127,15 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
     }
 
-    public void recuperarUltimaActualizacion(){
-        ParseQuery<UltimaActualizacion> query = ParseQueryFactory.ultimaActualizacionQuery(idCentroRegional);
-        mManager.recuperar(ParseConstantes.QUERY_ULTIMA_ACTUALIZACION, query, false, this);
-    }
-
-    public void recuperarPuntosDonacion(){
-        ParseQuery<PuntosDonacion> query = ParseQueryFactory.puntoDonacionQuery(idCentroRegional);
-        mManager.recuperar(ParseConstantes.QUERY_PUNTO_DONACION, query, false, this);
-    }
-
-    public void recuperarCentroRegional(){
-        ParseQuery<CentroRegional> query = ParseQueryFactory.centroRegionalQuery(idCentroRegional);
-        mManager.recuperarYAlmacenar(ParseConstantes.QUERY_CENTRO_REGIONAL, query, this);
-    }
-
     public void recuperarHorarios(List<PuntosDonacion> puntosDeDonacion){
 
         final int[] finishedCounter = {0};
 
         for(int i = 0; i < puntosDeDonacion.size(); i++){
+
             final PuntosDonacion puntoDeDonacion = puntosDeDonacion.get(i);
-
-            ParseQuery<HorariosDonacion> query = ParseQueryFactory.horariosDonacionQuery(puntoDeDonacion.getObjectId());
-            mManager.recuperarYAlmacenar(ParseConstantes.QUERY_CENTRO_REGIONAL, query, new ParseResponse() {
-                @Override
-                public void onSuccess(int type, List result) {
-                    isLastValue();
-                }
-
-                @Override
-                public void onError(int message) {
-                    Log.e(TAG,"Error descargando horario del punto: " + puntoDeDonacion.getObjectId());
-                    isLastValue();
-                }
-
-                private void isLastValue(){
-                    finishedCounter[0]++;
-                    boolean ultimoPuntoDonacion = finishedCounter[0] == puntosDeDonacion.size()-1;
-                    if(ultimoPuntoDonacion){
-                        downloadFinished = true;
-                        saveNewDate(fechaUltimaActualizacion);
-                        goToNextActivity();
-                    }
-                }
-            });
+            mManager.getHorarios(puntoDeDonacion.getObjectId(), false,
+                    new SplashHorariosParseResponse(this, finishedCounter, puntoDeDonacion, puntosDeDonacion.size()));
 
         }
     }
@@ -185,7 +146,7 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
         switch (type){
 
             case ParseConstantes.QUERY_CENTRO_REGIONAL:
-                recuperarPuntosDonacion();
+                mManager.getPuntosDonacion(idCentroRegional,false,SplashScreen.this);
                 return;
 
             case ParseConstantes.QUERY_PUNTO_DONACION:
@@ -207,11 +168,23 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
     }
 
+    @Override
+    public void onError(int type, int message) {
+        //TODO mostrar dialogo error
+        Log.e(TAG,"Ocurrió un error: " + message);
+        cannotUpdate();
+    }
+
+    @Override
+    public void onLocalError(int type, int message) {
+        //Do nothing here
+    }
+
     public void onSaveInPreferences(Date newDate) {
 
         if(needUpdate(newDate)){
             fechaUltimaActualizacion = newDate;
-            recuperarCentroRegional();
+            mManager.getCentroRegional(idCentroRegional,false,SplashScreen.this);
 
         }else{
             downloadFinished = true;
@@ -246,15 +219,6 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
 
 
-
-    @Override
-    public void onError(int message) {
-        //TODO mostrar dialogo error
-        Log.e(TAG,"Ocurrió un error: " + message);
-        cannotUpdate();
-    }
-
-
     public void goToNextActivity(){
 
         if(animationFinished && downloadFinished){
@@ -280,6 +244,14 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
     public void goToPrimerInicio(){
         startActivity(new Intent(SplashScreen.this, PrimerInicio.class));
+    }
+
+    public void setDownloadFinished(boolean finished){
+        downloadFinished = finished;
+    }
+
+    public Date getFechaUltimaActualizacion(){
+        return fechaUltimaActualizacion;
     }
 
 }

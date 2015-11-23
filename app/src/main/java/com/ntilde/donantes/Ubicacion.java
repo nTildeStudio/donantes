@@ -17,13 +17,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ntilde.percentagelayout.PLinearLayout;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseAnalytics;
-import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -76,6 +72,7 @@ public class Ubicacion extends ActionBarActivity {
 
         borde_rojo_superior.post(() -> borde_rojo_inferior.getLayoutParams().height=borde_rojo_superior.getPHeight());
 
+        //TODO cambiar por parse manager
         ParseQuery<ParseObject> query1 = ParseQuery.getQuery("CentrosRegionales");
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Ubicacion.MODE_PRIVATE);
         String centroSeleccionado = prefs.getString(Constantes.SP_CENTRO, "");

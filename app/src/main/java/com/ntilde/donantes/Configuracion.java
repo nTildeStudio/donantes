@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -18,12 +16,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.ntilde.listaexpandible.ExpandCollapseAnimation;
 import com.ntilde.percentagelayout.PLinearLayout;
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -78,7 +73,7 @@ public class Configuracion extends ActionBarActivity {
         } catch (Exception e) { }
 
 
-
+        //TODO cambiar por parse manager
         ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
         query.findInBackground((centrosRegionales, e) -> {
                 if (e == null) {

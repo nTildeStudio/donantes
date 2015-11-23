@@ -11,22 +11,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ntilde.modelo.HorariosDonacion;
+import com.ntilde.modelo.PuntosDonacion;
 import com.ntilde.percentagelayout.PLinearLayout;
-import com.ntilde.rest.ParseQueryFactory;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
+import com.ntilde.rest.ParseManager;
+import com.ntilde.rest.response.ParseResponse;
+import com.ntilde.utils.ParseConstantes;
 import com.squareup.timessquare.CalendarPickerView;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class PuntoDeDonacion extends ActionBarActivity {
+public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
 
     @InjectView(R.id.iconos_margen_superior)PLinearLayout ic_margen_sup;
     @InjectView(R.id.punto_de_donacion_logotipo)ImageView logotipo;
@@ -39,6 +42,9 @@ public class PuntoDeDonacion extends ActionBarActivity {
 
     private Map<Date,String> fechas;
 
+    private ParseManager manager = DonantesApplication.getInstance().getParseManager();
+    private String puntoDonacionId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +53,11 @@ public class PuntoDeDonacion extends ActionBarActivity {
 
         ButterKnife.inject(this);
 
-        ic_margen_sup.post(new Runnable(){
+        ic_margen_sup.post(new Runnable() {
             @Override
-            public void run(){
-                int valor=ic_margen_sup.getPHeight();
-                logotipo.setPadding(valor,valor/2,valor,valor/2);
+            public void run() {
+                int valor = ic_margen_sup.getPHeight();
+                logotipo.setPadding(valor, valor / 2, valor, valor / 2);
             }
         });
 
@@ -68,61 +74,34 @@ public class PuntoDeDonacion extends ActionBarActivity {
         calendar.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {
-                if(fechas !=null && fechas.containsKey(date)){
-                    msg_horario.setText("Horario: "+fechas.get(date));
-                }
-                else{
+                if (fechas != null && fechas.containsKey(date)) {
+                    msg_horario.setText("Horario: " + fechas.get(date));
+                } else {
                     msg_horario.setText("Cerrado");
                 }
             }
 
             @Override
-            public void onDateUnselected(Date date) {}
+            public void onDateUnselected(Date date) {
+            }
         });
 
         subtitulo.setText(getIntent().getExtras().getString("puntoNombre"));
         msg_direccion.setText(getIntent().getExtras().getString("puntoDireccion"));
+        recuperarPuntosDonacion();
 
-        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("PuntosDeDonacion");
-        query1.getInBackground(, (object, e1) -> {
-                if (e1 == null) {
-                    ParseQuery<ParseObject> query2 = ParseQuery.getQuery("HorariosDeDonacion").whereEqualTo("PuntoDeDonacion",object);
-                    query2.findInBackground((horarios, e2) -> {
-                            if(e2 == null) {
-                                for(ParseObject horario:horarios){
-                                    Date inicio=horario.getDate("FechaInicio");
-                                    Date fin=horario.getDate("FechaFin");
-                                    String horas=horario.getString("Horario");
-                                    Calendar cal = Calendar.getInstance();
-                                    fechas=new HashMap<>();
-                                    do{
-                                        cal.setTime(inicio);
-                                        cal.add(Calendar.DATE, 1);
-                                        cal.set(Calendar.HOUR_OF_DAY,0);
-                                        cal.set(Calendar.MINUTE,0);
-                                        cal.set(Calendar.SECOND,0);
-                                        cal.set(Calendar.MILLISECOND,0);
-                                        inicio = cal.getTime();
-                                        fechas.put(inicio,horas);
-                                    }while(inicio.getTime()<fin.getTime());
-                                    calendar.clearHighlightedDates();
-                                    calendar.highlightDates(fechas.keySet());
-                                }
-                            }
-                        });
-                }
-            });
     }
 
+
     public void recuperarPuntosDonacion(){
-        ParseQuery query = ParseQueryFactory.puntoDonacionQuery(getIntent().getExtras().getString("puntoId"));
-        //TODO add manager
+        String centroRegionalId = getIntent().getExtras().getString("puntoId");
+        manager.getPuntosDonacion(centroRegionalId, true, this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        overridePendingTransition(R.anim.activity_open_scale,R.anim.activity_close_translate);
+        overridePendingTransition(R.anim.activity_open_scale, R.anim.activity_close_translate);
     }
 
     @Override
@@ -158,5 +137,79 @@ public class PuntoDeDonacion extends ActionBarActivity {
                 startActivity(llamar);
                 break;
         }
+    }
+
+    @Override
+    public void onSuccess(int type, List result) {
+
+        if(type == ParseConstantes.QUERY_PUNTO_DONACION){
+            puntoDonacionId = ((PuntosDonacion)result).getObjectId();
+            manager.getHorarios(puntoDonacionId,true, PuntoDeDonacion.this);
+            return;
+        }
+
+        if(type == ParseConstantes.QUERY_HORARIOS_DONACION){
+            gestionarHorarios((List<HorariosDonacion>)result);
+            return;
+        }
+
+    }
+
+    private void gestionarHorarios(List<HorariosDonacion> horarios){
+
+        for(HorariosDonacion horario:horarios){
+            Date inicio=horario.getFechaInicio();
+            Date fin=horario.getFechaFin();
+            String horas=horario.getHorario();
+            crearHorarios(inicio,fin,horas);
+
+        }
+    }
+
+    private Calendar crearHorarios(Date inicio, Date fin, String horas){
+        Calendar cal = Calendar.getInstance();
+        fechas=new HashMap<>();
+        do{
+            cal.setTime(inicio);
+            cal.add(Calendar.DATE, 1);
+            cal.set(Calendar.HOUR_OF_DAY,0);
+            cal.set(Calendar.MINUTE,0);
+            cal.set(Calendar.SECOND,0);
+            cal.set(Calendar.MILLISECOND,0);
+            inicio = cal.getTime();
+            fechas.put(inicio,horas);
+        }while(inicio.getTime()<fin.getTime());
+
+        return cal;
+    }
+
+    @Override
+    public void onError(int type, int message) {
+
+        if(type == ParseConstantes.QUERY_PUNTO_DONACION){
+            //Gestionar fallo reintento
+            return;
+        }
+
+        if(type == ParseConstantes.QUERY_HORARIOS_DONACION){
+            //Gestionar fallo reintento
+            return;
+        }
+    }
+
+    @Override
+    public void onLocalError(int type, int message) {
+
+        if(type == ParseConstantes.QUERY_PUNTO_DONACION){
+            manager.getPuntosDonacion(getIntent().getExtras().getString("puntoId"),false, PuntoDeDonacion.this);
+            return;
+        }
+
+        if(type == ParseConstantes.QUERY_HORARIOS_DONACION){
+            manager.getHorarios(puntoDonacionId,false, PuntoDeDonacion.this);
+            return;
+        }
+
+
     }
 }

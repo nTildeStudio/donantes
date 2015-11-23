@@ -20,12 +20,9 @@ import com.ntilde.modelo.CentroRegional;
 import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.percentagelayout.PTextView;
 import com.ntilde.rest.ParseManager;
-import com.ntilde.rest.ParseQueryFactory;
-import com.ntilde.rest.ParseResponse;
-import com.ntilde.utils.ParseConstantes;
+import com.ntilde.rest.response.ParseResponse;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,8 +95,7 @@ public class PrimerInicio extends ActionBarActivity implements ParseResponse {
     }
 
     private void executeQuery(){
-        ParseQuery<CentroRegional> query = ParseQueryFactory.centrosRegionalesQuery();
-        manager.recuperar(ParseConstantes.QUERY_CENTROS_REGIONALES,query,false,this);
+        manager.getCentrosRegionales(this);
     }
 
 
@@ -209,6 +205,16 @@ public class PrimerInicio extends ActionBarActivity implements ParseResponse {
 
     }
 
+    @Override
+    public void onError(int type, int message) {
+        //TODO manage error
+    }
+
+    @Override
+    public void onLocalError(int type, int message) {
+        //Do nothing here
+    }
+
     private void generatePoints(List<CentroRegional> centros){
         otsLatLng = new ArrayList<>();
         centrosRegionalesIdNombre = new HashMap<>();
@@ -230,10 +236,5 @@ public class PrimerInicio extends ActionBarActivity implements ParseResponse {
         }
         LatLngBounds bounds = builder.build();
         return bounds;
-    }
-
-    @Override
-    public void onError(int message) {
-        //TODO manage error
     }
 }

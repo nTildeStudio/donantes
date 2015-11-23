@@ -18,11 +18,8 @@ import com.ntilde.percentagelayout.PImageView;
 import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.percentagelayout.PTextView;
 import com.ntilde.rest.ParseManager;
-import com.ntilde.rest.ParseQueryFactory;
-import com.ntilde.rest.ParseResponse;
-import com.ntilde.utils.ParseConstantes;
+import com.ntilde.rest.response.ParseResponse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseQuery;
 
 import java.util.HashMap;
 import java.util.List;
@@ -95,8 +92,7 @@ public class MenuPrincipal extends ActionBarActivity implements ParseResponse {
     @Override
     protected void onResume() {
         super.onResume();
-        ParseQuery<CentroRegional> query = ParseQueryFactory.centroRegionalQuery(prefs.getIdCentroRegional());
-        manager.recuperar(ParseConstantes.QUERY_CENTRO_REGIONAL, query, true, this);
+        manager.getCentroRegional(prefs.getIdCentroRegional(), true, this);
     }
 
     @Override
@@ -116,8 +112,13 @@ public class MenuPrincipal extends ActionBarActivity implements ParseResponse {
     }
 
     @Override
-    public void onError(int message) {
+    public void onError(int type, int message) {
         //TODO manage error
+    }
+
+    @Override
+    public void onLocalError(int type, int message) {
+        manager.getCentroRegional(prefs.getIdCentroRegional(), false, this);
     }
 
     private class MenuAnimatorRunnable implements Runnable{
