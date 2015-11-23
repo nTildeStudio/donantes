@@ -1,131 +1,50 @@
 package com.ntilde.donantes.views;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class DonantesCalendarEvent implements Serializable{
 
     private Object mEventInfo;
-    private Date mDate;
-    private int mColor;
-    private HashMap<Integer, Integer> mRange;
+    private DonantesCalendarRange mEvent;
+    private ArrayList<DonantesCalendarRange> mRange;
 
-//    public static final Parcelable.Creator<DonantesCalendarEvent> CREATOR = new Parcelable.Creator<DonantesCalendarEvent>()
-//    {
-//        @Override
-//        public DonantesCalendarEvent createFromParcel(Parcel source)
-//        {
-//            return new DonantesCalendarEvent(source);
-//        }
-//
-//        @Override
-//        public DonantesCalendarEvent[] newArray(int size)
-//        {
-//            return new DonantesCalendarEvent[size];
-//        }
-//    };
-
-//    public DonantesCalendarEvent(Parcel in){
-//        mEventInfo = in.readSerializable();
-//        mDate = (Date)in.readSerializable();
-//        mColor = in.readInt();
-//        mRange = (HashMap<Integer, Integer>)in.readSerializable();
-//    }
-//
-//    public void writeToParcel(Parcel dest, int flags) {
-//        dest.writeSerializable((Serializable)mEventInfo);
-//        dest.writeSerializable(mDate);
-//        dest.writeInt(mColor);
-//        dest.writeSerializable(mRange);
-//    }
-
-    public DonantesCalendarEvent(Object eventInfo, Date date, int color){
-        mEventInfo = eventInfo;
-        mDate = date;
-        mColor = color;
+    public DonantesCalendarEvent(Object eventInfo, DonantesCalendarRange event){
+        this(eventInfo, event, null);
     }
 
-    public DonantesCalendarEvent(Object eventInfo, Date date, int color, int... ranges){
+    public DonantesCalendarEvent(Object eventInfo, DonantesCalendarRange event, DonantesCalendarRange... ranges){
         mEventInfo = eventInfo;
-        mDate = date;
-        mColor = color;
-        mRange=new HashMap<>();
-        for(int i=0;i<ranges.length-ranges.length%2;i+=2){
-            mRange.put(ranges[i], ranges[i + 1]);
+        mEvent = event;
+        mRange=new ArrayList<>();
+        if(ranges != null) {
+            for (DonantesCalendarRange range : ranges) {
+                mRange.add(range);
+            }
         }
     }
 
-    public DonantesCalendarEvent(Object eventInfo, int year, int month, int day, int color){
-        mEventInfo = eventInfo;
-        mDate = new Date();
-        Calendar c= Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month-1);
-        c.set(Calendar.DAY_OF_MONTH, day);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        mDate.setTime(c.getTimeInMillis());
-        mColor = color;
-        //SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        //Log.e("XXX", "Fecha: " + format1.format(mDate));
+    public DonantesCalendarRange getEvent() {
+        return mEvent;
     }
 
-    public DonantesCalendarEvent(Object eventInfo, int year, int month, int day, int color, int... ranges){
-        mEventInfo = eventInfo;
-        mDate = new Date();
-        Calendar c= Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, month-1);
-        c.set(Calendar.DAY_OF_MONTH, day);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        mDate.setTime(c.getTimeInMillis());
-        mColor = color;
-        //SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        //Log.e("XXX", "Fecha: " + format1.format(mDate));
-        mRange=new HashMap<>();
-        for(int i=0;i<ranges.length-ranges.length%2;i+=2){
-            mRange.put(ranges[i], ranges[i + 1]);
-            //Log.e("XXX","Rango: color="+ranges[i]+" dias:"+ranges[i+1]);
-        }
+    public void setEvent(DonantesCalendarRange event) {
+        mEvent = event;
     }
 
-    public Date getDate() {
-        return mDate;
-    }
-
-    public void setDate(Date date) {
-        this.mDate = date;
-    }
-
-    public int getColor() {
-        return mColor;
-    }
-
-    public void setColor(int color) {
-        this.mColor = color;
-    }
-
-    public Map<Integer, Integer> getRanges() {
+    public ArrayList<DonantesCalendarRange> getRanges() {
         return mRange;
     }
 
-    public void setRanges(HashMap<Integer, Integer> ranges) {
-        this.mRange = ranges;
+    public void setRanges(ArrayList<DonantesCalendarRange> ranges) {
+        mRange = ranges;
     }
 
-    public void addRange(Integer color, Integer days){
+    public void addRange(DonantesCalendarRange range){
         if(mRange ==null){
-            mRange =new HashMap<>();
+            mRange =new ArrayList<>();
         }
-        mRange.put(color, days);
+        mRange.add(range);
     }
 
     public Object getEventInfo() {

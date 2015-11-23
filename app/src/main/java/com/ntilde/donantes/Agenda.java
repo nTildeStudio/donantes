@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ntilde.donantes.views.DonantesCalendarEvent;
+import com.ntilde.donantes.views.DonantesCalendarRange;
 import com.ntilde.donantes.views.DonantesCalendarView;
 import com.ntilde.percentagelayout.PLinearLayout;
 
@@ -61,13 +62,19 @@ public class Agenda extends AppCompatActivity {
         for(String donacion:donaciones){
             Date donacionDate=new Date(Long.parseLong(donacion.split("::")[0]));
             String tipo=donacion.split("::")[1];
-            calendar.addEvent(new DonantesCalendarEvent(tipo, donacionDate, Color.rgb(0, 128, 0), Color.rgb(255, 221, 85), 90, Color.rgb(212, 0, 0), 30));
+            DonantesCalendarRange evento = new DonantesCalendarRange(donacionDate, 1, DonantesCalendarRange.UNITS.DAYS, Color.rgb(0, 128, 0));
+            DonantesCalendarRange restriccion1 = new DonantesCalendarRange(3, DonantesCalendarRange.UNITS.MONTHS, Color.rgb(255, 221, 85), "No puedes donar sangre");
+            DonantesCalendarRange restriccion2 = new DonantesCalendarRange(1, DonantesCalendarRange.UNITS.MONTHS, Color.rgb(212, 0, 0), "No puedes donar");
+            calendar.addEvent(new DonantesCalendarEvent(tipo, evento, restriccion1, restriccion2));
         }
 
-        calendar.setOnSelectedDateChangeListener((selectedDate, event) -> {
+        calendar.setOnSelectedDateChangeListener((selectedDate, event, range) -> {
                 if(selectedDate!=null){
                     if(event!=null){
                         msgSeleccioneFecha.setText(String.format(getString(R.string.agenda_dono),event.getEventInfo()));
+                    }
+                    else if(range!=null){
+                        msgSeleccioneFecha.setText(range.getMessage());
                     }
                     else{
                         msgSeleccioneFecha.setText(getString(R.string.agenda_no_dono));
