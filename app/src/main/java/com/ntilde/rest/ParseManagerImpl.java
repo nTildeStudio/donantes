@@ -31,10 +31,10 @@ public class ParseManagerImpl<T extends ParseObject> implements ParseManager {
         ParseQuery<CentroRegional> centroRegional = ParseQueryFactory.centroRegionalQuery(centroRegionalId);
 
         if(fromLocal){
-            recuperar(ParseConstantes.QUERY_CENTROS_REGIONALES,centroRegional,fromLocal,callback);
+            recuperar(ParseConstantes.QUERY_CENTRO_REGIONAL,centroRegional,fromLocal,callback);
 
         }else{
-            recuperarYAlmacenar(ParseConstantes.QUERY_CENTROS_REGIONALES,centroRegional,callback);
+            recuperarYAlmacenar(ParseConstantes.QUERY_CENTRO_REGIONAL,centroRegional,callback);
 
         }
     }

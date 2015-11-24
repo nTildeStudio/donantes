@@ -1,11 +1,11 @@
 package com.ntilde.donantes;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +13,7 @@ import com.ntilde.donantes.adapters.FirstConfigViewPagerAdapter;
 import com.ntilde.donantes.fragments.FirstConfigStep2;
 import com.ntilde.donantes.fragments.FirstConfigStep3;
 import com.ntilde.donantes.models.CentroRegional;
+import com.ntilde.exception.InvalidValueType;
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.viewpagerindicator.CirclePageIndicator;
@@ -31,6 +32,8 @@ import butterknife.OnClick;
  */
 public class FirstConfig extends AppCompatActivity {
 
+    private static final String TAG = FirstConfig.class.getName();
+
     public List<CentroRegional> mCentrosRegionales;
     public CentroRegional mSelectedCentroRegional;
 
@@ -40,6 +43,8 @@ public class FirstConfig extends AppCompatActivity {
     @InjectView(R.id.first_config_right_button) TextView rightButton;
     @InjectView(R.id.first_config_viewpager) ViewPager viewPager;
     @InjectView(R.id.first_config_viewpager_indicator) CirclePageIndicator viewPagerIndicator;
+
+    private DonantesPreferences preferences = DonantesApplication.getInstance().getPrefrences();
 
 
     @Override
@@ -128,19 +133,9 @@ public class FirstConfig extends AppCompatActivity {
             updateBottomButtons(viewPager.getCurrentItem());
         }
 
-//        if(numDonante==null){
-//            datosOk=false;
-//            updateBottomButtons(viewPager.getCurrentItem());
-//        }
 
         if(datosOk) {
-            SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, PrimerInicio.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(Constantes.SP_CENTRO, mSelectedCentroRegional.getId());
-            editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
-            editor.putBoolean(Constantes.SP_NOTIFICACIONES, notificationsEnabled);
-            editor.putString(Constantes.SP_NUMERO_DONANTE, numDonante);
-            editor.commit();
+            storeInPreferences(grupoSanguineoSeleccionado,notificationsEnabled,numDonante);
 
             ParseInstallation pi = ParseInstallation.getCurrentInstallation();
             ArrayList<String> channels = new ArrayList<>();
@@ -151,6 +146,19 @@ public class FirstConfig extends AppCompatActivity {
             if(numDonante != null) pi.put("numeroDonante", numDonante);
             pi.saveInBackground();
             startActivity(new Intent(FirstConfig.this, MenuPrincipal.class));
+        }
+    }
+
+    private void storeInPreferences(String grupoSanguineo, boolean notificationsEnabled, String numDonante){
+        try{
+            preferences.put(Constantes.SP_CENTRO, mSelectedCentroRegional.getId());
+            preferences.put(Constantes.SP_GRUPO, grupoSanguineo);
+            preferences.put(Constantes.SP_NOTIFICACIONES, notificationsEnabled);
+            preferences.put(Constantes.SP_NUMERO_DONANTE, numDonante);
+            preferences.commit();
+
+        }catch (InvalidValueType e){
+            Log.e(TAG,"Error almacenando en preferencias");
         }
     }
 

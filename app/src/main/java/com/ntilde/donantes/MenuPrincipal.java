@@ -104,6 +104,7 @@ public class MenuPrincipal extends ActionBarActivity implements ParseResponse {
 
     @Override
     public void onSuccess(int type, List result) {
+        if(result.isEmpty()) return;
         CentroRegional centroRegional = ((List<CentroRegional>) result).get(0);
         nombre_centro.setText(centroRegional.getDescripcion());
         ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes del "+ centroRegional.getNombre());

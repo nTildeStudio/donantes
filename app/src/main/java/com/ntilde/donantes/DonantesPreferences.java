@@ -8,6 +8,7 @@ import com.ntilde.exception.InvalidValueType;
 import com.ntilde.utils.DateUtils;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -96,6 +97,29 @@ public class DonantesPreferences {
         return preferences.getString(Constantes.SP_CENTRO,"");
     }
 
+    public @Nullable String getGrupoSanguineo(){
+        return preferences.getString(Constantes.SP_SEXO,"");
+    }
+
+    public @Nullable String getNumeroDonante(){
+        return preferences.getString(Constantes.SP_NUMERO_DONANTE,"");
+    }
+
+    public boolean getNotificaciones(){
+        return preferences.getBoolean(Constantes.SP_NOTIFICACIONES, true);
+    }
+
+    public @Nullable String getSexo(){
+        return preferences.getString(Constantes.SP_GRUPO, "");
+    }
+
+    public Set<String> getAlertas(){
+        return preferences.getStringSet(Constantes.SP_ALERTAS, new HashSet<String>());
+    }
+
+    public Set<String> getDonaciones(){
+        return preferences.getStringSet(Constantes.SP_DONACIONES, new HashSet<String>());
+    }
 
     private void putString(SharedPreferences.Editor editor, String key, String value){
         editor.putString(key, value);

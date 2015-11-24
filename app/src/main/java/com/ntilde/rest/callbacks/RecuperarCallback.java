@@ -4,13 +4,14 @@ import com.ntilde.rest.response.ParseError;
 import com.ntilde.rest.response.ParseResponse;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 
 import java.util.List;
 
 /**
  * Created by emanuel on 23/11/15.
  */
-public class RecuperarCallback implements FindCallback{
+public class RecuperarCallback implements FindCallback<ParseObject>{
 
     private ParseResponse response;
     private int type;
@@ -21,7 +22,7 @@ public class RecuperarCallback implements FindCallback{
     }
 
     @Override
-    public void done(List list, ParseException e) {
+    public void done(List<ParseObject> list, ParseException e) {
 
         if(e != null){
             response.onLocalError(type, ParseError.crearMensajeError(type,false));

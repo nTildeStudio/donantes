@@ -21,6 +21,7 @@ import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.percentagelayout.PTextView;
 import com.ntilde.rest.ParseManager;
 import com.ntilde.rest.response.ParseResponse;
+import com.ntilde.utils.ParseConstantes;
 import com.parse.ParseGeoPoint;
 
 import java.util.ArrayList;
@@ -146,7 +147,7 @@ public class PrimerInicio extends ActionBarActivity implements ParseResponse {
     public void onGuardar(){
         boolean todoRelleno = isCentroSeleccionado() & isGrupoSeleccionado();
         if(todoRelleno) {
-            goToNextActivity();
+           recuperarYalmacenarCentro();
         }
     }
 
@@ -185,6 +186,10 @@ public class PrimerInicio extends ActionBarActivity implements ParseResponse {
 
     }
 
+    private void recuperarYalmacenarCentro(){
+        manager.getCentroRegional(centroSeleccionado, false, this);
+    }
+
     @Override
     public void onBackPressed() {
     }
@@ -192,26 +197,31 @@ public class PrimerInicio extends ActionBarActivity implements ParseResponse {
     @Override
     public void onSuccess(int type, List result) {
 
-        generatePoints((List<CentroRegional>) result);
+        if(type == ParseConstantes.QUERY_CENTROS_REGIONALES){
+            handleCentrosRegionales((List<CentroRegional>) result);
+            return;
+        }
+
+        if(type == ParseConstantes.QUERY_CENTRO_REGIONAL){
+            goToNextActivity();
+            return;
+        }
+    }
+
+    private void handleCentrosRegionales(List<CentroRegional> centros){
+        generatePoints(centros);
         LatLngBounds bounds = buildBounds();
         gmMapa.getUiSettings().setZoomControlsEnabled(true);
-        gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+        gmMapa.setOnMapLoadedCallback(()->
+        {
+            gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+
+        });
         gmMapa.setOnMarkerClickListener((marker) -> {
             centroSeleccionado = centrosRegionalesIdNombre.get(marker.getTitle());
             msg_centro.setTextColor(Color.BLACK);
             return false;
         });
-
-    }
-
-    @Override
-    public void onError(int type, int message) {
-        //TODO manage error
-    }
-
-    @Override
-    public void onLocalError(int type, int message) {
-        //Do nothing here
     }
 
     private void generatePoints(List<CentroRegional> centros){
@@ -236,4 +246,15 @@ public class PrimerInicio extends ActionBarActivity implements ParseResponse {
         LatLngBounds bounds = builder.build();
         return bounds;
     }
+
+    @Override
+    public void onError(int type, int message) {
+        //TODO manage error
+    }
+
+    @Override
+    public void onLocalError(int type, int message) {
+        //Do nothing here
+    }
+
 }

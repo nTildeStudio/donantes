@@ -5,12 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import com.ntilde.exception.InvalidValueType;
 import com.parse.ParsePushBroadcastReceiver;
 
 import org.json.JSONException;
@@ -25,7 +25,11 @@ import java.util.Set;
  */
 public class DonantesReceiver extends ParsePushBroadcastReceiver{
 
+    private static final String TAG = DonantesReceiver.class.getName();
+
     public static final String PARSE_DATA_KEY = "com.parse.Data";
+    private DonantesPreferences preferences = DonantesApplication.getInstance().getPrefrences();
+
 
     @Override
     protected void onPushReceive(Context context, Intent intent) {
@@ -36,31 +40,12 @@ public class DonantesReceiver extends ParsePushBroadcastReceiver{
             JSONObject data = new JSONObject(intent.getExtras().getString(PARSE_DATA_KEY));
 
             if(data.has("alert")){
-                SharedPreferences prefs = context.getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
-                Set<String> alertas=new HashSet<>(prefs.getStringSet(Constantes.SP_ALERTAS, new HashSet<String>()));
-                alertas.add(System.currentTimeMillis() + "::" + data.getString("alert"));
+                storeAlerts(data);
 
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putStringSet(Constantes.SP_ALERTAS, alertas);
-                editor.commit();
             }else{
-                Log.i("XXX", "Tipo: " + data.getString("tipo"));
-                Log.i("XXX", "Fecha: " + data.getString("fecha"));
 
-                Long received = Long.parseLong(data.getString("fecha"));
-                Calendar receivedDate = Calendar.getInstance();
-                receivedDate.setTimeInMillis(received);
-                receivedDate.set(Calendar.HOUR, 0);
-                receivedDate.set(Calendar.MINUTE, 0);
-                receivedDate.set(Calendar.SECOND, 0);
-                receivedDate.set(Calendar.MILLISECOND, 0);
-
-                SharedPreferences prefs = context.getSharedPreferences(Constantes.SP_KEY, Agenda.MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                Set<String> donacionesSet=new HashSet<>(prefs.getStringSet(Constantes.SP_DONACIONES, new HashSet<String>()));
-                donacionesSet.add(receivedDate.getTimeInMillis() + "::" + data.getString("tipo"));
-                editor.putStringSet(Constantes.SP_DONACIONES, donacionesSet);
-                editor.commit();
+                Calendar receivedDate = createDate(data);
+                storeDonaciones(receivedDate,data);
 
                 Intent notificationIntent = new Intent(context, Agenda.class);
                 PendingIntent contentIntent = PendingIntent.getActivity(context,
@@ -106,4 +91,42 @@ public class DonantesReceiver extends ParsePushBroadcastReceiver{
         }
     }
 
+
+    private void storeAlerts(JSONObject data) throws JSONException{
+        try{
+            Set<String> alertas=new HashSet<>(preferences.getAlertas());
+            alertas.add(System.currentTimeMillis() + "::" + data.getString("alert"));
+            preferences.put(Constantes.SP_ALERTAS, alertas);
+            preferences.commit();
+
+        }catch(InvalidValueType e){
+            Log.e(TAG, "Error almacenando en preferencias");
+        }
+    }
+
+
+    private Calendar createDate(JSONObject data) throws JSONException{
+
+        Long received = Long.parseLong(data.getString("fecha"));
+        Calendar receivedDate = Calendar.getInstance();
+        receivedDate.setTimeInMillis(received);
+        receivedDate.set(Calendar.HOUR, 0);
+        receivedDate.set(Calendar.MINUTE, 0);
+        receivedDate.set(Calendar.SECOND, 0);
+        receivedDate.set(Calendar.MILLISECOND, 0);
+
+        return  receivedDate;
+    }
+
+    private void storeDonaciones(Calendar receivedDate, JSONObject data) throws JSONException{
+
+        try{
+            Set<String> donacionesSet=new HashSet<>(preferences.getDonaciones());
+            donacionesSet.add(receivedDate.getTimeInMillis() + "::" + data.getString("tipo"));
+            preferences.put(Constantes.SP_DONACIONES, donacionesSet);
+            preferences.commit();
+        }catch (InvalidValueType e){
+            Log.e(TAG,"Error almacenando donaciones");
+        }
+    }
 }

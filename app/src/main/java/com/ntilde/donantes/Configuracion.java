@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.ntilde.exception.InvalidValueType;
 import com.ntilde.listaexpandible.ExpandCollapseAnimation;
 import com.ntilde.modelo.CentroRegional;
 import com.ntilde.percentagelayout.PLinearLayout;
@@ -37,6 +39,8 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 public class Configuracion extends ActionBarActivity implements ParseResponse{
+
+    private static final String TAG = Configuracion.class.getName();
 
     private String centroSeleccionado=null;
     private String grupoSanguineoSeleccionado=null;
@@ -59,6 +63,8 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
 
 
     private ParseManager manager = DonantesApplication.getInstance().getParseManager();
+    private DonantesPreferences preferences = DonantesApplication.getInstance().getPrefrences();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,16 +205,28 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
     public void onGuardar(){
 
         numerodonante.clearFocus();
+        storeInPreferences();
+        registerNotificationChannel();
+        finish();
+    }
 
-        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constantes.SP_CENTRO, centroSeleccionado);
-        editor.putString(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
-        editor.putString(Constantes.SP_SEXO, sexoSeleccionado);
-        editor.putBoolean(Constantes.SP_NOTIFICACIONES, checkNotificationes.isChecked());
-        editor.putString(Constantes.SP_NUMERO_DONANTE, numerodonante.getText().toString());
-        editor.commit();
+    private void storeInPreferences(){
+        try {
+            preferences.put(Constantes.SP_CENTRO, centroSeleccionado);
+            preferences.put(Constantes.SP_GRUPO, grupoSanguineoSeleccionado);
+            preferences.put(Constantes.SP_SEXO, sexoSeleccionado);
+            preferences.put(Constantes.SP_NOTIFICACIONES, checkNotificationes.isChecked());
+            preferences.put(Constantes.SP_NUMERO_DONANTE, numerodonante.getText().toString());
+            preferences.commit();
 
+        } catch (InvalidValueType invalidValueType) {
+            Log.e(TAG,"No se pudo almacenar en preferencias");
+
+        }
+
+    }
+
+    private void registerNotificationChannel(){
         ParseInstallation pi = ParseInstallation.getCurrentInstallation();
         ArrayList<String> channels = new ArrayList<>();
         String channel = centroSeleccionado+"_"+grupoSanguineoSeleccionado;
@@ -217,9 +235,8 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
         pi.put("channels", channels);
         pi.put("numeroDonante", numerodonante.getText().toString());
         pi.saveInBackground();
-
-        finish();
     }
+
 
     private void cargarPreferencias(){
         SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
@@ -265,7 +282,11 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
         List<CentroRegional> centrosRegionales = result;
         generatePoints(centrosRegionales);
         LatLngBounds bounds = buildBounds();
-        gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+        gmMapa.setOnMapLoadedCallback(() ->
+        {
+            gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+
+        });
         gmMapa.setOnMarkerClickListener(marker -> {
             centroSeleccionado = centrosRegionalesIdNombre.get(marker.getTitle());
             return false;

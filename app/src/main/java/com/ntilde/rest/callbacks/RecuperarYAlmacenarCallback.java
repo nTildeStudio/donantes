@@ -5,13 +5,14 @@ import com.ntilde.rest.response.ParseError;
 import com.ntilde.rest.response.ParseResponse;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 
 import java.util.List;
 
 /**
  * Created by emanuel on 23/11/15.
  */
-public class RecuperarYAlmacenarCallback implements FindCallback {
+public class RecuperarYAlmacenarCallback implements FindCallback<ParseObject> {
 
     private ParseManager manager;
     private int type;
@@ -26,7 +27,7 @@ public class RecuperarYAlmacenarCallback implements FindCallback {
     }
 
     @Override
-    public void done(List list, ParseException e) {
+    public void done(List<ParseObject> list, ParseException e) {
         if(e!=null){
             if(fromLocal){
                 response.onLocalError(type,ParseError.crearMensajeError(type,false));
