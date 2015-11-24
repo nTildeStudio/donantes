@@ -1,6 +1,7 @@
 package com.ntilde.donantes;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ntilde.donantes.views.DonantesCalendarEvent;
+import com.ntilde.donantes.views.DonantesCalendarRange;
+import com.ntilde.donantes.views.DonantesCalendarView;
 import com.ntilde.modelo.HorariosDonacion;
 import com.ntilde.modelo.PuntosDonacion;
 import com.ntilde.percentagelayout.PLinearLayout;
@@ -36,7 +40,7 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
     @InjectView(R.id.punto_de_donacion_borde_rojo_superior) PLinearLayout borde_rojo_superior;
     @InjectView(R.id.punto_de_donacion_borde_rojo_inferior) LinearLayout borde_rojo_inferior;
     @InjectView(R.id.punto_de_donacion_subtitulo) TextView subtitulo;
-    @InjectView(R.id.calendar_view) CalendarPickerView calendar;
+    @InjectView(R.id.calendar_view) DonantesCalendarView calendar;
     @InjectView(R.id.ubicacion_msg_seleccionar_fecha) TextView msg_horario;
     @InjectView(R.id.ubicacion_msg_direccion) TextView msg_direccion;
 
@@ -53,11 +57,11 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
 
         ButterKnife.inject(this);
 
-        ic_margen_sup.post(new Runnable() {
+        ic_margen_sup.post(new Runnable(){
             @Override
-            public void run() {
-                int valor = ic_margen_sup.getPHeight();
-                logotipo.setPadding(valor, valor / 2, valor, valor / 2);
+            public void run(){
+                int valor=ic_margen_sup.getPHeight();
+                logotipo.setPadding(valor,valor/2,valor,valor/2);
             }
         });
 
@@ -68,28 +72,57 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
         Calendar pastYear = Calendar.getInstance();
         pastYear.add(Calendar.YEAR, -1);
 
-        Date today = new Date();
-        calendar.init(pastYear.getTime(), nextYear.getTime()).withSelectedDate(today);
-
-        calendar.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Date date) {
-                if (fechas != null && fechas.containsKey(date)) {
-                    msg_horario.setText("Horario: " + fechas.get(date));
-                } else {
-                    msg_horario.setText("Cerrado");
+        calendar.setOnSelectedDateChangeListener(
+                (selectedDate, event, range) -> {
+                    if (selectedDate != null) {
+                        if (event != null) {
+                            msg_horario.setText("Horario: " + event.getEventInfo());
+                        } else {
+                            msg_horario.setText("Cerrado");
+                        }
+                    } else {
+                        msg_horario.setText("Seleccione una fecha");
+                    }
                 }
-            }
+        );
 
             @Override
-            public void onDateUnselected(Date date) {
-            }
+            public void onDateUnselected(Date date) {}
         });
 
         subtitulo.setText(getIntent().getExtras().getString("puntoNombre"));
         msg_direccion.setText(getIntent().getExtras().getString("puntoDireccion"));
         recuperarPuntosDonacion();
 
+       cambiar ParseQuery<ParseObject> query1 = ParseQuery.getQuery("PuntosDeDonacion");
+        query1.getInBackground(getIntent().getExtras().getString("puntoId"), (object, e1) -> {
+                if (e1 == null) {
+                    ParseQuery<ParseObject> query2 = ParseQuery.getQuery("HorariosDeDonacion").whereEqualTo("PuntoDeDonacion",object);
+                    query2.findInBackground((horarios, e2) -> {
+                            if(e2 == null) {
+                                for(ParseObject horario:horarios){
+                                    Date inicio=horario.getDate("FechaInicio");
+                                    Date fin=horario.getDate("FechaFin");
+                                    String horas=horario.getString("Horario");
+                                    Calendar cal = Calendar.getInstance();
+                                    fechas=new HashMap<>();
+                                    do{
+                                        cal.setTime(inicio);
+                                        cal.add(Calendar.DATE, 1);
+                                        cal.set(Calendar.HOUR_OF_DAY,0);
+                                        cal.set(Calendar.MINUTE,0);
+                                        cal.set(Calendar.SECOND,0);
+                                        cal.set(Calendar.MILLISECOND,0);
+                                        inicio = cal.getTime();
+                                        fechas.put(inicio,horas);
+                                    }while(inicio.getTime()<fin.getTime());
+                                    calendar.clearHighlightedDates();
+                                    calendar.highlightDates(fechas.keySet());
+                                }
+                            }
+                        });
+                }
+            });
     }
 
 

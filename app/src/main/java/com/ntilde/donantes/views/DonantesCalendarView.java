@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.ntilde.donantes.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class DonantesCalendarView extends View{
     private Canvas c;
 
     private TreeMap<Long,DonantesCalendarEvent> mEvents;
-    private HashMap<Long,Integer> mEventAssociated;
+    private HashMap<Long,DonantesCalendarRange> mEventAssociated;
 
     private Calendar cal, calDaysName;
     private int mWeekCount;
@@ -121,7 +122,7 @@ public class DonantesCalendarView extends View{
         if (state instanceof Bundle) {
             Bundle bundle = (Bundle) state;
             mEvents = (TreeMap<Long,DonantesCalendarEvent>)bundle.getSerializable("mEvents");
-            mEventAssociated = (HashMap<Long, Integer>)bundle.getSerializable("mEventAssociated");
+            mEventAssociated = (HashMap<Long, DonantesCalendarRange>)bundle.getSerializable("mEventAssociated");
             cal = (Calendar)bundle.getSerializable("cal");
             mSelectedDay = bundle.getInt("mSelectedDay");
             mSelectedDate = (Date) bundle.getSerializable("mSelectedDate");
@@ -221,14 +222,21 @@ public class DonantesCalendarView extends View{
     private void initEventsAssociated(){
         mEventAssociated = new HashMap<>();
         for(DonantesCalendarEvent event:mEvents.values()) {
-            Map<Integer, Integer> eventAssociated = event.getRanges();
+            ArrayList<DonantesCalendarRange> eventAssociated = event.getRanges();
             if (eventAssociated != null) {
-                for (Map.Entry<Integer, Integer> range : eventAssociated.entrySet()) {
+                for (DonantesCalendarRange range : eventAssociated) {
                     Calendar c = Calendar.getInstance();
-                    c.setTime(event.getDate());
-                    for (int i = 0; i < range.getValue(); i++) {
-                        c.add(Calendar.DAY_OF_MONTH, 1);
-                        mEventAssociated.put(c.getTimeInMillis(), range.getKey());
+                    c.setTime(event.getEvent().getDate());
+                    c.add(Calendar.DAY_OF_YEAR, 1);
+                    Calendar c2 = Calendar.getInstance();
+                    c2.setTime(event.getEvent().getDate());
+                    //noinspection ResourceType
+                    c2.add(range.getUnit(), range.getRange());
+                    if(c2.getTimeInMillis()-c.getTimeInMillis()>=24*60*60*1000){
+                        do{
+                            mEventAssociated.put(c.getTimeInMillis(), range);
+                            c.add(Calendar.DAY_OF_YEAR, 1);
+                        }while(c.getTimeInMillis()<=c2.getTimeInMillis());
                     }
                 }
             }
@@ -331,11 +339,11 @@ public class DonantesCalendarView extends View{
                             }
                             if(mEvents.keySet().contains(cal.getTimeInMillis())){
                                 DonantesCalendarEvent event=mEvents.get(cal.getTimeInMillis());
-                                mEventBoxFill.setColor(event.getColor());
+                                mEventBoxFill.setColor(event.getEvent().getColor());
                                 canvas.drawRect(l, t + (int) ((mMonthHeight - mDayHeight / 2) / 6 * 0.90), r, b, mEventBoxFill);
                             }
                             else if(mEventAssociated.keySet().contains(cal.getTimeInMillis())){
-                                mEventBoxFill.setColor(mEventAssociated.get(cal.getTimeInMillis()));
+                                mEventBoxFill.setColor(mEventAssociated.get(cal.getTimeInMillis()).getColor());
                                 canvas.drawRect(l, t + (int) ((mMonthHeight-mDayHeight/2)/6 * 0.90), r, b, mEventBoxFill);
                             }
                         }
@@ -378,7 +386,7 @@ public class DonantesCalendarView extends View{
             triangleLeft.lineTo(mDayWidth * 0.6f, mDayHeight * 0.7f);
             triangleLeft.close();
             triangleRight = new Path();
-            triangleRight.moveTo(canvas.getClipBounds().width() - mDayWidth * 0.3f - diff * 0.3f, mDayHeight / 2);
+            triangleRight.moveTo(canvas.getClipBounds().width() - mDayWidth * 0.3f - diff*0.3f, mDayHeight / 2);
             triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.3f);
             triangleRight.lineTo(canvas.getClipBounds().width() - mDayWidth * 0.6f, mDayHeight * 0.7f);
             triangleRight.close();
@@ -403,7 +411,7 @@ public class DonantesCalendarView extends View{
         }
 
         int radius = Math.min(mDayWidth,mDayHeight) / 2;
-        mEnabledDayText.setTextSize(Math.min(mDayWidth, mDayHeight)/2.8f);
+        mEnabledDayText.setTextSize(Math.min(mDayWidth,mDayHeight)/2.8f);
         mBlankDays=0;
         for(int week=0;week<=mWeekCount;week++){
             left=0;
@@ -426,11 +434,11 @@ public class DonantesCalendarView extends View{
                     drawCenter(canvas, mEnabledDayText, "" + cal.get(Calendar.DAY_OF_MONTH), new Rect(left, top, right, bottom));
                     if(mEvents.keySet().contains(cal.getTimeInMillis())){
                         DonantesCalendarEvent event=mEvents.get(cal.getTimeInMillis());
-                        mEventBoxFill.setColor(event.getColor());
+                        mEventBoxFill.setColor(event.getEvent().getColor());
                         canvas.drawRect(left, top+(int)(mDayHeight*0.95), right, bottom, mEventBoxFill);
                     }
                     else if(mEventAssociated.keySet().contains(cal.getTimeInMillis())){
-                        mEventBoxFill.setColor(mEventAssociated.get(cal.getTimeInMillis()));
+                        mEventBoxFill.setColor(mEventAssociated.get(cal.getTimeInMillis()).getColor());
                         canvas.drawRect(left, top + (int) (mDayHeight * 0.95), right, bottom, mEventBoxFill);
                     }
                 }
@@ -460,13 +468,17 @@ public class DonantesCalendarView extends View{
                         if(mSelectedDay!=-1){
                             if(mOnSelectedDateChangeListener!=null) {
                                 Calendar calClone=(Calendar)cal.clone();
-                                calClone.set(Calendar.DAY_OF_MONTH, mSelectedDay-mBlankDays+1);
-                                mOnSelectedDateChangeListener.OnSelectedDateChange(calClone.getTime(), getEvent(calClone.getTime()));
+                                calClone.set(Calendar.DAY_OF_MONTH, mSelectedDay - mBlankDays + 1);
+                                mOnSelectedDateChangeListener.OnSelectedDateChange(
+                                        calClone.getTime(),
+                                        getEvent(calClone.getTime()),
+                                        mEventAssociated.get(calClone.getTimeInMillis())
+                                );
                             }
                         }
                         else{
                             if(mOnSelectedDateChangeListener!=null){
-                                mOnSelectedDateChangeListener.OnSelectedDateChange(null, null);
+                                mOnSelectedDateChangeListener.OnSelectedDateChange(null, null, null);
                             }
                         }
                     } else if (touchedTitle(event.getX(), event.getY())) {
@@ -587,7 +599,6 @@ public class DonantesCalendarView extends View{
         super.onSizeChanged(w, h, oldw, oldh);
 
         mDayWidth=w/7;
-        //mDayHeight=mDayWidth;
         mDayHeight=(h-(mDisplayMonthName?mDayWidth:0)-(mDisplayDaysName?mDayWidth/2:0))/6;
         mMonthWidth=w/4-mDayBoxStrokeWidth;
         mMonthHeight=(h-mDayHeight)/3-mDayBoxStrokeWidth;
@@ -606,7 +617,7 @@ public class DonantesCalendarView extends View{
         heightInWeeks+=mDisplayDaysName?0.5:0;
 
         int desiredWidth = (int)((heightSize+mDayBoxStrokeWidth+1)/heightInWeeks*7);
-        int desiredHeight = (int)((widthSize+mDayBoxStrokeWidth+1)/7*heightInWeeks);
+        int desiredHeight = (int)((widthSize+mDayBoxStrokeWidth+1)/7*heightInWeeks)+mDayBoxStrokeWidth*5;
 
         int width;
         int height;
@@ -701,13 +712,28 @@ public class DonantesCalendarView extends View{
         if(mEvents==null){
             mEvents = new TreeMap<>();
         }
-        if(event.getDate()!=null) {
-            mEvents.put(event.getDate().getTime(), event);
+        if(event.getEvent().getDate()!=null) {
+            Calendar c1=Calendar.getInstance();
+            c1.setTimeInMillis(event.getEvent().getDate().getTime());
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            Calendar c2=Calendar.getInstance();
+            c2.setTimeInMillis(c1.getTimeInMillis());
+            //noinspection ResourceType
+            c2.add(event.getEvent().getUnit(), event.getEvent().getRange());
+            if(c2.getTimeInMillis()-c1.getTimeInMillis()>=24*60*60*1000){
+                do{
+                    mEvents.put(c1.getTimeInMillis(), event);
+                    c1.add(Calendar.DAY_OF_YEAR, 1);
+                }while(c1.getTimeInMillis()<c2.getTimeInMillis());
+            }
             initEventsAssociated();
         }
     }
 
     public interface OnSelectedDateChangeListener{
-        void OnSelectedDateChange(Date selectedDate, DonantesCalendarEvent event);
+        void OnSelectedDateChange(Date selectedDate, DonantesCalendarEvent event, DonantesCalendarRange range);
     }
 }

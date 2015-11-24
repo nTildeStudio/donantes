@@ -80,7 +80,7 @@
         <com.ntilde.donantes.views.DonantesCalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:displayMonthName="true"
             app:displayDaysName="true"
             app:highlightToday="true"
