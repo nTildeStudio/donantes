@@ -1,6 +1,7 @@
 package com.ntilde.donantes;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import android.util.Log;
 
 import com.github.jorgecastillo.FillableLoader;
 import com.github.jorgecastillo.listener.OnStateChangeListener;
+import com.ntilde.donantes.utils.DefaultConfig;
 import com.ntilde.exception.InvalidValueType;
 import com.ntilde.modelo.PuntosDonacion;
 import com.ntilde.modelo.UltimaActualizacion;
@@ -18,6 +20,9 @@ import com.ntilde.utils.DateUtils;
 import com.ntilde.utils.NetworkUtilities;
 import com.ntilde.utils.ParseConstantes;
 import com.ntilde.utils.VectorPath;
+import com.parse.ParseAnalytics;
+import com.parse.ParseConfig;
+import com.parse.ParseInstallation;
 
 import java.util.Date;
 import java.util.List;
@@ -47,6 +52,10 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        ParseAnalytics.trackAppOpenedInBackground(getIntent());
+
+        getParseConfig();
 
         ButterKnife.inject(this);
 
@@ -82,6 +91,7 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
         loaderGris.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
             public void onStateChange(int state) {
+                registerDevice();
                 if (state == 3) {
                     animationFinished = true;
                     goToNextActivity();
@@ -243,15 +253,53 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
     }
 
     public void goToPrimerInicio(){
-        startActivity(new Intent(SplashScreen.this, PrimerInicio.class));
+        startActivity(new Intent(SplashScreen.this, FirstConfig.class));
     }
 
     public void setDownloadFinished(boolean finished){
         downloadFinished = finished;
     }
 
+
     public Date getFechaUltimaActualizacion(){
         return fechaUltimaActualizacion;
     }
 
+    /**
+     * Register or update device info on parse
+     */
+    private void registerDevice(){
+        boolean update = false;
+
+        ParseInstallation pi = ParseInstallation.getCurrentInstallation();
+        if(!pi.has("deviceManufacturer") || !pi.getString("deviceManufacturer").equals(Build.MANUFACTURER)){
+            pi.put("deviceManufacturer", Build.MANUFACTURER);
+            update = true;
+        }
+        if(!pi.has("deviceModel") || !pi.getString("deviceModel").equals(Build.MODEL)){
+            pi.put("deviceModel", Build.MODEL);
+            update = true;
+        }
+
+        if(update){
+            pi.saveInBackground();
+        }
+    }
+
+    /**
+     * Get default config from parse
+     */
+    private void getParseConfig() {
+
+        ParseConfig.getInBackground((parseConfig, e) -> {
+                if(e == null){
+                    DefaultConfig.ImgCfg1 = parseConfig.getParseFile("ImagenCfg1");
+                    DefaultConfig.ImgCfg2 = parseConfig.getParseFile("ImagenCfg2");
+                    DefaultConfig.ImgCfg1Radius = parseConfig.getInt("ImagenCfg1Radio");
+                    DefaultConfig.ImgCfg2Radius = parseConfig.getInt("ImagenCfg2Radio");
+                }else{
+                    Log.e("XXX", "Error al obtener la configuración de parse");
+                }
+            });
+    }
 }
