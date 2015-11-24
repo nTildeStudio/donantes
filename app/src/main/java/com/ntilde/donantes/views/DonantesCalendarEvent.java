@@ -10,7 +10,7 @@ public class DonantesCalendarEvent implements Serializable{
     private ArrayList<DonantesCalendarRange> mRange;
 
     public DonantesCalendarEvent(Object eventInfo, DonantesCalendarRange event){
-        this(eventInfo, event, null);
+        this(eventInfo, event, new DonantesCalendarRange[]{});
     }
 
     public DonantesCalendarEvent(Object eventInfo, DonantesCalendarRange event, DonantesCalendarRange... ranges){
