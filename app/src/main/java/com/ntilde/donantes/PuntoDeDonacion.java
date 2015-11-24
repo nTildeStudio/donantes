@@ -21,11 +21,9 @@ import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.rest.ParseManager;
 import com.ntilde.rest.response.ParseResponse;
 import com.ntilde.utils.ParseConstantes;
-import com.squareup.timessquare.CalendarPickerView;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,20 +55,15 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
 
         ButterKnife.inject(this);
 
-        ic_margen_sup.post(new Runnable(){
+        ic_margen_sup.post(new Runnable() {
             @Override
-            public void run(){
-                int valor=ic_margen_sup.getPHeight();
-                logotipo.setPadding(valor,valor/2,valor,valor/2);
+            public void run() {
+                int valor = ic_margen_sup.getPHeight();
+                logotipo.setPadding(valor, valor / 2, valor, valor / 2);
             }
         });
 
         borde_rojo_superior.post(() -> borde_rojo_inferior.getLayoutParams().height = borde_rojo_superior.getPHeight());
-
-        Calendar nextYear = Calendar.getInstance();
-        nextYear.add(Calendar.YEAR, 1);
-        Calendar pastYear = Calendar.getInstance();
-        pastYear.add(Calendar.YEAR, -1);
 
         calendar.setOnSelectedDateChangeListener(
                 (selectedDate, event, range) -> {
@@ -86,43 +79,9 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
                 }
         );
 
-            @Override
-            public void onDateUnselected(Date date) {}
-        });
-
         subtitulo.setText(getIntent().getExtras().getString("puntoNombre"));
         msg_direccion.setText(getIntent().getExtras().getString("puntoDireccion"));
         recuperarPuntosDonacion();
-
-       cambiar ParseQuery<ParseObject> query1 = ParseQuery.getQuery("PuntosDeDonacion");
-        query1.getInBackground(getIntent().getExtras().getString("puntoId"), (object, e1) -> {
-                if (e1 == null) {
-                    ParseQuery<ParseObject> query2 = ParseQuery.getQuery("HorariosDeDonacion").whereEqualTo("PuntoDeDonacion",object);
-                    query2.findInBackground((horarios, e2) -> {
-                            if(e2 == null) {
-                                for(ParseObject horario:horarios){
-                                    Date inicio=horario.getDate("FechaInicio");
-                                    Date fin=horario.getDate("FechaFin");
-                                    String horas=horario.getString("Horario");
-                                    Calendar cal = Calendar.getInstance();
-                                    fechas=new HashMap<>();
-                                    do{
-                                        cal.setTime(inicio);
-                                        cal.add(Calendar.DATE, 1);
-                                        cal.set(Calendar.HOUR_OF_DAY,0);
-                                        cal.set(Calendar.MINUTE,0);
-                                        cal.set(Calendar.SECOND,0);
-                                        cal.set(Calendar.MILLISECOND,0);
-                                        inicio = cal.getTime();
-                                        fechas.put(inicio,horas);
-                                    }while(inicio.getTime()<fin.getTime());
-                                    calendar.clearHighlightedDates();
-                                    calendar.highlightDates(fechas.keySet());
-                                }
-                            }
-                        });
-                }
-            });
     }
 
 
@@ -194,26 +153,28 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
             Date inicio=horario.getFechaInicio();
             Date fin=horario.getFechaFin();
             String horas=horario.getHorario();
-            crearHorarios(inicio,fin,horas);
+            Calendar inicioCal = createCalendar(inicio);
+            Calendar finCal = createCalendar(fin);
+
+            int duracionEnDias=(int)((finCal.getTimeInMillis()-inicioCal.getTimeInMillis())/(24*60*60*1000))+1;
+            DonantesCalendarRange evento=new DonantesCalendarRange(inicioCal.getTime(), duracionEnDias, DonantesCalendarRange.UNITS.DAYS, Color.rgb(0, 128, 0));
+            calendar.addEvent(new DonantesCalendarEvent(horas, evento));
 
         }
     }
 
-    private Calendar crearHorarios(Date inicio, Date fin, String horas){
-        Calendar cal = Calendar.getInstance();
-        fechas=new HashMap<>();
-        do{
-            cal.setTime(inicio);
-            cal.add(Calendar.DATE, 1);
-            cal.set(Calendar.HOUR_OF_DAY,0);
-            cal.set(Calendar.MINUTE,0);
-            cal.set(Calendar.SECOND,0);
-            cal.set(Calendar.MILLISECOND,0);
-            inicio = cal.getTime();
-            fechas.put(inicio,horas);
-        }while(inicio.getTime()<fin.getTime());
+    private Calendar createCalendar(Date date){
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(date);
+        resetTime(c1);
+        return c1;
+    }
 
-        return cal;
+    private void resetTime(Calendar cal){
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
     }
 
     @Override
