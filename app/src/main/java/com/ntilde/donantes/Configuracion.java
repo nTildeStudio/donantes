@@ -69,7 +69,7 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
-        setContentView(R.layout.activity_configuracion_v2);
+        setContentView(R.layout.activity_configuracion);
 
         ButterKnife.inject(this);
 
@@ -87,18 +87,18 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
             });
 
         cabecera.setOnTouchListener((v, event) -> {
-                numerodonante.clearFocus();
-                return false;
-            });
+            numerodonante.clearFocus();
+            return false;
+        });
 
         checkNotificationes.setOnCheckedChangeListener((buttonView, isChecked) -> numerodonante.clearFocus());
 
         numerodonante.setOnFocusChangeListener((v, hasFocus) -> {
-                if (!hasFocus) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            });
+            if (!hasFocus) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+        });
 
         cargarPreferencias();
         manager.getCentrosRegionales(this);
