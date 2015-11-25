@@ -35,6 +35,7 @@ public class DonantesPreferences {
     }
 
     public void put(String key, Object value) throws InvalidValueType{
+        if(value == null) return;
 
         if(value instanceof String){
             putString(editor, key, (String) value);
@@ -98,7 +99,7 @@ public class DonantesPreferences {
     }
 
     public @Nullable String getGrupoSanguineo(){
-        return preferences.getString(Constantes.SP_SEXO,"");
+        return preferences.getString(Constantes.SP_GRUPO,"");
     }
 
     public @Nullable String getNumeroDonante(){
@@ -110,7 +111,7 @@ public class DonantesPreferences {
     }
 
     public @Nullable String getSexo(){
-        return preferences.getString(Constantes.SP_GRUPO, "");
+        return preferences.getString(Constantes.SP_SEXO, "");
     }
 
     public Set<String> getAlertas(){

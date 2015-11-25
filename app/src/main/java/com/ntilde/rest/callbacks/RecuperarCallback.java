@@ -24,10 +24,12 @@ public class RecuperarCallback implements FindCallback<ParseObject>{
     @Override
     public void done(List<ParseObject> list, ParseException e) {
 
-        if(e != null){
+        if(e != null || list.isEmpty()){
             response.onLocalError(type, ParseError.crearMensajeError(type,false));
+            return;
         }
 
         response.onSuccess(type, list);
     }
+
 }

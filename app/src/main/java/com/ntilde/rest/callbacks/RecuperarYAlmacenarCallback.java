@@ -28,17 +28,31 @@ public class RecuperarYAlmacenarCallback implements FindCallback<ParseObject> {
 
     @Override
     public void done(List<ParseObject> list, ParseException e) {
-        if(e!=null){
-            if(fromLocal){
-                response.onLocalError(type,ParseError.crearMensajeError(type,false));
 
-            }else{
-                response.onError(type,ParseError.crearMensajeError(type, false));
+        if(isLocalError(e) || nonStoredInLocalStorage(list) ){
+            response.onLocalError(type,ParseError.crearMensajeError(type,false));
+            return;
+        }
 
-            }
+        if (isNetError(e)){
+            response.onError(type,ParseError.crearMensajeError(type, false));
             return;
         }
 
         manager.almacenar(type,list,response);
     }
+
+    private boolean isLocalError(Exception e){
+        return e != null && fromLocal;
+    }
+
+    private boolean nonStoredInLocalStorage(List<ParseObject> list){
+        return  list.isEmpty();
+    }
+
+    private boolean isNetError(Exception e){
+       return e!=null && !fromLocal;
+    }
+
+
 }

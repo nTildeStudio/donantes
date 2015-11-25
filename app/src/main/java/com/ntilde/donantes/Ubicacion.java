@@ -140,7 +140,6 @@ public class Ubicacion extends ActionBarActivity implements ParseResponse{
 
     @Override
     public void onSuccess(int type, List result) {
-
         generatePoints((List<PuntosDonacion>)result);
         if(noPointsGenerated()) return;
 

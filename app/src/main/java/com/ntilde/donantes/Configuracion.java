@@ -1,7 +1,6 @@
 package com.ntilde.donantes;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -102,6 +101,7 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
             });
 
         cargarPreferencias();
+        manager.getCentrosRegionales(this);
 
 
     }
@@ -239,12 +239,11 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
 
 
     private void cargarPreferencias(){
-        SharedPreferences prefs = getSharedPreferences(Constantes.SP_KEY, Configuracion.MODE_PRIVATE);
-        centroSeleccionado=prefs.getString(Constantes.SP_CENTRO, null);
-        grupoSanguineoSeleccionado=prefs.getString(Constantes.SP_GRUPO, null);
-        sexoSeleccionado=prefs.getString(Constantes.SP_SEXO, null);
-        checkNotificationes.setChecked(prefs.getBoolean(Constantes.SP_NOTIFICACIONES, false));
-        numerodonante.setText(prefs.getString(Constantes.SP_NUMERO_DONANTE, ""));
+        centroSeleccionado=preferences.getIdCentroRegional();
+        grupoSanguineoSeleccionado=preferences.getGrupoSanguineo();
+        sexoSeleccionado=preferences.getSexo();
+        checkNotificationes.setChecked(preferences.getNotificaciones());
+        numerodonante.setText(preferences.getNumeroDonante());
         for(ImageView grupo:gruposSanguineos){
             if(grupo.getTag().toString().equals(grupoSanguineoSeleccionado)){
                 switch(grupo.getTag().toString()){
