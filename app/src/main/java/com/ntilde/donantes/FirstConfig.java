@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.ntilde.donantes.adapters.FirstConfigViewPagerAdapter;
 import com.ntilde.donantes.fragments.FirstConfigStep2;
 import com.ntilde.donantes.fragments.FirstConfigStep3;
-import com.ntilde.donantes.models.CentroRegional;
 import com.ntilde.exception.InvalidValueType;
 import com.ntilde.modelo.CentroRegional;
 import com.parse.ParseAnalytics;
@@ -140,7 +139,7 @@ public class FirstConfig extends AppCompatActivity {
 
             ParseInstallation pi = ParseInstallation.getCurrentInstallation();
             ArrayList<String> channels = new ArrayList<>();
-            String channel = mSelectedCentroRegional.getId()+"_"+grupoSanguineoSeleccionado;
+            String channel = mSelectedCentroRegional.getObjectId()+"_"+grupoSanguineoSeleccionado;
             channel = channel.replace("+","POS").replace("-","NEG");
             if(notificationsEnabled) channels.add(channel);
             pi.put("channels", channels);
@@ -152,7 +151,7 @@ public class FirstConfig extends AppCompatActivity {
 
     private void storeInPreferences(String grupoSanguineo, boolean notificationsEnabled, String numDonante){
         try{
-            preferences.put(Constantes.SP_CENTRO, mSelectedCentroRegional.getId());
+            preferences.put(Constantes.SP_CENTRO, mSelectedCentroRegional.getObjectId());
             preferences.put(Constantes.SP_GRUPO, grupoSanguineo);
             preferences.put(Constantes.SP_NOTIFICACIONES, notificationsEnabled);
             preferences.put(Constantes.SP_NUMERO_DONANTE, numDonante);
@@ -184,7 +183,7 @@ public class FirstConfig extends AppCompatActivity {
 
     public void selectCentroRegional(String title) {
         for(CentroRegional centro : mCentrosRegionales){
-            if(centro.getName().equals(title)){
+            if(centro.getNombre().equals(title)){
                 mSelectedCentroRegional = centro;
                 break;
             }
