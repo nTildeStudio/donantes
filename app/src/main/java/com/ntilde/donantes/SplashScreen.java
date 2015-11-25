@@ -1,9 +1,11 @@
 package com.ntilde.donantes;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -109,6 +111,9 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
         if(isCentroRegionalStored()){
             comprobarUltimaActualizacion();
 
+        }else if(!NetworkUtilities.hasNetworkConnection()){
+            showAlertError();
+
         }else{
             downloadFinished = true;
             goToNextActivity();
@@ -207,6 +212,19 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
         return fechaUltimaActualizacion == null || newDate.getTime() - fechaUltimaActualizacion.getTime() > 0;
     }
 
+    private void showAlertError(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.no_net_dialog_title))
+                .setMessage(getString(R.string.no_net_dialog_message))
+                .setPositiveButton(getString(R.string.no_net_dialog_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SplashScreen.this.finish();
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
+    }
 
 
     public void saveNewDate(Date newDate){

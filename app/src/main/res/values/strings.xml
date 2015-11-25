@@ -39,4 +39,7 @@
     <string name="empty_query_puntosdonacion">No se obtuvieron puntos de donación para dicho centro regional</string>
     <string name="centro_regional_not_found">No se encontró el centro regional buscado</string>
     <string name="centroreg_error_storing">Error almacenando centro regional</string>
+    <string name="no_net_dialog_title">Sin conexión</string>
+    <string name="no_net_dialog_message">La aplicación necesita internet para iniciar</string>
+    <string name="no_net_dialog_ok">OK</string>
 </resources>
