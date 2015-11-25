@@ -42,4 +42,6 @@
     <string name="no_net_dialog_title">Sin conexión</string>
     <string name="no_net_dialog_message">La aplicación necesita internet para iniciar</string>
     <string name="no_net_dialog_ok">OK</string>
+    <string name="no_data_retrieved_dialog_title">Error en la recuperación</string>
+    <string name="no_data_retrieved_dialog_message">La petición falló, no se pudieron recuperar los datos</string>
 </resources>

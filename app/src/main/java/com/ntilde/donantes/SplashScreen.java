@@ -1,11 +1,9 @@
 package com.ntilde.donantes;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -22,6 +20,7 @@ import com.ntilde.utils.DateUtils;
 import com.ntilde.utils.NetworkUtilities;
 import com.ntilde.utils.ParseConstantes;
 import com.ntilde.utils.VectorPath;
+import com.ntilde.utils.dialogs.DialogUtils;
 import com.parse.ParseAnalytics;
 import com.parse.ParseConfig;
 import com.parse.ParseInstallation;
@@ -112,7 +111,7 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
             comprobarUltimaActualizacion();
 
         }else if(!NetworkUtilities.hasNetworkConnection()){
-            showAlertError();
+            DialogUtils.showNoNetDialog(this);
 
         }else{
             downloadFinished = true;
@@ -185,9 +184,16 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
 
     @Override
     public void onError(int type, int message) {
-        //TODO mostrar dialogo error
-        Log.e(TAG,"Ocurrió un error: " + message);
-        cannotUpdate();
+
+        if(type == ParseConstantes.QUERY_ULTIMA_ACTUALIZACION){
+            cannotUpdate();
+            return;
+        }
+
+        if(type == ParseConstantes.QUERY_CENTROS_REGIONALES){
+            DialogUtils.showNoDataRetrieved(this);
+            return;
+        }
     }
 
     @Override
@@ -211,21 +217,6 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
     public boolean needUpdate(Date newDate){
         return fechaUltimaActualizacion == null || newDate.getTime() - fechaUltimaActualizacion.getTime() > 0;
     }
-
-    private void showAlertError(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.no_net_dialog_title))
-                .setMessage(getString(R.string.no_net_dialog_message))
-                .setPositiveButton(getString(R.string.no_net_dialog_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        SplashScreen.this.finish();
-                        dialog.dismiss();
-                    }
-                });
-        builder.create().show();
-    }
-
 
     public void saveNewDate(Date newDate){
 
