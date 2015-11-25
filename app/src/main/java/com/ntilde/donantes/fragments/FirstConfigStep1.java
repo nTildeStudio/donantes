@@ -15,17 +15,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.ntilde.donantes.DonantesApplication;
 import com.ntilde.donantes.FirstConfig;
 import com.ntilde.donantes.R;
-import com.ntilde.donantes.models.CentroRegional;
-import com.parse.FindCallback;
+import com.ntilde.modelo.CentroRegional;
+import com.ntilde.rest.ParseManager;
+import com.ntilde.rest.response.ParseResponse;
 import com.parse.ParseAnalytics;
-import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,12 +33,13 @@ import java.util.Map;
 /**
  * Created by Julio on 30/09/2015.
  */
-public class FirstConfigStep1 extends Fragment implements OnMapReadyCallback {
+public class FirstConfigStep1 extends Fragment implements OnMapReadyCallback, ParseResponse {
 
     GoogleMap gmMapa;
     List<LatLng> otsLatLng;
     TextView tvCentro;
     FirstConfig mActivity;
+    private ParseManager manager = DonantesApplication.getInstance().getParseManager();
 
 
     @Nullable
@@ -61,44 +60,7 @@ public class FirstConfigStep1 extends Fragment implements OnMapReadyCallback {
     }
 
     private void getMarkers(){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("CentrosRegionales");
-        query.findInBackground((centrosRegionales, e) -> {
-                if(e == null) {
-                    otsLatLng = new ArrayList<>();
-                    for(ParseObject centroRegional:centrosRegionales){
-                        ParseGeoPoint ubicacion=centroRegional.getParseGeoPoint("Ubicacion");
-                        LatLng latLng=new LatLng(ubicacion.getLatitude(),ubicacion.getLongitude());
-                        otsLatLng.add(latLng);
-                        gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getString("Nombre")));
-                        MarkerOptions a=new MarkerOptions();
-                        mActivity.mCentrosRegionales.add(new CentroRegional(centroRegional.getObjectId(),
-                                                                            centroRegional.getString("Nombre"),
-                                                                            centroRegional.getParseFile("ImagenCfg1"),
-                                                                            centroRegional.getParseFile("ImagenCfg2"),
-                                                                            centroRegional.getInt("ImagenCfg1Radio"),
-                                                                            centroRegional.getInt("ImagenCfg2Radio")));
-                    }
-                    gmMapa.getUiSettings().setZoomControlsEnabled(true);
-                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                    for(LatLng otLatLng:otsLatLng){
-                        builder.include(otLatLng);
-                    }
-                    LatLngBounds bounds = builder.build();
-                    gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
-                    gmMapa.setOnMarkerClickListener(marker -> {
-                            Map<String, String> parameters = new HashMap<>();
-                            parameters.put("configuracionInicial", "marker");
-                            parameters.put("markerName", marker.getTitle());
-                            ParseAnalytics.trackEventInBackground("click", parameters);
-
-                            mActivity.selectCentroRegional(marker.getTitle());
-                            tvCentro.setText(marker.getTitle());
-                            return false;
-                        });
-                }else{
-                    Toast.makeText(getActivity(), "Se ha producido un error al obtener los centros regionales", Toast.LENGTH_SHORT).show();
-                }
-            });
+        manager.getCentrosRegionales(this);
     }
 
     @Override
@@ -106,5 +68,47 @@ public class FirstConfigStep1 extends Fragment implements OnMapReadyCallback {
         gmMapa = googleMap;
         gmMapa.getUiSettings().setZoomControlsEnabled(false);
         getMarkers();
+    }
+
+    @Override
+    public void onSuccess(int type, List result) {
+        List<CentroRegional> centrosRegionales =  result;
+
+        otsLatLng = new ArrayList<>();
+        for(CentroRegional centroRegional:centrosRegionales){
+            ParseGeoPoint ubicacion=centroRegional.getLocalizacion();
+            LatLng latLng=new LatLng(ubicacion.getLatitude(),ubicacion.getLongitude());
+            otsLatLng.add(latLng);
+            gmMapa.addMarker(new MarkerOptions().position(latLng).title(centroRegional.getNombre()));
+            MarkerOptions a=new MarkerOptions();
+            mActivity.mCentrosRegionales.add(centroRegional);
+        }
+        gmMapa.getUiSettings().setZoomControlsEnabled(true);
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for(LatLng otLatLng:otsLatLng){
+            builder.include(otLatLng);
+        }
+        LatLngBounds bounds = builder.build();
+        gmMapa.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+        gmMapa.setOnMarkerClickListener(marker -> {
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("configuracionInicial", "marker");
+            parameters.put("markerName", marker.getTitle());
+            ParseAnalytics.trackEventInBackground("click", parameters);
+
+            mActivity.selectCentroRegional(marker.getTitle());
+            tvCentro.setText(marker.getTitle());
+            return false;
+        });
+    }
+
+    @Override
+    public void onError(int type, int message) {
+        Toast.makeText(getActivity(), "Se ha producido un error al obtener los centros regionales", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLocalError(int type, int message) {
+
     }
 }

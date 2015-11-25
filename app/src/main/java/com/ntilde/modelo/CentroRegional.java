@@ -1,6 +1,7 @@
 package com.ntilde.modelo;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
@@ -42,6 +43,22 @@ public class CentroRegional extends ParseObject {
 
     public Date getFechaModificacion(){
         return getUpdatedAt();
+    }
+
+    public ParseFile getImagenCfg1(){
+        return getParseFile("ImageCfg1");
+    }
+
+    public ParseFile getImagenCfg2(){
+        return getParseFile("ImageCfg2");
+    }
+
+    public Integer getImagenCfg1Radius(){
+        return getInt("ImagenCfg1Radius");
+    }
+
+    public Integer getImagenCfg2Radius(){
+        return getInt("ImagenCfg2Radius");
     }
 
 }

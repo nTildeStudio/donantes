@@ -14,6 +14,7 @@ import com.ntilde.donantes.fragments.FirstConfigStep2;
 import com.ntilde.donantes.fragments.FirstConfigStep3;
 import com.ntilde.donantes.models.CentroRegional;
 import com.ntilde.exception.InvalidValueType;
+import com.ntilde.modelo.CentroRegional;
 import com.parse.ParseAnalytics;
 import com.parse.ParseInstallation;
 import com.viewpagerindicator.CirclePageIndicator;
