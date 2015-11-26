@@ -21,8 +21,10 @@ import com.ntilde.utils.NetworkUtilities;
 import com.ntilde.utils.ParseConstantes;
 import com.ntilde.utils.VectorPath;
 import com.ntilde.utils.dialogs.DialogUtils;
+import com.parse.ConfigCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseConfig;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 
 import java.util.Date;
@@ -294,16 +296,22 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
      * Get default config from parse
      */
     private void getParseConfig() {
-
-        ParseConfig.getInBackground((parseConfig, e) -> {
+        ParseConfig.getInBackground(new ConfigCallback() {
+            @Override
+            public void done(ParseConfig parseConfig, ParseException e) {
                 if(e == null){
                     DefaultConfig.ImgCfg1 = parseConfig.getParseFile("ImagenCfg1");
                     DefaultConfig.ImgCfg2 = parseConfig.getParseFile("ImagenCfg2");
                     DefaultConfig.ImgCfg1Radius = parseConfig.getInt("ImagenCfg1Radio");
                     DefaultConfig.ImgCfg2Radius = parseConfig.getInt("ImagenCfg2Radio");
-                }else{
-                    Log.e("XXX", "Error al obtener la configuración de parse");
+
+                    DefaultConfig.ImgCfg1 = null;
+                    DefaultConfig.ImgCfg2 = null;
+                    DefaultConfig.ImgCfg1Radius = null;
+                    DefaultConfig.ImgCfg2Radius = null;
                 }
-            });
+            }
+
+        });
     }
 }

@@ -140,23 +140,33 @@ public class FirstConfigStep2 extends Fragment implements View.OnClickListener{
     }
 
     public void updateBackground(){
-        String url;
-        int blur;
+        String url = null;
+        Integer blur;
 
         if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg1() != null){
             url = mActivity.mSelectedCentroRegional.getImagenCfg1().getUrl();
         }else{
-            url = DefaultConfig.ImgCfg1.getUrl();
+            if(DefaultConfig.ImgCfg1 != null){
+                url = DefaultConfig.ImgCfg1.getUrl();
+
+            }
         }
 
         if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg1Radius() != null){
             blur = mActivity.mSelectedCentroRegional.getImagenCfg1Radius();
         }else{
-            blur = DefaultConfig.ImgCfg1Radius;
+            blur = (DefaultConfig.ImgCfg1Radius == null)? DefaultConfig.DEFAULT_RADIUS : DefaultConfig.ImgCfg1Radius;
         }
 
-        Picasso.with(mActivity).invalidate(url);
-        Picasso.with(mActivity).load(url).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
+
+        if(url == null){
+            Picasso.with(mActivity).load(R.drawable.donantes2).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
+
+        }else{
+            Picasso.with(mActivity).invalidate(url);
+            Picasso.with(mActivity).load(url).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
+
+        }
     }
 
 }

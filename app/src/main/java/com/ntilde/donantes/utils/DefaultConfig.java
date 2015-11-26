@@ -7,6 +7,7 @@ import com.parse.ParseFile;
  */
 public class DefaultConfig {
 
+    public static final Integer DEFAULT_RADIUS = 10;
     public static ParseFile ImgCfg1;
     public static ParseFile ImgCfg2;
     public static Integer ImgCfg1Radius;

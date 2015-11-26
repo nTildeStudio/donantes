@@ -82,22 +82,32 @@ public class FirstConfigStep3 extends Fragment{
     }
 
     public void updateBackground(){
-        String url;
-        int blur;
+        String url = null ;
+        Integer blur;
 
         if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg2() != null){
             url = mActivity.mSelectedCentroRegional.getImagenCfg2().getUrl();
         }else{
-            url = DefaultConfig.ImgCfg2.getUrl();
+            if(DefaultConfig.ImgCfg2 != null){
+                url = DefaultConfig.ImgCfg2.getUrl();
+
+            }
         }
 
         if(mActivity.mSelectedCentroRegional != null && mActivity.mSelectedCentroRegional.getImagenCfg2Radius() != null){
             blur = mActivity.mSelectedCentroRegional.getImagenCfg2Radius();
         }else{
-            blur = DefaultConfig.ImgCfg2Radius;
+            blur = (DefaultConfig.ImgCfg2Radius == null)? DefaultConfig.DEFAULT_RADIUS : DefaultConfig.ImgCfg2Radius;
         }
 
-        Picasso.with(mActivity).invalidate(url);
-        Picasso.with(mActivity).load(url).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
+        if(url == null){
+            Picasso.with(mActivity).load(R.drawable.donantes3).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
+
+        }else{
+            Picasso.with(mActivity).invalidate(url);
+            Picasso.with(mActivity).load(url).transform(new PicassoTransformationBlur(blur)).into(ivBackground);
+
+        }
+
     }
 }

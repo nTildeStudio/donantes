@@ -22,6 +22,8 @@ import com.ntilde.donantes.R;
 import com.ntilde.modelo.CentroRegional;
 import com.ntilde.rest.ParseManager;
 import com.ntilde.rest.response.ParseResponse;
+import com.ntilde.utils.NetworkUtilities;
+import com.ntilde.utils.dialogs.DialogUtils;
 import com.parse.ParseAnalytics;
 import com.parse.ParseGeoPoint;
 
@@ -60,7 +62,13 @@ public class FirstConfigStep1 extends Fragment implements OnMapReadyCallback, Pa
     }
 
     private void getMarkers(){
-        manager.getCentrosRegionales(this);
+        if(!NetworkUtilities.hasNetworkConnection()){
+            DialogUtils.showNoNetDialog(getActivity());
+
+        }else{
+            manager.getCentrosRegionales(this);
+
+        }
     }
 
     @Override
