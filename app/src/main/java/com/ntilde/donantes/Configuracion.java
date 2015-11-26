@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +24,7 @@ import com.ntilde.modelo.CentroRegional;
 import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.rest.ParseManager;
 import com.ntilde.rest.response.ParseResponse;
+import com.ntilde.utils.ParseConstantes;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 
@@ -278,7 +280,16 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
 
     @Override
     public void onSuccess(int type, List result) {
-        List<CentroRegional> centrosRegionales = result;
+
+        if(type == ParseConstantes.QUERY_CENTROS_REGIONALES){
+            List<CentroRegional> centrosRegionales = result;
+            fillMap(centrosRegionales);
+            return;
+        }
+
+    }
+
+    private void fillMap(List<CentroRegional> centrosRegionales){
         generatePoints(centrosRegionales);
         LatLngBounds bounds = buildBounds();
         gmMapa.setOnMapLoadedCallback(() ->
@@ -318,7 +329,12 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
 
     @Override
     public void onError(int type, int message) {
-        //TODO manage error
+        if(type == ParseConstantes.QUERY_CENTROS_REGIONALES){
+            //TODO sustituir por snackbar
+            Toast.makeText(this, "No se pudieron recuperar los centros", Toast.LENGTH_LONG).show();
+            return;
+        }
+
     }
 
     @Override

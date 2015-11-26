@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +22,7 @@ import com.ntilde.modelo.PuntosDonacion;
 import com.ntilde.percentagelayout.PLinearLayout;
 import com.ntilde.rest.ParseManager;
 import com.ntilde.rest.response.ParseResponse;
+import com.ntilde.utils.ParseConstantes;
 import com.parse.ParseAnalytics;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -206,8 +208,14 @@ public class Ubicacion extends ActionBarActivity implements ParseResponse{
 
     @Override
     public void onError(int type, int message) {
-        //TODO handle error
+
+        if(type == ParseConstantes.QUERY_PUNTO_DONACION){
+            //TODO sustituir por snackbar
+            Toast.makeText(this,"No se pudieron recuperar los puntos asociados a su centro",Toast.LENGTH_LONG).show();
+            return;
+        }
     }
+
 
     @Override
     public void onLocalError(int type, int message) {
