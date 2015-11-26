@@ -189,11 +189,6 @@ public class SplashScreen extends ActionBarActivity implements ParseResponse{
             cannotUpdate();
             return;
         }
-
-        if(type == ParseConstantes.QUERY_CENTROS_REGIONALES){
-            DialogUtils.showNoDataRetrieved(this);
-            return;
-        }
     }
 
     @Override
