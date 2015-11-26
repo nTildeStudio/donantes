@@ -114,7 +114,9 @@ public class MenuPrincipal extends ActionBarActivity implements ParseResponse {
 
     @Override
     public void onError(int type, int message) {
-        //TODO manage error
+        nombre_centro.setText("");
+        ((TextView)mensajes.get(3).getChildAt(0)).setText("Mensajes de su centro");
+        ((TextView)mensajes.get(3).getChildAt(1)).setText("Vuelve a leer los mensajes de tu centro");
     }
 
     @Override
