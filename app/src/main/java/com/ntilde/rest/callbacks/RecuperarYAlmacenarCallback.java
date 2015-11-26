@@ -47,7 +47,7 @@ public class RecuperarYAlmacenarCallback implements FindCallback<ParseObject> {
     }
 
     private boolean nonStoredInLocalStorage(List<ParseObject> list){
-        return  list.isEmpty();
+        return  list == null || list.isEmpty();
     }
 
     private boolean isNetError(Exception e){
