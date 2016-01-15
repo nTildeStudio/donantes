@@ -6,10 +6,16 @@
     <string name="default_asset_font"></string>
     <string name="title_activity_ubicacion">Ubicacion</string>
     <string name="title_activity_agenda">Agenda</string>
-    <string name="home_donde_donar_titulo">Dónde donar</string>
-    <string name="home_donde_donar_descripcion">Encuentra los mejores puntos de donación</string>
+    <string name="home_donde_donar_title">Dónde donar</string>
+    <string name="home_donde_donar_description">Encuentra los mejores puntos de donación</string>
     <string name="home_agenda_titulo">Agenda de donaciones</string>
     <string name="home_agenda_descripcion">Anota tus donaciones y olvídate de fechas</string>
+    <string name="home_info_title">Información al donante</string>
+    <string name="home_info_description">Todo lo que necesitas saber sobre donaciones</string>
+    <string name="home_config_title">Configuración</string>
+    <string name="home_config_description">Gestiona tu perfil de usuario y alertas</string>
+    <string name="home_messages_title">Mensajes del CRTG</string>
+    <string name="home_messages_description">Vuelve a leer los mensajes del CRT</string>
     <string name="title_activity_primer_inicio">Configuracion inicial</string>
     <string name="title_activity_splash_screen">Donantes</string>
     <color name="rojo">#c00</color>
@@ -44,4 +50,6 @@
     <string name="no_net_dialog_ok">OK</string>
     <string name="no_data_retrieved_dialog_title">Error en la recuperación</string>
     <string name="no_data_retrieved_dialog_message">La petición falló, no se pudieron recuperar los datos</string>
+
+
 </resources>

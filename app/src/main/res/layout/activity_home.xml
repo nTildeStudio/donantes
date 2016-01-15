@@ -97,13 +97,13 @@
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/home_donde_donar_titulo"
+                android:text="@string/home_donde_donar_title"
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/home_donde_donar_descripcion"
+                android:text="@string/home_donde_donar_description"
                 app:ptv_height="1.7"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView
@@ -195,13 +195,13 @@
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Información al donante"
+                android:text="@string/home_info_title"
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Todo lo que necesitas saber sobre donaciones"
+                android:text="@string/home_info_description"
                 app:ptv_height="1.7"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView
@@ -244,16 +244,17 @@
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mensajes del CRTG"
+                android:text="@string/home_messages_title"
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vuelve a leer los mensajes del CRT"
+                android:text="@string/home_messages_description"
                 app:ptv_height="1.7"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView
+                android:id="@+id/tv_info_mensajes_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" "
@@ -293,13 +294,13 @@
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Configuración"
+                android:text="@string/home_config_title"
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Gestiona tu perfil de usuario y alertas"
+                android:text="@string/home_config_description"
                 app:ptv_height="1.7"
                 android:textColor="#444"/>
             <com.ntilde.percentagelayout.PTextView
