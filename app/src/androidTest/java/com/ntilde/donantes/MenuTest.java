@@ -61,18 +61,21 @@ public class MenuTest extends ActivityInstrumentationTestCase2{
     }
 
     public void testMensajes() throws Exception{
-        solo.clickOnText(getActivity().getString(R.string.home_messages_title));
+        //El título cambia según el Centro seleccionado
+        TextView tvTituloMensajes = (TextView) solo.getView("tv_info_mensajes_titulo");
+        solo.clickOnView(tvTituloMensajes);
         solo.assertCurrentActivity("Actividad incorrecta",Mensajes.class);
         solo.goBack();
         //La descripción cambia según el Centro seleccionado
         TextView tvDescripcionMensajes = (TextView) solo.getView("tv_info_mensajes_description");
-        solo.clickOnText(tvDescripcionMensajes.getText().toString());
+        solo.clickOnView(tvDescripcionMensajes);
         solo.assertCurrentActivity("Actividad incorrecta",Mensajes.class);
         solo.goBack();
         View imageMensajes = solo.getView("icono_mensajes");
         solo.clickOnView(imageMensajes);
         solo.assertCurrentActivity("Actividad incorrecta", Mensajes.class);
         solo.goBack();
+
     }
 
     public void testConfiguracion() throws Exception{

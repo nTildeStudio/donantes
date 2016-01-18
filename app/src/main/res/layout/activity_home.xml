@@ -248,6 +248,7 @@
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
             <com.ntilde.percentagelayout.PTextView
+                android:id="@+id/tv_info_mensajes_titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_messages_description"
