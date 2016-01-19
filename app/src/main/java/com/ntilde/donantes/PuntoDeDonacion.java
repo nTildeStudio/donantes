@@ -5,13 +5,13 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ntilde.donantes.views.DonantesCalendarEvent;
 import com.ntilde.donantes.views.DonantesCalendarRange;
@@ -87,11 +87,8 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
 
 
     public void recuperarPuntosDonacion(){
-        Log.e("XXX","rpd1");
         String centroRegionalId = getIntent().getExtras().getString("puntoId");
-        Log.e("XXX","rpd2:"+getIntent().getExtras().getString("puntoId"));
         manager.getPuntosDonacion(centroRegionalId, true, this);
-        Log.e("XXX","rpd3");
     }
 
     @Override
@@ -139,14 +136,12 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
     public void onSuccess(int type, List result) {
 
         if(type == ParseConstantes.QUERY_PUNTO_DONACION){
-            Log.e("XXX","Sucess punto");
             puntoDonacionId = ((PuntosDonacion)result).getObjectId();
             manager.getHorarios(puntoDonacionId,true, PuntoDeDonacion.this);
             return;
         }
 
         if(type == ParseConstantes.QUERY_HORARIOS_DONACION){
-            Log.e("XXX","Sucess horarios");
             gestionarHorarios((List<HorariosDonacion>)result);
             return;
         }
@@ -154,8 +149,8 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
     }
 
     private void gestionarHorarios(List<HorariosDonacion> horarios){
+
         for(HorariosDonacion horario:horarios){
-            Log.e("XXX","Horario :)");
             Date inicio=horario.getFechaInicio();
             Date fin=horario.getFechaFin();
             String horas=horario.getHorario();
@@ -186,15 +181,15 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
     @Override
     public void onError(int type, int message) {
 
+        Toast toast = Toast.makeText(this,message,Toast.LENGTH_LONG);
+        toast.show();
         if(type == ParseConstantes.QUERY_PUNTO_DONACION){
-            //Gestionar fallo reintento
-            Log.e("XXX","E1");
+
             return;
         }
 
         if(type == ParseConstantes.QUERY_HORARIOS_DONACION){
             //Gestionar fallo reintento
-            Log.e("XXX","E2");
             return;
         }
     }
@@ -204,13 +199,11 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
 
         if(type == ParseConstantes.QUERY_PUNTO_DONACION){
             manager.getPuntosDonacion(getIntent().getExtras().getString("puntoId"),false, PuntoDeDonacion.this);
-            Log.e("XXX","E3");
             return;
         }
 
         if(type == ParseConstantes.QUERY_HORARIOS_DONACION){
             manager.getHorarios(puntoDonacionId,false, PuntoDeDonacion.this);
-            Log.e("XXX","E4");
             return;
         }
 
