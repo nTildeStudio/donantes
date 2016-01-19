@@ -75,6 +75,8 @@
             </com.ntilde.percentagelayout.PLinearLayout>
         </com.ntilde.percentagelayout.PLinearLayout>
 
+        <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+            android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
 
         <com.ntilde.percentagelayout.PRelativeLayout
             android:layout_width="0dp"
