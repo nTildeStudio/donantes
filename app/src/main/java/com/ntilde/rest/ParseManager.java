@@ -16,6 +16,7 @@ public interface ParseManager<T extends ParseObject> {
     void getCentroRegional(String centroRegionalId,boolean fromLocal, ParseResponse callback);
     void getUltimaActualizacion(String centroRegionalId, ParseResponse callback);
     void getPuntosDonacion(String centroRegionalId, boolean fromLocal, ParseResponse callback);
+    void getPuntosDonacionByID(String puntoDonacionID, boolean fromLocal, ParseResponse callback);
     void getHorarios(String puntoDonacionId, boolean fromLocal,ParseResponse callback);
 
 }

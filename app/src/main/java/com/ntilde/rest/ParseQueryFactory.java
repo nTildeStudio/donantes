@@ -30,6 +30,12 @@ public class ParseQueryFactory {
         return puntosDonacionQuery;
     }
 
+    public static ParseQuery<PuntosDonacion> puntoDonacionQueryByID(String objectId){
+        ParseQuery<PuntosDonacion> puntosDonacionQuery = ParseQuery.getQuery("PuntosDeDonacion");
+        puntosDonacionQuery.whereEqualTo("objectId", objectId);
+        return puntosDonacionQuery;
+    }
+
     public static ParseQuery<UltimaActualizacion> ultimaActualizacionQuery(String objectId){
         ParseQuery<UltimaActualizacion> ultimaActualizacionQuery = ParseQuery.getQuery("UltimaActualizacion");
         ParseObject object = ParseObject.createWithoutData(CentroRegional.class, objectId);
