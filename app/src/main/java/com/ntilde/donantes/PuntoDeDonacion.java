@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ntilde.donantes.views.DonantesCalendarEvent;
 import com.ntilde.donantes.views.DonantesCalendarRange;
@@ -180,8 +181,10 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
     @Override
     public void onError(int type, int message) {
 
+        Toast toast = Toast.makeText(this,message,Toast.LENGTH_LONG);
+        toast.show();
         if(type == ParseConstantes.QUERY_PUNTO_DONACION){
-            //Gestionar fallo reintento
+
             return;
         }
 
