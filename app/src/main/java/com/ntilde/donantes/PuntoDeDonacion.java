@@ -87,8 +87,8 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
 
 
     public void recuperarPuntosDonacion(){
-        String centroRegionalId = getIntent().getExtras().getString("puntoId");
-        manager.getPuntosDonacion(centroRegionalId, true, this);
+        String puntoId = getIntent().getExtras().getString("puntoId");
+        manager.getPuntosDonacionByID(puntoId, true, this);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
     public void onSuccess(int type, List result) {
 
         if(type == ParseConstantes.QUERY_PUNTO_DONACION){
-            puntoDonacionId = ((PuntosDonacion)result).getObjectId();
+            puntoDonacionId = ((PuntosDonacion)result.get(0)).getObjectId();
             manager.getHorarios(puntoDonacionId,true, PuntoDeDonacion.this);
             return;
         }
@@ -198,7 +198,7 @@ public class PuntoDeDonacion extends ActionBarActivity implements ParseResponse{
     public void onLocalError(int type, int message) {
 
         if(type == ParseConstantes.QUERY_PUNTO_DONACION){
-            manager.getPuntosDonacion(getIntent().getExtras().getString("puntoId"),false, PuntoDeDonacion.this);
+            manager.getPuntosDonacionByID(getIntent().getExtras().getString("puntoId"),false, PuntoDeDonacion.this);
             return;
         }
 

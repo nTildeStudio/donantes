@@ -59,6 +59,19 @@ public class ParseManagerImpl<T extends ParseObject> implements ParseManager {
     }
 
     @Override
+    public void getPuntosDonacionByID(String puntoDonacionID, boolean fromLocal, ParseResponse callback) {
+        ParseQuery<PuntosDonacion> puntosDonacion = ParseQueryFactory.puntoDonacionQueryByID(puntoDonacionID);
+
+        if(fromLocal){
+            recuperar(ParseConstantes.QUERY_PUNTO_DONACION,puntosDonacion,fromLocal,callback);
+
+        }else{
+            recuperarYAlmacenar(ParseConstantes.QUERY_PUNTO_DONACION,puntosDonacion,callback);
+
+        }
+    }
+
+    @Override
     public void getHorarios(String puntoDonacionId, boolean fromLocal, ParseResponse callback) {
         ParseQuery<HorariosDonacion> horarios = ParseQueryFactory.horariosDonacionQuery(puntoDonacionId);
 
