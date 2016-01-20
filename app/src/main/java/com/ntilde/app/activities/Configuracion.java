@@ -56,6 +56,7 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
     GoogleMap gmMapa;
     List<LatLng> otsLatLng;
 
+    @InjectView(R.id.iconos_margen_superior)PLinearLayout ic_margen_sup;
     @InjectView(R.id.configuracion_logotipo)ImageView logotipo;
     @InjectViews({R.id.configuracion_grupo_0n, R.id.configuracion_grupo_0p, R.id.configuracion_grupo_an, R.id.configuracion_grupo_ap,
             R.id.configuracion_grupo_bn, R.id.configuracion_grupo_bp, R.id.configuracion_grupo_abn, R.id.configuracion_grupo_abp}) ImageView[] gruposSanguineos;
@@ -78,6 +79,15 @@ public class Configuracion extends ActionBarActivity implements ParseResponse{
         setContentView(R.layout.activity_configuracion);
 
         ButterKnife.inject(this);
+
+        ic_margen_sup.post(new Runnable() {
+            @Override
+            public void run() {
+                int valor = ic_margen_sup.getPHeight();
+                logotipo.setPadding(valor, valor / 2, valor, valor / 2);
+                ic_margen_sup.setVisibility(View.GONE);
+            }
+        });
 
         smfMapa=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.configuracion_mapa);
 
