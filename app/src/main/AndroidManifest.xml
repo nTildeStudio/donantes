@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ntilde.donantes" >
+    package="com.ntilde.app" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,11 +16,11 @@
       to match your app's package name + ".permission.C2D_MESSAGE".
     -->
     <!--<permission android:protectionLevel="signature" android:name="com.parse.starter.permission.C2D_MESSAGE" />-->
-    <permission android:protectionLevel="signature" android:name="com.ntilde.donantes.permission.C2D_MESSAGE" />
+    <permission android:protectionLevel="signature" android:name="com.ntilde.app.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.ntilde.donantes.permission.C2D_MESSAGE" />
 
     <application
-        android:name=".DonantesApplication"
+        android:name="com.ntilde.app.DonantesApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_logotipo"
         android:label="@string/app_name"
@@ -34,7 +34,7 @@
             android:value="8369a218463c798b92253dbb0dd41007389605ac" />
 
         <activity
-            android:name=".SplashScreen"
+            android:name="com.ntilde.app.activities.SplashScreen"
             android:label="@string/title_activity_splash_screen"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -44,42 +44,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Ubicacion"
+            android:name="com.ntilde.app.activities.Ubicacion"
             android:label="@string/title_activity_ubicacion"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".Agenda"
+            android:name="com.ntilde.app.activities.Agenda"
             android:label="@string/title_activity_agenda"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".MenuPrincipal"
+            android:name="com.ntilde.app.activities.MenuPrincipal"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".PrimerInicio"
-            android:label="@string/title_activity_primer_inicio"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".Configuracion"
+            android:name="com.ntilde.app.activities.Configuracion"
             android:label="@string/title_activity_configuracion"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".Informacion"
+            android:name="com.ntilde.app.activities.Informacion"
             android:label="@string/title_activity_informacion"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".Mensajes"
+            android:name="com.ntilde.app.activities.Mensajes"
             android:label="@string/title_activity_mensajes"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".FirstConfig"
+            android:name="com.ntilde.app.activities.FirstConfig"
             android:label="Inicio"
             android:screenOrientation="portrait">
         </activity>
@@ -94,7 +89,7 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-        <receiver android:name="DonantesReceiver"
+        <receiver android:name="com.ntilde.app.DonantesReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
@@ -117,7 +112,7 @@
         </receiver>
 
         <activity
-            android:name=".PuntoDeDonacion"
+            android:name="com.ntilde.app.activities.PuntoDeDonacion"
             android:label="@string/title_activity_punto_de_donacion"
             android:screenOrientation="portrait">
         </activity>

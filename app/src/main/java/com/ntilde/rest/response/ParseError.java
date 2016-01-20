@@ -1,6 +1,6 @@
 package com.ntilde.rest.response;
 
-import com.ntilde.donantes.R;
+import com.ntilde.app.R;
 import com.ntilde.utils.ParseConstantes;
 
 /**

@@ -8,14 +8,14 @@
     android:background="#fff"
     android:id="@+id/iconos_margen_izquierdo">
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:id="@+id/home_cabecera"
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_height="12.5"
         app:pl_percentage_width="100"
         android:orientation="vertical">
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:layout_width="0px"
             android:layout_height="0px"
             app:pl_percentage_height="95"
@@ -32,21 +32,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <com.ntilde.percentagelayout.PTextView
+                <com.ntilde.app.views.percentagelayout.PTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     app:ptv_height="1"
                     android:text=" "
                     android:textColor="#444"/>
-                <com.ntilde.percentagelayout.PTextView
+                <com.ntilde.app.views.percentagelayout.PTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     app:ptv_height="4.5"
                     android:text="Donación de sangre"
                     android:textColor="#c00"/>
-                <com.ntilde.percentagelayout.PTextView
+                <com.ntilde.app.views.percentagelayout.PTextView
                     android:id="@+id/menu_principal_nombre_centro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -55,28 +55,29 @@
                     android:text="Centro Regional de Transfusiones de Galicia"
                     android:textColor="#444"/>
             </LinearLayout>
-        </com.ntilde.percentagelayout.PLinearLayout>
-        <com.ntilde.percentagelayout.PLinearLayout
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:id="@+id/home_borde_rojo_superior"
             android:layout_width="0px"
             android:layout_height="0px"
             app:pl_percentage_height="5"
             app:pl_percentage_width="100"
             android:background="#c00">
-        </com.ntilde.percentagelayout.PLinearLayout>
-    </com.ntilde.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
+        android:layout_width="0px" android:layout_height="0px"
+        android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_width="100"
         app:pl_percentage_height="14"
         android:orientation="horizontal">
 
-        <com.ntilde.percentagelayout.PImageView
+        <com.ntilde.app.views.percentagelayout.PImageView
             android:id="@+id/icono_ubicacion"
             android:tag="ubicacion"
             android:layout_width="1px"
@@ -85,7 +86,7 @@
             android:alpha="0"
             android:src="@drawable/ic_ubicacion_v2"/>
 
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:id="@+id/info_ubicacion"
             android:tag="ubicacion"
             android:layout_width="0px"
@@ -94,38 +95,39 @@
             app:pl_percentage_height="100"
             android:orientation="vertical"
             android:gravity="center_vertical">
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_donde_donar_title"
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_donde_donar_description"
                 app:ptv_height="1.7"
                 android:textColor="#444"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" "
                 app:ptv_height="1"/>
-        </com.ntilde.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
+        android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_width="100"
         app:pl_percentage_height="14"
         android:orientation="horizontal">
 
-        <com.ntilde.percentagelayout.PImageView
+        <com.ntilde.app.views.percentagelayout.PImageView
             android:id="@+id/icono_agenda"
             android:tag="agenda"
             android:layout_width="1px"
@@ -134,7 +136,7 @@
             android:alpha="0"
             android:src="@drawable/ic_agenda_v2"/>
 
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:id="@+id/info_agenda"
             android:tag="agenda"
             android:layout_width="0px"
@@ -143,38 +145,39 @@
             app:pl_percentage_height="100"
             android:orientation="vertical"
             android:gravity="center_vertical">
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_agenda_titulo"
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_agenda_descripcion"
                 app:ptv_height="1.7"
                 android:textColor="#444"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" "
                 app:ptv_height="1"/>
-        </com.ntilde.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
+        android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_width="100"
         app:pl_percentage_height="14"
         android:orientation="horizontal">
 
-        <com.ntilde.percentagelayout.PImageView
+        <com.ntilde.app.views.percentagelayout.PImageView
             android:id="@+id/icono_informacion"
             android:tag="informacion"
             android:layout_width="1px"
@@ -183,7 +186,7 @@
             android:alpha="0"
             android:src="@drawable/ic_informacion_v2"/>
 
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:id="@+id/info_informacion"
             android:tag="informacion"
             android:layout_width="0px"
@@ -192,38 +195,39 @@
             app:pl_percentage_height="100"
             android:orientation="vertical"
             android:gravity="center_vertical">
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_info_title"
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_info_description"
                 app:ptv_height="1.7"
                 android:textColor="#444"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" "
                 app:ptv_height="1"/>
-        </com.ntilde.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
+        android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_width="100"
         app:pl_percentage_height="14"
         android:orientation="horizontal">
 
-        <com.ntilde.percentagelayout.PImageView
+        <com.ntilde.app.views.percentagelayout.PImageView
             android:id="@+id/icono_mensajes"
             android:tag="mensajes"
             android:layout_width="1px"
@@ -232,7 +236,7 @@
             android:alpha="0"
             android:src="@drawable/ic_mensajes_v2"/>
 
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:id="@+id/info_mensajes"
             android:tag="mensajes"
             android:layout_width="0px"
@@ -241,40 +245,41 @@
             app:pl_percentage_height="100"
             android:orientation="vertical"
             android:gravity="center_vertical">
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_messages_title"
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:id="@+id/tv_info_mensajes_titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_messages_description"
                 app:ptv_height="1.7"
                 android:textColor="#444"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:id="@+id/tv_info_mensajes_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" "
                 app:ptv_height="1"/>
-        </com.ntilde.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
+        android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_width="100"
         app:pl_percentage_height="14"
         android:orientation="horizontal">
 
-        <com.ntilde.percentagelayout.PImageView
+        <com.ntilde.app.views.percentagelayout.PImageView
             android:id="@+id/icono_configuracion"
             android:tag="configuracion"
             android:layout_width="1px"
@@ -283,7 +288,7 @@
             android:alpha="0"
             android:src="@drawable/ic_configuracion_v2"/>
 
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:id="@+id/info_configuracion"
             android:tag="configuracion"
             android:layout_width="0px"
@@ -292,29 +297,30 @@
             app:pl_percentage_height="100"
             android:orientation="vertical"
             android:gravity="center_vertical">
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_config_title"
                 app:ptv_height="3.5"
                 android:textColor="#222"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/home_config_description"
                 app:ptv_height="1.7"
                 android:textColor="#444"/>
-            <com.ntilde.percentagelayout.PTextView
+            <com.ntilde.app.views.percentagelayout.PTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" "
                 app:ptv_height="1"/>
-        </com.ntilde.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
+        android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.app.views.percentagelayout.PLinearLayout>
 
     <LinearLayout
         android:id="@+id/home_borde_rojo_inferior"
