@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                tools:context="com.ntilde.donantes.PrimerInicio"
+                tools:context="com.ntilde.app.PrimerInicio"
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
                 android:background="#fff"
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:id="@+id/configuracion_cabecera"
             android:layout_width="0px"
             android:layout_height="0px"
@@ -23,7 +23,7 @@
             app:pl_percentage_width="100"
             android:orientation="vertical"
             >
-            <com.ntilde.percentagelayout.PLinearLayout
+            <com.ntilde.app.views.percentagelayout.PLinearLayout
                 android:layout_width="0px"
                 android:layout_height="0px"
                 app:pl_percentage_height="95"
@@ -42,21 +42,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <com.ntilde.percentagelayout.PTextView
+                    <com.ntilde.app.views.percentagelayout.PTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         app:ptv_height="1"
                         android:text=" "
                         android:textColor="#444"/>
-                    <com.ntilde.percentagelayout.PTextView
+                    <com.ntilde.app.views.percentagelayout.PTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         app:ptv_height="4"
                         android:text="Configuración"
                         android:textColor="#c00"/>
-                    <com.ntilde.percentagelayout.PTextView
+                    <com.ntilde.app.views.percentagelayout.PTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -64,19 +64,21 @@
                         android:text="Gestiona tu perfil de usuario y alertas"
                         android:textColor="#444"/>
                 </LinearLayout>
-            </com.ntilde.percentagelayout.PLinearLayout>
-            <com.ntilde.percentagelayout.PLinearLayout
+            </com.ntilde.app.views.percentagelayout.PLinearLayout>
+            <com.ntilde.app.views.percentagelayout.PLinearLayout
                 android:id="@+id/configuracion_borde_rojo_superior"
                 android:layout_width="0px"
                 android:layout_height="0px"
                 app:pl_percentage_height="5"
                 app:pl_percentage_width="100"
                 android:background="#c00">
-            </com.ntilde.percentagelayout.PLinearLayout>
-        </com.ntilde.percentagelayout.PLinearLayout>
+            </com.ntilde.app.views.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
+        <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
+            android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
 
-        <com.ntilde.percentagelayout.PRelativeLayout
+        <com.ntilde.app.views.percentagelayout.PRelativeLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:pr_percentage_height="10"
@@ -113,9 +115,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 />
-        </com.ntilde.percentagelayout.PRelativeLayout>
+        </com.ntilde.app.views.percentagelayout.PRelativeLayout>
 
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:id="@+id/container_grupos"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -193,9 +195,9 @@
                 android:layout_marginRight="5dp"
                 android:src="@drawable/grupo_ab_pos_off"/>
 
-        </com.ntilde.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:pl_percentage_width="100"
@@ -207,7 +209,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-        </com.ntilde.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
     </LinearLayout>
 
 

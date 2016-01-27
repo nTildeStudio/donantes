@@ -34,7 +34,7 @@ public class RecuperarYAlmacenarCallback implements FindCallback<ParseObject> {
             return;
         }
 
-        if (isNetError(e)){
+        if (isNetError(e) || noDataRetrieved(list)){
             response.onError(type,ParseError.crearMensajeError(type, false));
             return;
         }
@@ -47,12 +47,15 @@ public class RecuperarYAlmacenarCallback implements FindCallback<ParseObject> {
     }
 
     private boolean nonStoredInLocalStorage(List<ParseObject> list){
-        return  list == null || list.isEmpty();
+        return  fromLocal && (list == null || list.isEmpty());
     }
 
     private boolean isNetError(Exception e){
        return e!=null && !fromLocal;
     }
 
+    private boolean noDataRetrieved(List<ParseObject> list){
+        return  !fromLocal && (list == null || list.isEmpty());
+    }
 
 }

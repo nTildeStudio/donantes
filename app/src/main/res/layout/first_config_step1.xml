@@ -12,7 +12,7 @@
         android:contentDescription="@null"
         android:scaleType="centerCrop"/>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:id="@+id/first_config_step1_map_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -27,9 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:id="@+id/first_config_step1_bottom_space"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -39,7 +39,7 @@
         app:pl_percentage_height="10"
         android:orientation="vertical"/>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
@@ -49,7 +49,7 @@
         android:background="@color/first_configuration_translucent_black"
         android:orientation="vertical">
 
-        <com.ntilde.percentagelayout.PTextView
+        <com.ntilde.app.views.percentagelayout.PTextView
             android:id="@+id/first_config_step1_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:paddingRight="16dp"
             android:textColor="#fff"/>
 
-        <com.ntilde.percentagelayout.PTextView
+        <com.ntilde.app.views.percentagelayout.PTextView
             android:id="@+id/first_config_step1_centro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,6 +71,6 @@
             android:paddingRight="16dp"
             android:textColor="@color/rojo"/>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
 </RelativeLayout>

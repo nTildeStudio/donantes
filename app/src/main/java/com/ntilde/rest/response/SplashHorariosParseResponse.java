@@ -2,9 +2,9 @@ package com.ntilde.rest.response;
 
 import android.util.Log;
 
-import com.ntilde.donantes.SplashScreen;
-import com.ntilde.modelo.HorariosDonacion;
-import com.ntilde.modelo.PuntosDonacion;
+import com.ntilde.app.activities.SplashScreen;
+import com.ntilde.domain.HorariosDonacion;
+import com.ntilde.domain.PuntosDonacion;
 
 import java.util.List;
 

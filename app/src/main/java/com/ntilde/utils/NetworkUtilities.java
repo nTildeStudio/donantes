@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.ntilde.donantes.DonantesApplication;
+import com.ntilde.app.DonantesApplication;
 
 /**
  * Created by emanuel on 20/11/15.

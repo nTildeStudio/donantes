@@ -1,9 +1,9 @@
 package com.ntilde.rest;
 
-import com.ntilde.modelo.CentroRegional;
-import com.ntilde.modelo.HorariosDonacion;
-import com.ntilde.modelo.PuntosDonacion;
-import com.ntilde.modelo.UltimaActualizacion;
+import com.ntilde.domain.CentroRegional;
+import com.ntilde.domain.HorariosDonacion;
+import com.ntilde.domain.PuntosDonacion;
+import com.ntilde.domain.UltimaActualizacion;
 import com.ntilde.rest.callbacks.AlmacenarCallback;
 import com.ntilde.rest.callbacks.RecuperarCallback;
 import com.ntilde.rest.callbacks.RecuperarYAlmacenarCallback;
@@ -48,6 +48,19 @@ public class ParseManagerImpl<T extends ParseObject> implements ParseManager {
     @Override
     public void getPuntosDonacion(String centroRegionalId, boolean fromLocal, ParseResponse callback) {
         ParseQuery<PuntosDonacion> puntosDonacion = ParseQueryFactory.puntoDonacionQuery(centroRegionalId);
+
+        if(fromLocal){
+            recuperar(ParseConstantes.QUERY_PUNTO_DONACION,puntosDonacion,fromLocal,callback);
+
+        }else{
+            recuperarYAlmacenar(ParseConstantes.QUERY_PUNTO_DONACION,puntosDonacion,callback);
+
+        }
+    }
+
+    @Override
+    public void getPuntosDonacionByID(String puntoDonacionID, boolean fromLocal, ParseResponse callback) {
+        ParseQuery<PuntosDonacion> puntosDonacion = ParseQueryFactory.puntoDonacionQueryByID(puntoDonacionID);
 
         if(fromLocal){
             recuperar(ParseConstantes.QUERY_PUNTO_DONACION,puntosDonacion,fromLocal,callback);
