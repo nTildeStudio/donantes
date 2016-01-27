@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.ntilde.exception.InvalidValueType;
@@ -16,7 +17,9 @@ import com.parse.ParsePushBroadcastReceiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,7 +53,7 @@ public class DonantesReceiver extends ParsePushBroadcastReceiver{
                 Intent notificationIntent = new Intent(context, Agenda.class);
                 PendingIntent contentIntent = PendingIntent.getActivity(context,
                         10, notificationIntent,
-                        PendingIntent.FLAG_CANCEL_CURRENT);
+                        PendingIntent.FLAG_UPDATE_CURRENT);
 
                 Notification n;
                 Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -64,15 +67,21 @@ public class DonantesReceiver extends ParsePushBroadcastReceiver{
                             .setSound(alarmSound)
                             .getNotification();
                 }else {
-                    // build notification
-                    // the addAction re-use the same intent to keep the example short
-                    n = new Notification.Builder(context)
+
+                    //For wearables -> Create the action and show donation date
+                    Date d = new Date(data.getLong("fecha"));
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM");
+                    String date = sdf.format(d);
+                    NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_agenda_white, date, contentIntent).build();
+
+                    n = new NotificationCompat.Builder(context)
                             .setContentTitle("Calendario Donantes")
                             .setContentText("Se ha añadido una donación de " + data.getString("tipo"))
                             .setSmallIcon(R.drawable.ic_agenda)
                             .setContentIntent(contentIntent)
                             .setAutoCancel(true)
                             .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                            .extend(new android.support.v4.app.NotificationCompat.WearableExtender().addAction(action)) //Extra capabilities for Android Wear
                             .setSound(alarmSound)
                             .build();
                 }
