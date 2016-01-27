@@ -70,9 +70,12 @@ public class DonantesReceiver extends ParsePushBroadcastReceiver{
                 }else {
 
                     //For wearables -> Create the action and show donation date
-                    Date d = new Date(data.getLong("fecha"));
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM");
-                    String date = sdf.format(d);
+                    String date = "";
+                    if(data.has("fecha")) {
+                        Date d = new Date(data.getLong("fecha"));
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM");
+                        date = sdf.format(d);
+                    }
                     NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.drawable.ic_agenda_white, date, contentIntent).build();
 
                     n = new NotificationCompat.Builder(context)
