@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:id="@+id/first_config_buttons_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -40,9 +40,9 @@
             android:text="Siguiente"
             android:textColor="#fff"/>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
@@ -59,6 +59,6 @@
             android:padding="2dp"
             android:layout_width="match_parent"/>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
 </RelativeLayout>

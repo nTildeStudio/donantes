@@ -36,7 +36,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
-import com.ntilde.donantes.R;
+import com.ntilde.app.R;
 
 import java.util.ArrayList;
 

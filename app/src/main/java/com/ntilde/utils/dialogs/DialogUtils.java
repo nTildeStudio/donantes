@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 
-import com.ntilde.donantes.R;
+import com.ntilde.app.R;
 
 /**
  * Created by emanuel on 25/11/15.

@@ -1,9 +1,9 @@
 package com.ntilde.rest;
 
-import com.ntilde.modelo.CentroRegional;
-import com.ntilde.modelo.HorariosDonacion;
-import com.ntilde.modelo.PuntosDonacion;
-import com.ntilde.modelo.UltimaActualizacion;
+import com.ntilde.domain.CentroRegional;
+import com.ntilde.domain.HorariosDonacion;
+import com.ntilde.domain.PuntosDonacion;
+import com.ntilde.domain.UltimaActualizacion;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 

@@ -3,20 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.ntilde.donantes.PrimerInicio"
+    tools:context="com.ntilde.app.PrimerInicio"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="#fff"
     android:id="@+id/iconos_margen_izquierdo">
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:id="@+id/punto_de_donacion_cabecera"
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_height="12.5"
         app:pl_percentage_width="100"
         android:orientation="vertical">
-        <com.ntilde.percentagelayout.PLinearLayout
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:layout_width="0px"
             android:layout_height="0px"
             app:pl_percentage_height="95"
@@ -33,21 +33,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <com.ntilde.percentagelayout.PTextView
+                <com.ntilde.app.views.percentagelayout.PTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     app:ptv_height="1"
                     android:text=" "
                     android:textColor="#444"/>
-                <com.ntilde.percentagelayout.PTextView
+                <com.ntilde.app.views.percentagelayout.PTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     app:ptv_height="4"
                     android:text="Punto de donación"
                     android:textColor="#c00"/>
-                <com.ntilde.percentagelayout.PTextView
+                <com.ntilde.app.views.percentagelayout.PTextView
                     android:id="@+id/punto_de_donacion_subtitulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,21 +56,22 @@
                     android:text="Gestiona tu perfil de usuario y alertas"
                     android:textColor="#444"/>
             </LinearLayout>
-        </com.ntilde.percentagelayout.PLinearLayout>
-        <com.ntilde.percentagelayout.PLinearLayout
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
+        <com.ntilde.app.views.percentagelayout.PLinearLayout
             android:id="@+id/punto_de_donacion_borde_rojo_superior"
             android:layout_width="0px"
             android:layout_height="0px"
             app:pl_percentage_height="5"
             app:pl_percentage_width="100"
             android:background="#c00">
-        </com.ntilde.percentagelayout.PLinearLayout>
-    </com.ntilde.percentagelayout.PLinearLayout>
+        </com.ntilde.app.views.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
+        android:layout_width="0px" android:layout_height="0px"
+        android:id="@+id/iconos_margen_superior" app:pl_percentage_height="2.5"></com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0px"
         android:layout_height="0px"
         app:pl_percentage_width="100"
@@ -78,17 +79,18 @@
         app:pl_percentage_padding_left="5"
         app:pl_percentage_padding_right="5">
 
-        <com.ntilde.donantes.views.DonantesCalendarView
+        <com.ntilde.app.views.calendar.DonantesCalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout android:layout_width="0px" android:layout_height="0px"
-        app:pl_percentage_height="2.5"></com.ntilde.percentagelayout.PLinearLayout>
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
+        android:layout_width="0px" android:layout_height="0px"
+        app:pl_percentage_height="2.5"></com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:pl_percentage_width="100"
@@ -97,7 +99,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <com.ntilde.percentagelayout.PTextView
+        <com.ntilde.app.views.percentagelayout.PTextView
             android:id="@+id/ubicacion_msg_direccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,7 +107,7 @@
             app:ptv_height="3"
             android:textColor="#000"/>
 
-        <com.ntilde.percentagelayout.PTextView
+        <com.ntilde.app.views.percentagelayout.PTextView
             android:id="@+id/ubicacion_msg_seleccionar_fecha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -114,9 +116,9 @@
             android:textColor="#fff"
             android:text="Seleccione una fecha"/>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
-    <com.ntilde.percentagelayout.PLinearLayout
+    <com.ntilde.app.views.percentagelayout.PLinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:pl_percentage_width="100"
@@ -137,7 +139,7 @@
             android:layout_height="wrap_content"
             android:text="Cómo llegar"/>
 
-    </com.ntilde.percentagelayout.PLinearLayout>
+    </com.ntilde.app.views.percentagelayout.PLinearLayout>
 
     <LinearLayout
         android:id="@+id/punto_de_donacion_borde_rojo_inferior"
