@@ -11,7 +11,6 @@ import com.ntilde.rest.ParseManager;
 import com.ntilde.rest.ParseManagerImpl;
 import com.parse.Parse;
 import com.parse.ParseObject;
-import com.parse.PushService;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -28,14 +27,14 @@ public class DonantesApplication extends Application{
 
         sInstance = this;
 
-        //Cargar SharedPreferences
-
-        //Registramos clases pertenecientes al modelo local
         registrarModeloLocalParse();
-        //Habilitamos almacenamieto local de datos
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "9qm1kVlIwYlGQ8ZBvJiAj6GEj7mfBpfLmE2eGCh0", "tD7aDDlGmcd2InKOho2g2KQCfg1OWUQhIfOdsAre");
-        PushService.setDefaultPushCallback(this, MenuPrincipal.class, R.drawable.ic_logotipo_blanco);
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId("9qm1kVlIwYlGQ8ZBvJiAj6GEj7mfBpfLmE2eGCh0")
+                .clientKey(null)
+                .server("http://angeldearbo.ddns.net:9999/donantes")
+                .enableLocalDataStore()
+                .build());
+//        PushService.setDefaultPushCallback(this, MenuPrincipal.class, R.drawable.ic_logotipo_blanco);
         Fabric.with(this, new Crashlytics());
     }
 
